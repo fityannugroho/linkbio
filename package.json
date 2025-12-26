@@ -7,6 +7,7 @@
     "lint:fix": "biome check --diagnostic-level error --write .",
     "dev": "vite dev --port 3000",
     "build": "vite build",
+    "start": "node .output/server/index.mjs",
     "preview": "vite preview",
     "test": "vitest run"
   },
