@@ -6,7 +6,6 @@ type StorageConfig = {
   bucket: string;
   endpoint: string;
   forcePathStyle: boolean;
-  publicUrl: string;
   region: string;
 };
 
@@ -16,7 +15,6 @@ function getStorageConfig(): StorageConfig {
     S3_SECRET_ACCESS_KEY,
     S3_BUCKET,
     S3_ENDPOINT,
-    S3_PUBLIC_URL,
     S3_REGION,
     S3_FORCE_PATH_STYLE,
   } = process.env;
@@ -37,9 +35,6 @@ function getStorageConfig(): StorageConfig {
   if (!S3_ENDPOINT) {
     throw new Error("S3_ENDPOINT is missing");
   }
-  if (!S3_PUBLIC_URL) {
-    throw new Error("S3_PUBLIC_URL is missing");
-  }
   if (!S3_REGION) {
     throw new Error("S3_REGION is missing");
   }
@@ -49,7 +44,6 @@ function getStorageConfig(): StorageConfig {
     secretAccessKey: S3_SECRET_ACCESS_KEY,
     bucket: S3_BUCKET,
     endpoint: S3_ENDPOINT,
-    publicUrl: S3_PUBLIC_URL,
     region: S3_REGION,
     forcePathStyle: S3_FORCE_PATH_STYLE === "true",
   };
@@ -81,7 +75,22 @@ export function buildPublicUrl(objectKey: string) {
     const key = objectKey.replace(/^\/+/, "");
     return `/${key}`;
   }
-  const base = getStorageConfig().publicUrl.replace(/\/+$/, "");
+
+  const { endpoint, bucket, forcePathStyle } = getStorageConfig();
+  const base = endpoint.replace(/\/+$/, "");
   const key = objectKey.replace(/^\/+/, "");
-  return `${base}/${key}`;
+
+  if (forcePathStyle) {
+    // Path-style: https://s3.provider.com/{bucket}/{key}
+    return `${base}/${bucket}/${key}`;
+  }
+
+  // Virtual-hosted–style: https://{bucket}.s3.provider.com/{key}
+  try {
+    const url = new URL(base);
+    return `${url.protocol}//${bucket}.${url.host}/${key}`;
+  } catch {
+    // If endpoint is not a full URL, assume https
+    return `https://${bucket}.${base}/${key}`;
+  }
 }
