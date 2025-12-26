@@ -12,6 +12,7 @@ import { ProfileDialog } from "@/components/ProfileDialog";
 import { ProfileHeader } from "@/components/ProfileHeader";
 import { SocialDialog } from "@/components/SocialDialog";
 import { useLinks } from "@/hooks/useLinks";
+import type { SocialPlatform } from "@/lib/validation";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardLinksPage,
@@ -30,23 +31,36 @@ function DashboardLinksPage() {
   const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const [isSocialDialogOpen, setIsSocialDialogOpen] = useState(false);
+  const [selectedSocialKey, setSelectedSocialKey] =
+    useState<SocialPlatform | null>(null);
 
   const linksManager = useLinks({
     initialLinks,
     onInvalidate: () => router.invalidate(),
   });
 
-  const hasAnySocial = (profile?.socials?.length || 0) > 0;
+  function openSocialDialog(key?: SocialPlatform) {
+    if (key) {
+      setSelectedSocialKey(key);
+    } else {
+      setSelectedSocialKey(null);
+    }
+    setIsSocialDialogOpen(true);
+  }
+
+  function closeSocialDialog() {
+    setIsSocialDialogOpen(false);
+    setSelectedSocialKey(null);
+  }
 
   return (
     <>
       <ProfileHeader
         className="mb-8"
         profile={profile}
-        hasAnySocial={hasAnySocial}
         onEditAvatar={() => setIsAvatarDialogOpen(true)}
         onEditProfile={() => setIsProfileDialogOpen(true)}
-        onEditSocial={() => setIsSocialDialogOpen(true)}
+        onEditSocial={openSocialDialog}
       />
 
       <div className="flex flex-col gap-4">
@@ -93,8 +107,9 @@ function DashboardLinksPage() {
       <SocialDialog
         open={isSocialDialogOpen}
         profile={profile}
-        onClose={() => setIsSocialDialogOpen(false)}
+        onClose={closeSocialDialog}
         onSuccess={() => router.invalidate()}
+        initialEditingKey={selectedSocialKey}
       />
     </>
   );

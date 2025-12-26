@@ -3,14 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { socialItems } from "@/constants/social";
 import { cn } from "@/lib/utils";
+import type { SocialPlatform } from "@/lib/validation";
 
 import type { ProfileWithDetails } from "@/types/profile";
 
 type ProfileHeaderProps = {
   profile: ProfileWithDetails | null;
-  hasAnySocial: boolean;
   onEditProfile: () => void;
-  onEditSocial: () => void;
+  onEditSocial: (key?: SocialPlatform) => void;
   onEditAvatar: () => void;
   className?: string;
 };
@@ -22,6 +22,8 @@ export function ProfileHeader({
   onEditAvatar,
   className,
 }: ProfileHeaderProps) {
+  const hasSocials = (profile?.socials?.length || 0) > 0;
+
   return (
     <div
       className={cn(
@@ -61,29 +63,51 @@ export function ProfileHeader({
             )}
           </Button>
           <div className="flex flex-wrap items-center gap-2">
-            {profile?.socials
-              ?.slice()
-              .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-              .map((social) => {
-                const item = socialItems.find((i) => i.key === social.platform);
-                if (!item || !social.value) return null;
+            {hasSocials
+              ? profile?.socials
+                  ?.slice()
+                  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+                  .map((social) => {
+                    const item = socialItems.find(
+                      (i) => i.key === social.platform,
+                    );
+                    if (!item || !social.value) return null;
 
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={onEditSocial}
-                    className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-muted transition-colors"
-                    title={`Edit ${item.label}`}
-                  >
-                    <item.Icon size={18} />
-                  </button>
-                );
-              })}
+                    return (
+                      <button
+                        key={item.key}
+                        type="button"
+                        onClick={() => onEditSocial(item.key)}
+                        className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-muted transition-colors"
+                        title={`Edit ${item.label}`}
+                      >
+                        <item.Icon size={18} />
+                      </button>
+                    );
+                  })
+              : ["instagram", "twitter", "youtube"].map((key) => {
+                  const item = socialItems.find((i) => i.key === key);
+                  if (!item) return null;
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => onEditSocial(item.key as SocialPlatform)}
+                      className="relative flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-border text-muted-foreground hover:bg-muted transition-colors"
+                      title={`Add ${item.label}`}
+                    >
+                      <item.Icon size={18} className="opacity-50" />
+                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-background bg-muted text-muted-foreground shadow-sm">
+                        <Plus size={8} />
+                      </span>
+                    </button>
+                  );
+                })}
             <Button
               variant="outline"
               size="icon"
-              onClick={onEditSocial}
+              className="h-9 w-9 rounded-full"
+              onClick={() => onEditSocial()}
               title="Edit social icons"
             >
               <Plus size={16} />

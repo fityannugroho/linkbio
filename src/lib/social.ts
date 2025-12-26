@@ -44,14 +44,12 @@ export const buildSocialForm = (
 };
 
 export const buildSocialPayload = (form: SocialForm): ProfileSocial[] => {
-  return socialItems
-    .map((item, index) => ({
-      platform: item.key,
-      value: form[item.key].value.trim(),
-      order: index,
-      isVisible: form[item.key].isVisible,
-    }))
-    .filter((item) => item.value !== "");
+  return socialItems.map((item, index) => ({
+    platform: item.key,
+    value: form[item.key].value.trim(),
+    order: index,
+    isVisible: form[item.key].isVisible,
+  }));
 };
 
 export const buildSocialFields = (

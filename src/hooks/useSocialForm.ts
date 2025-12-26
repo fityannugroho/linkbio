@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { socialItems } from "@/constants/social";
 import {
   buildSocialForm,
@@ -21,6 +21,11 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
   const [socialForm, setSocialForm] = useState<SocialForm>(() =>
     buildSocialForm(profile?.socials),
   );
+
+  // Sync with profile when it changes (e.g. after a direct update)
+  useEffect(() => {
+    setSocialForm(buildSocialForm(profile?.socials));
+  }, [profile?.socials]);
 
   const updateSocialUrl = (key: SocialPlatform, value: string) => {
     if (value && !isValidSocialValue(key, value)) {

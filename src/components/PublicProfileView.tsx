@@ -1,6 +1,5 @@
-import { Github, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import { SocialIcons } from "@/components/SocialIcons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { buildSocialUrl } from "@/lib/social";
 import { getUmami } from "@/lib/umami";
 import { cn } from "@/lib/utils";
 import type { ProfileWithDetails } from "@/types/profile";
@@ -53,20 +52,15 @@ export function PublicProfileView({
   const buttonStyle = design["button.style"] || "default";
   const isPreview = variant === "preview";
 
-  const socialIconMap = {
-    instagram: Instagram,
-    twitter: Twitter,
-    github: Github,
-    linkedin: Linkedin,
-    youtube: Youtube,
-  };
+  const socialPosition =
+    (design["social_icons.position"] as "top" | "bottom") || "top";
 
   return (
     <div
       className={cn(
-        "w-full flex flex-col items-center transition-colors",
+        "w-full flex flex-col items-center transition-colors px-1",
         isPreview
-          ? "h-full overflow-y-auto py-8 px-4"
+          ? "h-full overflow-y-auto pt-8 pb-12 px-4"
           : "min-h-screen py-12 px-4",
       )}
       style={{ ...bgStyle, color: fontColor }}
@@ -88,47 +82,16 @@ export function PublicProfileView({
           <p className="mt-2 text-sm opacity-80">{profile.bio}</p>
         )}
 
-        {profile.socials &&
-          profile.socials.filter((s) => s.isVisible).length > 0 && (
-            <div className="flex justify-center gap-4 mt-6">
-              {profile.socials
-                .filter((s) => s.isVisible !== false)
-                .map((social) => {
-                  if (!social.value) return null;
-
-                  const Icon =
-                    socialIconMap[
-                      social.platform as keyof typeof socialIconMap
-                    ];
-                  if (!Icon) return null;
-
-                  const url = buildSocialUrl(social.platform, social.value);
-
-                  return (
-                    <a
-                      key={social.platform}
-                      href={url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hover:scale-110 transition-transform text-current opacity-80 hover:opacity-100"
-                      onClick={() => {
-                        if (!enableTracking) return;
-                        const umami = getUmami();
-                        umami?.track("click-social", {
-                          platform: social.platform,
-                          url,
-                        });
-                      }}
-                    >
-                      <Icon className="h-6 w-6" />
-                    </a>
-                  );
-                })}
-            </div>
-          )}
+        {socialPosition === "top" && (
+          <SocialIcons
+            socials={profile.socials}
+            enableTracking={enableTracking}
+            className="mt-6"
+          />
+        )}
       </div>
 
-      <div className="flex flex-col gap-4 w-full max-w-lg pb-12">
+      <div className="flex flex-col gap-4 w-full max-w-lg mb-8">
         {links.map((link) => (
           <a
             key={link.id}
@@ -170,6 +133,14 @@ export function PublicProfileView({
           </div>
         )}
       </div>
+
+      {socialPosition === "bottom" && (
+        <SocialIcons
+          socials={profile.socials}
+          enableTracking={enableTracking}
+          className="mt-6"
+        />
+      )}
 
       {showFooter && (
         <footer className="mt-auto pt-8 pb-4 text-xs opacity-40">

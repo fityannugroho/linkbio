@@ -3,6 +3,8 @@ import {
   Instagram,
   Linkedin,
   type LucideProps,
+  Mail,
+  Music2,
   Twitter,
   Youtube,
 } from "lucide-react";
@@ -54,6 +56,20 @@ export const socialItems: SocialItem[] = [
     Icon: Youtube,
     placeholder: "@handle or full URL",
     inputType: "both",
+  },
+  {
+    key: "tiktok",
+    label: "TikTok",
+    Icon: Music2,
+    placeholder: "@handle",
+    inputType: "username",
+  },
+  {
+    key: "email",
+    label: "Email",
+    Icon: Mail,
+    placeholder: "email address",
+    inputType: "url",
   },
 ];
 

@@ -2,8 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { upsertDesigns } from "@/data/designs";
 import { upsertProfile } from "@/data/profile";
 import { reorderSocials, upsertSocials } from "@/data/socials";
-import { getInvalidSocialValues } from "@/lib/social";
-import type { SocialPlatform } from "@/lib/validation";
+import { isValidSocialValue, type SocialPlatform } from "@/lib/validation";
 import { getSessionOrThrow } from "@/server/auth";
 import type { ProfileSocial } from "@/types/profile";
 
@@ -27,20 +26,22 @@ export const updateProfileAction = createServerFn({ method: "POST" })
     });
   });
 
-// Update social links only
+// Update a single social link
 export const updateSocialsAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { socials: ProfileSocial[] }) => data)
+  .inputValidator((data: { social: ProfileSocial }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
 
-    const invalidSocials = getInvalidSocialValues(data.socials);
-    if (invalidSocials.length > 0) {
+    if (
+      data.social.value &&
+      !isValidSocialValue(data.social.platform, data.social.value)
+    ) {
       throw new Error(
-        `${invalidSocials[0].charAt(0).toUpperCase() + invalidSocials[0].slice(1)} value is invalid`,
+        `${data.social.platform.charAt(0).toUpperCase() + data.social.platform.slice(1)} value is invalid`,
       );
     }
 
-    await upsertSocials(session.user.id, data.socials);
+    await upsertSocials(session.user.id, [data.social]);
   });
 
 // Update design settings only
@@ -64,4 +65,14 @@ export const reorderSocialsAction = createServerFn({ method: "POST" })
       session.user.id,
       data.socials as Array<{ platform: SocialPlatform; order: number }>,
     );
+  });
+
+// Update social icons position
+export const updateSocialPositionAction = createServerFn({ method: "POST" })
+  .inputValidator((data: { position: "top" | "bottom" }) => data)
+  .handler(async ({ data }) => {
+    const session = await getSessionOrThrow();
+    await upsertDesigns(session.user.id, {
+      "social_icons.position": data.position,
+    });
   });

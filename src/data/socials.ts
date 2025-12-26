@@ -22,6 +22,14 @@ export async function upsertSocials(
 ) {
   for (let i = 0; i < data.length; i++) {
     const item = data[i];
+    if (!item.value || item.value.trim() === "") {
+      await db
+        .delete(socials)
+        .where(
+          and(eq(socials.userId, userId), eq(socials.platform, item.platform)),
+        );
+      continue;
+    }
     await db
       .insert(socials)
       .values({

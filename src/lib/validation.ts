@@ -3,7 +3,9 @@ export type SocialPlatform =
   | "twitter"
   | "github"
   | "linkedin"
-  | "youtube";
+  | "youtube"
+  | "tiktok"
+  | "email";
 
 const stripWww = (hostname: string) =>
   hostname.toLowerCase().replace(/^www\./, "");
@@ -19,6 +21,10 @@ export const isValidHttpUrl = (value: string) => {
 };
 
 export const isValidSocialUrl = (platform: SocialPlatform, value: string) => {
+  if (platform === "email") {
+    return value.includes("@");
+  }
+
   if (!isValidHttpUrl(value)) return false;
   const hostname = stripWww(new URL(value).hostname);
   switch (platform) {
@@ -32,6 +38,8 @@ export const isValidSocialUrl = (platform: SocialPlatform, value: string) => {
       return hostname === "linkedin.com";
     case "youtube":
       return hostname === "youtube.com" || hostname === "youtu.be";
+    case "tiktok":
+      return hostname === "tiktok.com";
     default:
       return false;
   }
