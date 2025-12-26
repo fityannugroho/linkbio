@@ -1,12 +1,12 @@
 {
-	"projectName": "linktr",
-	"mode": "file-router",
-	"typescript": true,
-	"tailwind": true,
-	"packageManager": "pnpm",
-	"git": true,
-	"addOnOptions": {},
-	"version": 1,
-	"framework": "react-cra",
-	"chosenAddOns": ["start", "nitro"]
+  "projectName": "linkbio",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "git": true,
+  "addOnOptions": {},
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": ["start", "nitro"]
 }

@@ -8,219 +8,241 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as DashboardRouteImport } from "./routes/_dashboard";
-import { Route as DashboardDashboardAnalyticsRouteImport } from "./routes/_dashboard.dashboard.analytics";
-import { Route as DashboardDashboardIndexRouteImport } from "./routes/_dashboard.dashboard.index";
-import { Route as DashboardDashboardProfileRouteImport } from "./routes/_dashboard.dashboard.profile";
-import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth.$";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as LoginRouteImport } from "./routes/login";
-import { Route as SetupRouteImport } from "./routes/setup";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SetupRouteImport } from './routes/setup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
+import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
+import { Route as ApiAvatarUploadRouteImport } from './routes/api/avatar-upload'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const SetupRoute = SetupRouteImport.update({
-	id: "/setup",
-	path: "/setup",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
-	id: "/login",
-	path: "/login",
-	getParentRoute: () => rootRouteImport,
-} as any);
-const DashboardRoute = DashboardRouteImport.update({
-	id: "/_dashboard",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport,
-} as any);
-const DashboardDashboardIndexRoute = DashboardDashboardIndexRouteImport.update({
-	id: "/dashboard/",
-	path: "/dashboard/",
-	getParentRoute: () => DashboardRoute,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardDesignRoute = DashboardDesignRouteImport.update({
+  id: '/design',
+  path: '/design',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
+  id: '/api/avatar-upload',
+  path: '/api/avatar-upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-	id: "/api/auth/$",
-	path: "/api/auth/$",
-	getParentRoute: () => rootRouteImport,
-} as any);
-const DashboardDashboardProfileRoute =
-	DashboardDashboardProfileRouteImport.update({
-		id: "/dashboard/profile",
-		path: "/dashboard/profile",
-		getParentRoute: () => DashboardRoute,
-	} as any);
-const DashboardDashboardAnalyticsRoute =
-	DashboardDashboardAnalyticsRouteImport.update({
-		id: "/dashboard/analytics",
-		path: "/dashboard/analytics",
-		getParentRoute: () => DashboardRoute,
-	} as any);
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/login": typeof LoginRoute;
-	"/setup": typeof SetupRoute;
-	"/dashboard/analytics": typeof DashboardDashboardAnalyticsRoute;
-	"/dashboard/profile": typeof DashboardDashboardProfileRoute;
-	"/api/auth/$": typeof ApiAuthSplatRoute;
-	"/dashboard": typeof DashboardDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/setup': typeof SetupRoute
+  '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
+  '/dashboard/design': typeof DashboardDesignRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/login": typeof LoginRoute;
-	"/setup": typeof SetupRoute;
-	"/dashboard/analytics": typeof DashboardDashboardAnalyticsRoute;
-	"/dashboard/profile": typeof DashboardDashboardProfileRoute;
-	"/api/auth/$": typeof ApiAuthSplatRoute;
-	"/dashboard": typeof DashboardDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/setup': typeof SetupRoute
+  '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
+  '/dashboard/design': typeof DashboardDesignRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/_dashboard": typeof DashboardRouteWithChildren;
-	"/login": typeof LoginRoute;
-	"/setup": typeof SetupRoute;
-	"/_dashboard/dashboard/analytics": typeof DashboardDashboardAnalyticsRoute;
-	"/_dashboard/dashboard/profile": typeof DashboardDashboardProfileRoute;
-	"/api/auth/$": typeof ApiAuthSplatRoute;
-	"/_dashboard/dashboard/": typeof DashboardDashboardIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/setup': typeof SetupRoute
+  '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
+  '/dashboard/design': typeof DashboardDesignRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| "/"
-		| "/login"
-		| "/setup"
-		| "/dashboard/analytics"
-		| "/dashboard/profile"
-		| "/api/auth/$"
-		| "/dashboard";
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| "/"
-		| "/login"
-		| "/setup"
-		| "/dashboard/analytics"
-		| "/dashboard/profile"
-		| "/api/auth/$"
-		| "/dashboard";
-	id:
-		| "__root__"
-		| "/"
-		| "/_dashboard"
-		| "/login"
-		| "/setup"
-		| "/_dashboard/dashboard/analytics"
-		| "/_dashboard/dashboard/profile"
-		| "/api/auth/$"
-		| "/_dashboard/dashboard/";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/setup'
+    | '/api/avatar-upload'
+    | '/dashboard/analytics'
+    | '/dashboard/design'
+    | '/dashboard/'
+    | '/api/auth/$'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/setup'
+    | '/api/avatar-upload'
+    | '/dashboard/analytics'
+    | '/dashboard/design'
+    | '/dashboard'
+    | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/setup'
+    | '/api/avatar-upload'
+    | '/dashboard/analytics'
+    | '/dashboard/design'
+    | '/dashboard/'
+    | '/api/auth/$'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	DashboardRoute: typeof DashboardRouteWithChildren;
-	LoginRoute: typeof LoginRoute;
-	SetupRoute: typeof SetupRoute;
-	ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
+  IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SetupRoute: typeof SetupRoute
+  ApiAvatarUploadRoute: typeof ApiAvatarUploadRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/setup": {
-			id: "/setup";
-			path: "/setup";
-			fullPath: "/setup";
-			preLoaderRoute: typeof SetupRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/login": {
-			id: "/login";
-			path: "/login";
-			fullPath: "/login";
-			preLoaderRoute: typeof LoginRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/_dashboard": {
-			id: "/_dashboard";
-			path: "";
-			fullPath: "";
-			preLoaderRoute: typeof DashboardRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/_dashboard/dashboard/": {
-			id: "/_dashboard/dashboard/";
-			path: "/dashboard";
-			fullPath: "/dashboard";
-			preLoaderRoute: typeof DashboardDashboardIndexRouteImport;
-			parentRoute: typeof DashboardRoute;
-		};
-		"/api/auth/$": {
-			id: "/api/auth/$";
-			path: "/api/auth/$";
-			fullPath: "/api/auth/$";
-			preLoaderRoute: typeof ApiAuthSplatRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/_dashboard/dashboard/profile": {
-			id: "/_dashboard/dashboard/profile";
-			path: "/dashboard/profile";
-			fullPath: "/dashboard/profile";
-			preLoaderRoute: typeof DashboardDashboardProfileRouteImport;
-			parentRoute: typeof DashboardRoute;
-		};
-		"/_dashboard/dashboard/analytics": {
-			id: "/_dashboard/dashboard/analytics";
-			path: "/dashboard/analytics";
-			fullPath: "/dashboard/analytics";
-			preLoaderRoute: typeof DashboardDashboardAnalyticsRouteImport;
-			parentRoute: typeof DashboardRoute;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/design': {
+      id: '/dashboard/design'
+      path: '/design'
+      fullPath: '/dashboard/design'
+      preLoaderRoute: typeof DashboardDesignRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/api/avatar-upload': {
+      id: '/api/avatar-upload'
+      path: '/api/avatar-upload'
+      fullPath: '/api/avatar-upload'
+      preLoaderRoute: typeof ApiAvatarUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
-interface DashboardRouteChildren {
-	DashboardDashboardAnalyticsRoute: typeof DashboardDashboardAnalyticsRoute;
-	DashboardDashboardProfileRoute: typeof DashboardDashboardProfileRoute;
-	DashboardDashboardIndexRoute: typeof DashboardDashboardIndexRoute;
+interface DashboardRouteRouteChildren {
+  DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
+  DashboardDesignRoute: typeof DashboardDesignRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
-const DashboardRouteChildren: DashboardRouteChildren = {
-	DashboardDashboardAnalyticsRoute: DashboardDashboardAnalyticsRoute,
-	DashboardDashboardProfileRoute: DashboardDashboardProfileRoute,
-	DashboardDashboardIndexRoute: DashboardDashboardIndexRoute,
-};
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAnalyticsRoute: DashboardAnalyticsRoute,
+  DashboardDesignRoute: DashboardDesignRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
 
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-	DashboardRouteChildren,
-);
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	DashboardRoute: DashboardRouteWithChildren,
-	LoginRoute: LoginRoute,
-	SetupRoute: SetupRoute,
-	ApiAuthSplatRoute: ApiAuthSplatRoute,
-};
+  IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SetupRoute: SetupRoute,
+  ApiAvatarUploadRoute: ApiAvatarUploadRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx";
-
-declare module "@tanstack/react-start" {
-	interface Register {
-		ssr: true;
-		router: Awaited<ReturnType<typeof getRouter>>;
-	}
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
