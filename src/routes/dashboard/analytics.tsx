@@ -72,8 +72,11 @@ const getAnalytics = createServerFn({ method: "GET" })
     });
     if (!session) throw new Error("Unauthorized");
 
-    const apiUrl = import.meta.env.VITE_UMAMI_API_URL;
-    const websiteId = import.meta.env.VITE_UMAMI_WEBSITE_ID;
+    const apiUrl =
+      process.env.VITE_UMAMI_API_URL ?? import.meta.env.VITE_UMAMI_API_URL;
+    const websiteId =
+      process.env.VITE_UMAMI_WEBSITE_ID ??
+      import.meta.env.VITE_UMAMI_WEBSITE_ID;
 
     if (!websiteId) {
       return {

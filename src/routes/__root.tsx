@@ -32,8 +32,10 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const umamiId = import.meta.env.VITE_UMAMI_WEBSITE_ID;
-  const umamiUrl = import.meta.env.VITE_UMAMI_API_URL;
+  const umamiId =
+    process.env.VITE_UMAMI_WEBSITE_ID ?? import.meta.env.VITE_UMAMI_WEBSITE_ID;
+  const umamiUrl =
+    process.env.VITE_UMAMI_API_URL ?? import.meta.env.VITE_UMAMI_API_URL;
 
   return (
     <html lang="en" suppressHydrationWarning>
