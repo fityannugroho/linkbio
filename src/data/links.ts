@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { links } from "@/db/schema";
 
@@ -25,41 +25,50 @@ export const addLink = async (data: {
   });
 };
 
-export const updateLink = async (data: {
-  id: number;
-  title: string;
-  url: string;
-}) => {
+export const updateLink = async (
+  userId: string,
+  data: {
+    id: number;
+    title: string;
+    url: string;
+  },
+) => {
   await db
     .update(links)
     .set({
       title: data.title,
       url: data.url,
     })
-    .where(eq(links.id, data.id));
+    .where(and(eq(links.id, data.id), eq(links.userId, userId)));
 };
 
 export const reorderLinks = async (
+  userId: string,
   data: { id: number; newOrder: number }[],
 ) => {
   for (const item of data) {
     await db
       .update(links)
       .set({ order: item.newOrder })
-      .where(eq(links.id, item.id));
+      .where(and(eq(links.id, item.id), eq(links.userId, userId)));
   }
 };
 
-export const toggleLinkVisibility = async (id: number) => {
-  const link = await db.select().from(links).where(eq(links.id, id));
+export const toggleLinkVisibility = async (userId: string, id: number) => {
+  const link = await db
+    .select()
+    .from(links)
+    .where(and(eq(links.id, id), eq(links.userId, userId)));
   if (link[0]) {
     await db
       .update(links)
       .set({ isVisible: !link[0].isVisible })
-      .where(eq(links.id, id));
+      .where(and(eq(links.id, id), eq(links.userId, userId)));
   }
 };
 
-export const deleteLink = async (id: number) => {
-  await db.delete(links).where(eq(links.id, id));
+export const deleteLink = async (userId: string, id: number) => {
+  await db
+    .delete(links)
+    .where(and(eq(links.id, id), eq(links.userId, userId)));
 };

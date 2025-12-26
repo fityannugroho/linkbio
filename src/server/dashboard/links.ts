@@ -53,27 +53,27 @@ export const updateLinkAction = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ data }) => {
-    await getSessionOrThrow();
-    await updateLink(data);
+    const session = await getSessionOrThrow();
+    await updateLink(session.user.id, data);
   });
 
 export const reorderLinksAction = createServerFn({ method: "POST" })
   .inputValidator((data: { id: number; newOrder: number }[]) => data)
   .handler(async ({ data }) => {
-    await getSessionOrThrow();
-    await reorderLinks(data);
+    const session = await getSessionOrThrow();
+    await reorderLinks(session.user.id, data);
   });
 
 export const toggleLinkVisibilityAction = createServerFn({ method: "POST" })
   .inputValidator((data: number) => data)
   .handler(async ({ data: id }) => {
-    await getSessionOrThrow();
-    await toggleLinkVisibility(id);
+    const session = await getSessionOrThrow();
+    await toggleLinkVisibility(session.user.id, id);
   });
 
 export const deleteLinkAction = createServerFn({ method: "POST" })
   .inputValidator((data: number) => data)
   .handler(async ({ data: id }) => {
-    await getSessionOrThrow();
-    await deleteLink(id);
+    const session = await getSessionOrThrow();
+    await deleteLink(session.user.id, id);
   });

@@ -32,6 +32,12 @@ export function ensureAvatarObjectKey(
   mode: AvatarStorageMode,
 ) {
   const basePath = mode === "s3" ? "avatars" : "media/avatars";
+
+  // Prevent path traversal
+  if (objectKey.includes("..") || objectKey.includes("\0")) {
+    throw new Error("Invalid avatar key");
+  }
+
   if (!objectKey.startsWith(`${basePath}/${userId}/`)) {
     throw new Error("Invalid avatar key");
   }
