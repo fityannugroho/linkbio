@@ -73,6 +73,8 @@ const socialBaseUrl: Record<SocialPlatform, string> = {
   github: "https://github.com/",
   linkedin: "https://linkedin.com/in/",
   youtube: "https://youtube.com/@",
+  tiktok: "https://www.tiktok.com/@",
+  email: "mailto:",
 };
 
 export const buildSocialUrl = (platform: SocialPlatform, value: string) => {
