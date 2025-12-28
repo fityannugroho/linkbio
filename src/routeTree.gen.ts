@@ -17,6 +17,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
 import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
 import { Route as ApiAvatarUploadRouteImport } from './routes/api/avatar-upload'
+import { Route as ApiS3SplatRouteImport } from './routes/api/s3/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const SetupRoute = SetupRouteImport.update({
@@ -59,6 +60,11 @@ const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
   path: '/api/avatar-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiS3SplatRoute = ApiS3SplatRouteImport.update({
+  id: '/api/s3/$',
+  path: '/api/s3/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/s3/$': typeof ApiS3SplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/s3/$': typeof ApiS3SplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/s3/$': typeof ApiS3SplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard/'
     | '/api/auth/$'
+    | '/api/s3/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard'
     | '/api/auth/$'
+    | '/api/s3/$'
   id:
     | '__root__'
     | '/'
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard/'
     | '/api/auth/$'
+    | '/api/s3/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   SetupRoute: typeof SetupRoute
   ApiAvatarUploadRoute: typeof ApiAvatarUploadRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiS3SplatRoute: typeof ApiS3SplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAvatarUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/s3/$': {
+      id: '/api/s3/$'
+      path: '/api/s3/$'
+      fullPath: '/api/s3/$'
+      preLoaderRoute: typeof ApiS3SplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -233,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   SetupRoute: SetupRoute,
   ApiAvatarUploadRoute: ApiAvatarUploadRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiS3SplatRoute: ApiS3SplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

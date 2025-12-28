@@ -1,4 +1,4 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 type StorageConfig = {
   accessKeyId: string;
@@ -70,27 +70,26 @@ export function getStorageBucket() {
   return getStorageConfig().bucket;
 }
 
+export async function getStorageObject(key: string) {
+  const client = createStorageClient();
+  const bucket = getStorageBucket();
+  const command = new GetObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+  return client.send(command);
+}
+
 export function buildPublicUrl(objectKey: string) {
   if (!isS3Enabled()) {
     const key = objectKey.replace(/^\/+/, "");
     return `/${key}`;
   }
 
-  const { endpoint, bucket, forcePathStyle } = getStorageConfig();
-  const base = endpoint.replace(/\/+$/, "");
+  // For private buckets, we must proxy the content through our server
+  // or return a presigned URL (cached).
+  // Given the 'avatars' use case on a public profile, a proxy route is cleaner
+  // than managing presigned URL expiration for every viewer.
   const key = objectKey.replace(/^\/+/, "");
-
-  if (forcePathStyle) {
-    // Path-style: https://s3.provider.com/{bucket}/{key}
-    return `${base}/${bucket}/${key}`;
-  }
-
-  // Virtual-hosted–style: https://{bucket}.s3.provider.com/{key}
-  try {
-    const url = new URL(base);
-    return `${url.protocol}//${bucket}.${url.host}/${key}`;
-  } catch {
-    // If endpoint is not a full URL, assume https
-    return `https://${bucket}.${base}/${key}`;
-  }
+  return `/api/s3/${key}`;
 }
