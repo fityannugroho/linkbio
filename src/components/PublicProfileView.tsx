@@ -66,7 +66,7 @@ export function PublicProfileView({
       style={{ ...bgStyle, color: fontColor }}
     >
       <div className="mb-8 text-center max-w-md w-full">
-        <Avatar className="h-24 w-24 mx-auto mb-4 border-2 border-white/10 shadow-xl">
+        <Avatar className="h-24 w-24 mx-auto mb-4 shadow-xl">
           <AvatarImage
             src={profile.avatarUrl || ""}
             alt={profile.displayName}
