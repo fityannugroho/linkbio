@@ -60,10 +60,8 @@ export const useLinks = ({ initialLinks, onInvalidate }: UseLinksOptions) => {
   };
 
   const deleteLink = async (id: number) => {
-    if (confirm("Are you sure?")) {
-      await deleteLinkAction({ data: id });
-      await onInvalidate();
-    }
+    await deleteLinkAction({ data: id });
+    await onInvalidate();
   };
 
   const startDrag = (event: DragEvent, id: number) => {
