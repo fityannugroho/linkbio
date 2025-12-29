@@ -133,7 +133,7 @@ export function PublicProfileView({
                   />
                 </div>
               )}
-              <span className="line-clamp-2 wrap-break-word text-sm sm:text-base leading-tight">
+              <span className="line-clamp-2 wrap-break-word text-sm sm:text-base">
                 {link.title}
               </span>
             </div>
