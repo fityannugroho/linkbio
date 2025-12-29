@@ -1,5 +1,5 @@
 import { ChevronLeft, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,6 +34,12 @@ export function SocialEditDialog({
   onUrlChange,
 }: SocialEditDialogProps) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+  useEffect(() => {
+    if (editingKey) {
+      setIsConfirmingDelete(false);
+    }
+  }, [editingKey]);
 
   if (!editingKey) return null;
 
@@ -95,7 +101,13 @@ export function SocialEditDialog({
               </Button>
             </div>
           ) : (
-            <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSave();
+              }}
+              className="space-y-6"
+            >
               <div className="space-y-2">
                 <Label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                   {inputLabel}
@@ -116,8 +128,8 @@ export function SocialEditDialog({
 
               <div className="space-y-3 pt-2">
                 <Button
+                  type="submit"
                   className="w-full h-12 rounded-full font-semibold"
-                  onClick={onSave}
                   disabled={isSaving}
                 >
                   {isSaving ? "Saving..." : "Save"}
@@ -131,7 +143,7 @@ export function SocialEditDialog({
                   Remove icon
                 </Button>
               </div>
-            </>
+            </form>
           )}
         </div>
       </DialogContent>
