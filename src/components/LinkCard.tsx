@@ -4,10 +4,12 @@ import {
   Eye,
   EyeOff,
   GripVertical,
+  ImagePlus,
   Trash2,
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { ThumbnailDialog } from "@/components/ThumbnailDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -15,7 +17,10 @@ type LinkItem = typeof import("@/db/schema").links.$inferSelect;
 
 type LinkCardProps = {
   link: LinkItem;
-  onUpdate: (id: number, data: { title: string; url: string }) => Promise<void>;
+  onUpdate: (
+    id: number,
+    data: { title: string; url: string; thumbnailUrl?: string | null },
+  ) => Promise<void>;
   onToggleVisibility: (id: number) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
   onDragStart: (event: React.DragEvent, id: number) => void;
@@ -36,12 +41,18 @@ export function LinkCard({
   const [editForm, setEditForm] = useState({
     title: link.title,
     url: link.url,
+    thumbnailUrl: link.thumbnailUrl,
   });
   const [error, setError] = useState("");
+  const [isThumbnailDialogOpen, setIsThumbnailDialogOpen] = useState(false);
 
   const startEdit = () => {
     setIsEditing(true);
-    setEditForm({ title: link.title, url: link.url });
+    setEditForm({
+      title: link.title,
+      url: link.url,
+      thumbnailUrl: link.thumbnailUrl,
+    });
     setError("");
   };
 
@@ -61,98 +72,162 @@ export function LinkCard({
   };
 
   return (
-    <li
-      data-link-card
-      className="list-none group rounded-lg border border-border bg-card text-card-foreground hover:border-border/80 transition-colors"
-      onDragOver={(event) => onDragOver(event, link.id)}
-    >
-      <div className="flex items-center gap-4 px-4 py-3">
-        <button
-          type="button"
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
-          onMouseDown={(event) => event.stopPropagation()}
-          draggable
-          onDragStart={(event) => onDragStart(event, link.id)}
-          onDragEnd={onDragEnd}
-        >
-          <GripVertical size={20} />
-        </button>
+    <>
+      <li
+        data-link-card
+        className="list-none group rounded-lg border border-border bg-card text-card-foreground hover:border-border/80 transition-colors"
+        onDragOver={(event) => onDragOver(event, link.id)}
+      >
+        <div className="flex items-center gap-4 px-4 py-3">
+          <button
+            type="button"
+            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+            onMouseDown={(event) => event.stopPropagation()}
+            draggable
+            onDragStart={(event) => onDragStart(event, link.id)}
+            onDragEnd={onDragEnd}
+          >
+            <GripVertical size={20} />
+          </button>
 
-        {isEditing ? (
-          <div className="flex-1 space-y-2">
-            <Input
-              value={editForm.title}
-              onChange={(e) =>
-                setEditForm((prev) => ({ ...prev, title: e.target.value }))
-              }
-              placeholder="Title"
-            />
-            <Input
-              value={editForm.url}
-              onChange={(e) => {
-                setEditForm((prev) => ({ ...prev, url: e.target.value }));
-                if (error) setError("");
-              }}
-              placeholder="URL"
-            />
-            {error && <p className="text-xs text-destructive">{error}</p>}
-          </div>
-        ) : (
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold truncate">{link.title}</h3>
-            <p className="text-sm text-muted-foreground truncate">{link.url}</p>
-          </div>
-        )}
-
-        <div className="flex items-center gap-2">
           {isEditing ? (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={saveEdit}
-                className="text-primary hover:text-primary/80 hover:bg-accent"
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => setIsThumbnailDialogOpen(true)}
+                className="shrink-0 relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-md border border-dashed border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
               >
-                <Check size={18} />
-              </Button>
-              <Button variant="ghost" size="icon" onClick={cancelEdit}>
-                <X size={18} />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={startEdit}
-                title="Edit"
-              >
-                <Edit size={18} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onToggleVisibility(link.id)}
-                title={link.isVisible ? "Hide" : "Show"}
-              >
-                {link.isVisible ? (
-                  <Eye size={18} />
+                {editForm.thumbnailUrl ? (
+                  <img
+                    src={editForm.thumbnailUrl}
+                    alt="Thumbnail"
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
-                  <EyeOff size={18} className="text-muted-foreground" />
+                  <ImagePlus size={16} className="text-muted-foreground" />
                 )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
-                onClick={() => onDelete(link.id)}
+              </button>
+              <div className="flex-1 space-y-2">
+                <Input
+                  value={editForm.title}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                  placeholder="Title"
+                />
+                <Input
+                  value={editForm.url}
+                  onChange={(e) => {
+                    setEditForm((prev) => ({ ...prev, url: e.target.value }));
+                    if (error) setError("");
+                  }}
+                  placeholder="URL"
+                />
+                {error && <p className="text-xs text-destructive">{error}</p>}
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <button
+                type="button"
+                onClick={() => setIsThumbnailDialogOpen(true)}
+                className="group/thumb shrink-0 relative h-10 w-10 overflow-hidden rounded-md border border-border transition-colors hover:border-primary/50 flex justify-center items-center"
+                title="Change thumbnail"
               >
-                <Trash2 size={18} />
-              </Button>
-            </>
+                {link.thumbnailUrl ? (
+                  <>
+                    <img
+                      src={link.thumbnailUrl}
+                      alt=""
+                      className="h-full w-full object-cover transition-opacity group-hover/thumb:opacity-40"
+                    />
+                    {/* <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover/thumb:opacity-100">
+                      <ImagePlus size={14} className="text-primary" />
+                    </div> */}
+                  </>
+                ) : (
+                  <ImagePlus size={16} className="text-muted-foreground" />
+                )}
+              </button>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold truncate">{link.title}</h3>
+                <p className="text-sm text-muted-foreground truncate">
+                  {link.url}
+                </p>
+              </div>
+            </div>
           )}
+
+          <div className="flex items-center gap-2">
+            {isEditing ? (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={saveEdit}
+                  className="text-primary hover:text-primary/80 hover:bg-accent"
+                >
+                  <Check size={18} />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={cancelEdit}>
+                  <X size={18} />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={startEdit}
+                  title="Edit"
+                >
+                  <Edit size={18} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onToggleVisibility(link.id)}
+                  title={link.isVisible ? "Hide" : "Show"}
+                >
+                  {link.isVisible ? (
+                    <Eye size={18} />
+                  ) : (
+                    <EyeOff size={18} className="text-muted-foreground" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                  onClick={() => onDelete(link.id)}
+                >
+                  <Trash2 size={18} />
+                </Button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+
+      <ThumbnailDialog
+        open={isThumbnailDialogOpen}
+        currentThumbnailUrl={
+          isEditing ? editForm.thumbnailUrl : link.thumbnailUrl
+        }
+        onClose={() => setIsThumbnailDialogOpen(false)}
+        onSuccess={async (url) => {
+          if (isEditing) {
+            setEditForm((prev) => ({ ...prev, thumbnailUrl: url }));
+          } else {
+            // Auto-save when not in editing mode
+            await onUpdate(link.id, {
+              title: link.title,
+              url: link.url,
+              thumbnailUrl: url,
+            });
+          }
+        }}
+      />
+    </>
   );
 }

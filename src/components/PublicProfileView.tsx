@@ -111,8 +111,9 @@ export function PublicProfileView({
           >
             <div
               className={`
-                    w-full py-4 px-6 rounded-full text-center font-medium transition-all duration-300 ease-out
+                    w-full min-h-[64px] py-4 rounded-full text-center font-medium transition-all duration-300 ease-out
                     hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] flex items-center justify-center relative
+                    ${link.thumbnailUrl ? "px-16" : "px-6"}
                     ${buttonStyle === "outline" ? "border-2 border-current hover:bg-white/10" : ""}
                     ${buttonStyle === "glass" ? "bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:shadow-xl" : ""}
                     ${buttonStyle === "default" ? "bg-white text-black hover:bg-gray-50 shadow-md hover:shadow-xl" : ""}
@@ -123,7 +124,18 @@ export function PublicProfileView({
                   : { borderColor: fontColor }
               }
             >
-              {link.title}
+              {link.thumbnailUrl && (
+                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 overflow-hidden rounded-full">
+                  <img
+                    src={link.thumbnailUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <span className="line-clamp-2 wrap-break-word text-sm sm:text-base leading-tight">
+                {link.title}
+              </span>
             </div>
           </a>
         ))}

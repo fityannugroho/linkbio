@@ -65,6 +65,7 @@ export const links = pgTable("links", {
     .references(() => user.id),
   title: text("title").notNull(),
   url: text("url").notNull(),
+  thumbnailUrl: text("thumbnail_url"),
   isVisible: boolean("is_visible").default(true).notNull(),
   order: integer("order").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),

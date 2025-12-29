@@ -28,30 +28,39 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(
 );
 
 export const addLinkAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { title: string; url: string }) => {
-    if (!data.title.trim()) {
-      throw new Error("Title is required");
-    }
-    if (!isValidHttpUrl(data.url)) {
-      throw new Error("URL is invalid");
-    }
-    return data;
-  })
+  .inputValidator(
+    (data: { title: string; url: string; thumbnailUrl?: string }) => {
+      if (!data.title.trim()) {
+        throw new Error("Title is required");
+      }
+      if (!isValidHttpUrl(data.url)) {
+        throw new Error("URL is invalid");
+      }
+      return data;
+    },
+  )
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     await addLink({ ...data, userId: session.user.id });
   });
 
 export const updateLinkAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: number; title: string; url: string }) => {
-    if (!data.title.trim()) {
-      throw new Error("Title is required");
-    }
-    if (!isValidHttpUrl(data.url)) {
-      throw new Error("URL is invalid");
-    }
-    return data;
-  })
+  .inputValidator(
+    (data: {
+      id: number;
+      title: string;
+      url: string;
+      thumbnailUrl?: string | null;
+    }) => {
+      if (!data.title.trim()) {
+        throw new Error("Title is required");
+      }
+      if (!isValidHttpUrl(data.url)) {
+        throw new Error("URL is invalid");
+      }
+      return data;
+    },
+  )
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     await updateLink(session.user.id, data);

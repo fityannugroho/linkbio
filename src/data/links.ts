@@ -9,6 +9,7 @@ export const addLink = async (data: {
   userId: string;
   title: string;
   url: string;
+  thumbnailUrl?: string | null;
 }) => {
   const existing = await listLinks(data.userId);
   const newOrder =
@@ -20,6 +21,7 @@ export const addLink = async (data: {
     userId: data.userId,
     title: data.title,
     url: data.url,
+    thumbnailUrl: data.thumbnailUrl ?? null,
     isVisible: true,
     order: newOrder,
   });
@@ -31,6 +33,7 @@ export const updateLink = async (
     id: number;
     title: string;
     url: string;
+    thumbnailUrl?: string | null;
   },
 ) => {
   await db
@@ -38,6 +41,7 @@ export const updateLink = async (
     .set({
       title: data.title,
       url: data.url,
+      thumbnailUrl: data.thumbnailUrl,
     })
     .where(and(eq(links.id, data.id), eq(links.userId, userId)));
 };
@@ -68,7 +72,5 @@ export const toggleLinkVisibility = async (userId: string, id: number) => {
 };
 
 export const deleteLink = async (userId: string, id: number) => {
-  await db
-    .delete(links)
-    .where(and(eq(links.id, id), eq(links.userId, userId)));
+  await db.delete(links).where(and(eq(links.id, id), eq(links.userId, userId)));
 };

@@ -45,7 +45,7 @@ export function PreviewPanel({ profile, links }: PreviewPanelProps) {
     const linksKey = links
       .map(
         (link) =>
-          `${link.id}:${link.title}:${link.url}:${link.isVisible}:${link.order}`,
+          `${link.id}:${link.title}:${link.url}:${link.isVisible}:${link.order}:${link.thumbnailUrl}`,
       )
       .join("|");
     return hashString(`${profileKey}-${linksKey}`);

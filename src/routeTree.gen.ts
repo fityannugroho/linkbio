@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
 import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
+import { Route as ApiThumbnailUploadRouteImport } from './routes/api/thumbnail-upload'
 import { Route as ApiAvatarUploadRouteImport } from './routes/api/avatar-upload'
 import { Route as ApiS3SplatRouteImport } from './routes/api/s3/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
@@ -55,6 +56,11 @@ const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const ApiThumbnailUploadRoute = ApiThumbnailUploadRouteImport.update({
+  id: '/api/thumbnail-upload',
+  path: '/api/thumbnail-upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
   id: '/api/avatar-upload',
   path: '/api/avatar-upload',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/setup': typeof SetupRoute
   '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/api/thumbnail-upload': typeof ApiThumbnailUploadRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/setup': typeof SetupRoute
   '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/api/thumbnail-upload': typeof ApiThumbnailUploadRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/setup': typeof SetupRoute
   '/api/avatar-upload': typeof ApiAvatarUploadRoute
+  '/api/thumbnail-upload': typeof ApiThumbnailUploadRoute
   '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/setup'
     | '/api/avatar-upload'
+    | '/api/thumbnail-upload'
     | '/dashboard/analytics'
     | '/dashboard/design'
     | '/dashboard/'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/setup'
     | '/api/avatar-upload'
+    | '/api/thumbnail-upload'
     | '/dashboard/analytics'
     | '/dashboard/design'
     | '/dashboard'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/setup'
     | '/api/avatar-upload'
+    | '/api/thumbnail-upload'
     | '/dashboard/analytics'
     | '/dashboard/design'
     | '/dashboard/'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   SetupRoute: typeof SetupRoute
   ApiAvatarUploadRoute: typeof ApiAvatarUploadRoute
+  ApiThumbnailUploadRoute: typeof ApiThumbnailUploadRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiS3SplatRoute: typeof ApiS3SplatRoute
 }
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAnalyticsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/api/thumbnail-upload': {
+      id: '/api/thumbnail-upload'
+      path: '/api/thumbnail-upload'
+      fullPath: '/api/thumbnail-upload'
+      preLoaderRoute: typeof ApiThumbnailUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/avatar-upload': {
       id: '/api/avatar-upload'
       path: '/api/avatar-upload'
@@ -252,6 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   SetupRoute: SetupRoute,
   ApiAvatarUploadRoute: ApiAvatarUploadRoute,
+  ApiThumbnailUploadRoute: ApiThumbnailUploadRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiS3SplatRoute: ApiS3SplatRoute,
 }

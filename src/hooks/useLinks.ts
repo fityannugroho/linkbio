@@ -25,7 +25,11 @@ export const useLinks = ({ initialLinks, onInvalidate }: UseLinksOptions) => {
     setLinks(initialLinks);
   }, [initialLinks]);
 
-  const addLink = async (data: { title: string; url: string }) => {
+  const addLink = async (data: {
+    title: string;
+    url: string;
+    thumbnailUrl?: string;
+  }) => {
     if (!isValidHttpUrl(data.url)) {
       throw new Error("Please enter a valid URL (https://...)");
     }
@@ -35,7 +39,7 @@ export const useLinks = ({ initialLinks, onInvalidate }: UseLinksOptions) => {
 
   const updateLink = async (
     id: number,
-    data: { title: string; url: string },
+    data: { title: string; url: string; thumbnailUrl?: string | null },
   ) => {
     if (!isValidHttpUrl(data.url)) {
       throw new Error("Please enter a valid URL (https://...)");
