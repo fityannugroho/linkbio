@@ -1,4 +1,3 @@
-
 import { useRef, useState } from "react";
 import type { Area } from "react-easy-crop";
 import Cropper from "react-easy-crop";

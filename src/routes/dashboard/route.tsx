@@ -93,6 +93,7 @@ function DashboardLayout() {
           avatar: userAvatar,
         }}
         onLogout={handleLogout}
+        onNavigate={() => setActiveView("editor")}
         viewHref="/"
       />
       <SidebarInset>
