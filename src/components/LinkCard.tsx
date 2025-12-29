@@ -78,35 +78,9 @@ export function LinkCard({
         className="list-none group rounded-lg border border-border bg-card text-card-foreground hover:border-border/80 transition-colors"
         onDragOver={(event) => onDragOver(event, link.id)}
       >
-        <div className="flex items-center gap-4 px-4 py-3">
-          <button
-            type="button"
-            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
-            onMouseDown={(event) => event.stopPropagation()}
-            draggable
-            onDragStart={(event) => onDragStart(event, link.id)}
-            onDragEnd={onDragEnd}
-          >
-            <GripVertical size={20} />
-          </button>
-
+        <div className="flex flex-wrap gap-2 px-4 py-3">
           {isEditing ? (
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <button
-                type="button"
-                onClick={() => setIsThumbnailDialogOpen(true)}
-                className="shrink-0 relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-md border border-dashed border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
-              >
-                {editForm.thumbnailUrl ? (
-                  <img
-                    src={editForm.thumbnailUrl}
-                    alt="Thumbnail"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <ImagePlus size={16} className="text-muted-foreground" />
-                )}
-              </button>
               <div className="flex-1 space-y-2">
                 <Input
                   value={editForm.title}
@@ -128,6 +102,16 @@ export function LinkCard({
             </div>
           ) : (
             <div className="flex items-center gap-3 flex-1 min-w-0">
+              <button
+                type="button"
+                className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+                onMouseDown={(event) => event.stopPropagation()}
+                draggable
+                onDragStart={(event) => onDragStart(event, link.id)}
+                onDragEnd={onDragEnd}
+              >
+                <GripVertical size={20} />
+              </button>
               <button
                 type="button"
                 onClick={() => setIsThumbnailDialogOpen(true)}
@@ -158,7 +142,7 @@ export function LinkCard({
             </div>
           )}
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             {isEditing ? (
               <>
                 <Button
