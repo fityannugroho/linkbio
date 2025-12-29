@@ -77,7 +77,7 @@ export function SocialEditDialog({
           )}
           <DialogTitle className="flex-1 text-center pr-8">
             {isConfirmingDelete
-              ? `Edit ${item.label} icon`
+              ? `Remove ${item.label} icon`
               : `Edit ${item.label}`}
           </DialogTitle>
         </DialogHeader>
@@ -86,8 +86,8 @@ export function SocialEditDialog({
           {isConfirmingDelete ? (
             <div className="space-y-3 pb-2">
               <Button
-                variant="default"
-                className="w-full h-12 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+                variant="destructive"
+                className="w-full h-12 rounded-full font-semibold"
                 onClick={onRemove}
               >
                 Yes, remove

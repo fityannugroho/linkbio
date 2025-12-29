@@ -305,11 +305,7 @@ export function SocialDialog({
                   className="space-y-3"
                 >
                   <div className="flex items-center space-x-3">
-                    <RadioGroupItem
-                      value="top"
-                      id="top"
-                      className="h-5 w-5 border-2 border-muted-foreground data-[state=checked]:border-purple-600 data-[state=checked]:text-purple-600"
-                    />
+                    <RadioGroupItem value="top" id="top" className="h-5 w-5" />
                     <Label
                       htmlFor="top"
                       className="text-sm font-medium cursor-pointer"
@@ -321,7 +317,7 @@ export function SocialDialog({
                     <RadioGroupItem
                       value="bottom"
                       id="bottom"
-                      className="h-5 w-5 border-2 border-muted-foreground data-[state=checked]:border-purple-600 data-[state=checked]:text-purple-600"
+                      className="h-5 w-5"
                     />
                     <Label
                       htmlFor="bottom"
@@ -348,7 +344,7 @@ export function SocialDialog({
             </Button>
             <Button
               onClick={() => setIsAddOpen(true)}
-              className="flex-1 h-12 rounded-full font-bold gap-2 bg-purple-600 hover:bg-purple-700 text-white"
+              className="flex-1 h-12 rounded-full font-bold gap-2"
             >
               <Plus size={18} />
               Add social icon
