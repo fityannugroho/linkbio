@@ -7,38 +7,14 @@ export const ALLOWED_AVATAR_CONTENT_TYPES = new Map([
   ["image/webp", "webp"],
 ]);
 
-export type AvatarStorageMode = "s3" | "local";
-
 export function getAvatarExtension(contentType: string) {
   return ALLOWED_AVATAR_CONTENT_TYPES.get(contentType) || null;
 }
 
-export function createAvatarObjectKey(
-  userId: string,
-  contentType: string,
-  mode: AvatarStorageMode,
-) {
+export function createAvatarObjectKey(userId: string, contentType: string) {
   const extension = getAvatarExtension(contentType);
   if (!extension) {
     throw new Error("Unsupported image type");
   }
-  const basePath = mode === "s3" ? "avatars" : "media/avatars";
-  return `${basePath}/${userId}/${randomUUID()}.${extension}`;
-}
-
-export function ensureAvatarObjectKey(
-  userId: string,
-  objectKey: string,
-  mode: AvatarStorageMode,
-) {
-  const basePath = mode === "s3" ? "avatars" : "media/avatars";
-
-  // Prevent path traversal
-  if (objectKey.includes("..") || objectKey.includes("\0")) {
-    throw new Error("Invalid avatar key");
-  }
-
-  if (!objectKey.startsWith(`${basePath}/${userId}/`)) {
-    throw new Error("Invalid avatar key");
-  }
+  return `avatars/${userId}/${randomUUID()}.${extension}`;
 }

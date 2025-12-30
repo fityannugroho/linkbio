@@ -2,7 +2,7 @@ import { Readable } from "node:stream";
 import { createFileRoute } from "@tanstack/react-router";
 import { getStorageObject } from "@/lib/storage.server";
 
-export const Route = createFileRoute("/api/s3/$")({
+export const Route = createFileRoute("/api/storage/$")({
   server: {
     handlers: {
       GET: async ({ params }) => {
@@ -17,17 +17,12 @@ export const Route = createFileRoute("/api/s3/$")({
         }
 
         try {
-          // getStorageObject uses the server-side credentials
+          // getStorageObject handles both S3 and local storage
           const output = await getStorageObject(key);
 
           if (!output.Body) {
             return new Response("File not found", { status: 404 });
           }
-
-          // Convert the S3 stream to a Web ReadableStream
-          // Node.js S3 SDK returns a Node stream (IncomingMessage) or similar
-          // We need to ensure it's compatible with the Web Response API.
-          // @aws-sdk/client-s3 Body is "Readable | ReadableStream | Blob"
 
           let stream: ReadableStream;
           if (output.Body instanceof Readable) {
@@ -43,6 +38,19 @@ export const Route = createFileRoute("/api/s3/$")({
                 );
               },
             });
+          } else if (
+            output.Body instanceof Uint8Array ||
+            Buffer.isBuffer(output.Body)
+          ) {
+            // If it's a buffer (local files), creating a Response from it is easy
+            return new Response(output.Body, {
+              status: 200,
+              headers: {
+                "Content-Type":
+                  output.ContentType || "application/octet-stream",
+                "Cache-Control": "public, max-age=31536000, immutable",
+              },
+            });
           } else {
             // Assume it's already a web stream or blob
             stream = output.Body as unknown as ReadableStream;
@@ -51,12 +59,6 @@ export const Route = createFileRoute("/api/s3/$")({
           const headers = new Headers();
           if (output.ContentType) {
             headers.set("Content-Type", output.ContentType);
-          }
-          if (output.ContentLength) {
-            headers.set("Content-Length", output.ContentLength.toString());
-          }
-          if (output.ETag) {
-            headers.set("ETag", output.ETag);
           }
           // Cache control for performance (e.g., 1 year immutable)
           headers.set("Cache-Control", "public, max-age=31536000, immutable");
@@ -68,11 +70,13 @@ export const Route = createFileRoute("/api/s3/$")({
         } catch (error) {
           if (
             error instanceof Error &&
-            (error.name === "NoSuchKey" || error.name === "NotFound")
+            (error.name === "NoSuchKey" ||
+              error.name === "NotFound" ||
+              (error as { code?: string }).code === "ENOENT")
           ) {
             return new Response("File not found", { status: 404 });
           }
-          console.error("S3 Proxy Error:", error);
+          console.error("Storage Error:", error);
           return new Response("Error fetching file", { status: 500 });
         }
       },

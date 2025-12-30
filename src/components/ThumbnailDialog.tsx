@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getCroppedImage } from "@/lib/cropImage";
+import { getPublicUrl } from "@/lib/storage";
 import { createThumbnailUploadAction } from "@/server/dashboard/thumbnails";
 
 const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
@@ -62,7 +63,7 @@ export function ThumbnailDialog({
     if (!ALLOWED_THUMBNAIL_TYPES.includes(contentType)) {
       throw new Error("Unsupported image type");
     }
-    const { uploadUrl, uploadMethod, thumbnailUrl } =
+    const { uploadUrl, uploadMethod, objectKey } =
       await createThumbnailUploadAction({
         data: { contentType, size: file.size },
       });
@@ -90,21 +91,7 @@ export function ThumbnailDialog({
       throw new Error("Upload failed");
     }
 
-    // Attempt to extract updated URL if the POST response returns JSON with updated info
-    // For PUT (S3 pre-signed), we already have the public URL in `thumbnailUrl` from the server action
-    let finalUrl = thumbnailUrl;
-    if (uploadMethod === "POST") {
-      try {
-        const json = await uploadResponse.json();
-        if (json.thumbnailUrl) {
-          finalUrl = json.thumbnailUrl;
-        }
-      } catch {
-        // ignore JSON parse error, use fallback
-      }
-    }
-
-    return finalUrl;
+    return objectKey;
   }
 
   const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
@@ -156,10 +143,10 @@ export function ThumbnailDialog({
         setIsUploading(false);
         return;
       }
-      const url = await uploadThumbnail(croppedBlob);
+      const key = await uploadThumbnail(croppedBlob);
       toast.success("Thumbnail uploaded.");
       resetCropState();
-      onSuccess(url);
+      onSuccess(key);
       handleClose();
     } catch (_error) {
       toast.error("Failed to upload thumbnail.");
@@ -256,7 +243,7 @@ export function ThumbnailDialog({
               {currentThumbnailUrl ? (
                 <div className="relative h-48 w-48 overflow-hidden rounded-md border border-border">
                   <img
-                    src={currentThumbnailUrl}
+                    src={getPublicUrl(currentThumbnailUrl) || ""}
                     alt="Thumbnail"
                     className="h-full w-full object-cover"
                   />

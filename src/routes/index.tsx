@@ -10,6 +10,7 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
   const { db } = await import("../db");
   const { links, user } = await import("../db/schema");
   const { eq, count } = await import("drizzle-orm");
+  const { getPublicUrl } = await import("@/lib/storage");
 
   // Get first user
   const users = await db.select().from(user).limit(1);
@@ -32,8 +33,18 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
     .orderBy(links.order);
 
   return {
-    profile: userProfile,
-    links: userLinks.filter((link) => link.isVisible),
+    profile: userProfile
+      ? {
+          ...userProfile,
+          avatarUrl: getPublicUrl(userProfile.avatarUrl),
+        }
+      : null,
+    links: userLinks
+      .filter((link) => link.isVisible)
+      .map((link) => ({
+        ...link,
+        thumbnailUrl: getPublicUrl(link.thumbnailUrl),
+      })),
     userExists: true,
   };
 });

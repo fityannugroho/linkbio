@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { upsertDesigns } from "@/data/designs";
 import { upsertProfile } from "@/data/profile";
 import { reorderSocials, upsertSocials } from "@/data/socials";
+import { extractKey as extractStorageKey } from "@/lib/storage.server";
 import { isValidSocialValue, type SocialPlatform } from "@/lib/validation";
 import { getSessionOrThrow } from "@/server/auth";
 import type { ProfileSocial } from "@/types/profile";
@@ -22,7 +23,7 @@ export const updateProfileAction = createServerFn({ method: "POST" })
       userId: session.user.id,
       displayName: data.displayName,
       bio: data.bio,
-      avatarUrl: data.avatarUrl || null,
+      avatarUrl: extractStorageKey(data.avatarUrl) || null,
     });
   });
 

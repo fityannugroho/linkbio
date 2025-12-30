@@ -1,6 +1,4 @@
-import { rm } from "node:fs/promises";
-import path from "node:path";
-import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createServerFn } from "@tanstack/react-start";
 import {
@@ -16,12 +14,12 @@ import {
 import {
   ALLOWED_AVATAR_CONTENT_TYPES,
   createAvatarObjectKey,
-  ensureAvatarObjectKey,
   MAX_AVATAR_SIZE,
 } from "@/lib/avatars.server";
+import { getPublicUrl } from "@/lib/storage";
 import {
-  buildPublicUrl,
   createStorageClient,
+  deleteFile,
   getStorageBucket,
   isS3Enabled,
 } from "@/lib/storage.server";
@@ -30,7 +28,11 @@ import { getSessionOrThrow } from "@/server/auth";
 export const listAvatarsAction = createServerFn({ method: "GET" }).handler(
   async () => {
     const session = await getSessionOrThrow();
-    return await listAvatarsByUserId(session.user.id);
+    const avatars = await listAvatarsByUserId(session.user.id);
+    return avatars.map((avatar) => ({
+      ...avatar,
+      url: getPublicUrl(avatar.url),
+    }));
   },
 );
 
@@ -46,12 +48,7 @@ export const createAvatarUploadAction = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
-    const mode = isS3Enabled() ? "s3" : "local";
-    const objectKey = createAvatarObjectKey(
-      session.user.id,
-      data.contentType,
-      mode,
-    );
+    const objectKey = createAvatarObjectKey(session.user.id, data.contentType);
 
     if (!isS3Enabled()) {
       return {
@@ -75,7 +72,7 @@ export const createAvatarUploadAction = createServerFn({ method: "POST" })
       uploadMethod: "PUT",
       objectKey,
       requiresSave: true,
-      publicUrl: buildPublicUrl(objectKey),
+      publicUrl: getPublicUrl(objectKey),
     };
   });
 
@@ -88,15 +85,16 @@ export const saveAvatarAction = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
-    ensureAvatarObjectKey(session.user.id, data.objectKey, "s3");
-    const url = buildPublicUrl(data.objectKey);
     const created = await insertAvatar({
       userId: session.user.id,
       objectKey: data.objectKey,
-      url,
+      url: data.objectKey,
     });
-    await updateProfileAvatar(session.user.id, url);
-    return created;
+    await updateProfileAvatar(session.user.id, data.objectKey);
+    return {
+      ...created,
+      url: getPublicUrl(created.url),
+    };
   });
 
 export const setProfileAvatarAction = createServerFn({ method: "POST" })
@@ -108,7 +106,10 @@ export const setProfileAvatarAction = createServerFn({ method: "POST" })
       throw new Error("Avatar not found");
     }
     await updateProfileAvatar(session.user.id, avatar.url);
-    return avatar;
+    return {
+      ...avatar,
+      url: getPublicUrl(avatar.url),
+    };
   });
 
 export const clearProfileAvatarAction = createServerFn({ method: "POST" })
@@ -130,20 +131,7 @@ export const deleteAvatarAction = createServerFn({ method: "POST" })
       throw new Error("Avatar not found");
     }
 
-    if (isS3Enabled()) {
-      const client = createStorageClient();
-      await client.send(
-        new DeleteObjectCommand({
-          Bucket: getStorageBucket(),
-          Key: avatar.objectKey,
-        }),
-      );
-    } else {
-      ensureAvatarObjectKey(session.user.id, avatar.objectKey, "local");
-      const targetPath = path.join(process.cwd(), "public", avatar.objectKey);
-      await rm(targetPath, { force: true });
-    }
-
+    await deleteFile(avatar.objectKey);
     await deleteAvatarById(avatar.id);
     await clearProfileAvatarIfMatches(session.user.id, avatar.url);
     return { deletedId: avatar.id };
