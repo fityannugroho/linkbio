@@ -107,7 +107,7 @@ export function DateRangeFilter() {
         <Button
           variant="outline"
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-60 justify-start text-left font-normal",
             !search.range && "text-muted-foreground",
           )}
         >
@@ -117,7 +117,7 @@ export function DateRangeFilter() {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="end">
         {view === "presets" ? (
-          <div className="flex flex-col p-1.5 min-w-[180px] max-h-[340px] overflow-y-auto">
+          <div className="flex flex-col p-1.5 min-w-45 max-h-85 overflow-y-auto">
             {ANALYTICS_GROUPS.map((group, groupIndex) => (
               <React.Fragment key={group.items.join("-")}>
                 {groupIndex > 0 && (
