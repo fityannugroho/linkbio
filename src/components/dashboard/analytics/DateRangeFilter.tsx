@@ -7,6 +7,7 @@ import {
   ANALYTICS_GROUPS,
   ANALYTICS_PRESETS,
   type AnalyticsSearch,
+  DEFAULT_ANALYTICS_RANGE,
 } from "@/components/dashboard/analytics/schema";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -88,7 +89,10 @@ export function DateRangeFilter() {
       return `${format(search.from, "LLL dd, y")} - ${format(search.to, "LLL dd, y")}`;
     }
     const preset = ANALYTICS_PRESETS.find((p) => p.value === search.range);
-    return preset?.label || "Last 30 Days";
+    const defaultPreset = ANALYTICS_PRESETS.find(
+      (p) => p.value === DEFAULT_ANALYTICS_RANGE,
+    );
+    return preset?.label || defaultPreset?.label || "Last 24 hours";
   };
 
   return (
@@ -125,7 +129,10 @@ export function DateRangeFilter() {
                       (p) => p.value === value,
                     );
                     if (!preset) return null;
-                    const isActive = search.range === preset.value;
+                    const isActive =
+                      search.range === preset.value ||
+                      (!search.range &&
+                        preset.value === DEFAULT_ANALYTICS_RANGE);
                     return (
                       <Button
                         key={preset.value}
