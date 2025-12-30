@@ -1,4 +1,9 @@
-import { Edit, GripVertical, ImagePlus, Trash2 } from "lucide-react";
+import {
+  EditIcon,
+  GripVerticalIcon,
+  ImagePlusIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useState } from "react";
 import { ThumbnailDialog } from "@/components/ThumbnailDialog";
 import { Button } from "@/components/ui/button";
@@ -85,7 +90,7 @@ export function LinkCard({
               onDragStart={(event) => onDragStart(event, link.id)}
               onDragEnd={onDragEnd}
             >
-              <GripVertical size={20} />
+              <GripVerticalIcon size={20} />
             </button>
             <div className="flex-1 min-w-0">
               <div className="flex flex-col">
@@ -103,7 +108,7 @@ export function LinkCard({
                   className="p-1 hover:bg-accent rounded-md text-muted-foreground hover:text-foreground transition-colors"
                   title="Edit"
                 >
-                  <Edit size={16} />
+                  <EditIcon size={16} />
                 </button>
                 <button
                   type="button"
@@ -111,7 +116,7 @@ export function LinkCard({
                   className="p-1 hover:bg-accent rounded-md text-muted-foreground hover:text-foreground transition-colors"
                   title="Thumbnail"
                 >
-                  <ImagePlus size={16} />
+                  <ImagePlusIcon size={16} />
                 </button>
                 <button
                   type="button"
@@ -119,7 +124,7 @@ export function LinkCard({
                   className="p-1 hover:bg-accent rounded-md text-muted-foreground hover:text-destructive transition-colors"
                   title="Delete"
                 >
-                  <Trash2 size={16} />
+                  <Trash2Icon size={16} />
                 </button>
               </div>
             </div>

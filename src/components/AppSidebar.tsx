@@ -1,6 +1,10 @@
 "use client";
 
-import { BarChart3, LayoutDashboard, Paintbrush } from "lucide-react";
+import {
+  BarChart3Icon,
+  LayoutDashboardIcon,
+  PaintbrushIcon,
+} from "lucide-react";
 import type * as React from "react";
 
 import { NavMain } from "@/components/NavMain";
@@ -31,17 +35,17 @@ const navItems = [
   {
     title: "Links",
     url: "/dashboard",
-    icon: LayoutDashboard,
+    icon: LayoutDashboardIcon,
   },
   {
     title: "Design",
     url: "/dashboard/design",
-    icon: Paintbrush,
+    icon: PaintbrushIcon,
   },
   {
     title: "Analytics",
     url: "/dashboard/analytics",
-    icon: BarChart3,
+    icon: BarChart3Icon,
   },
 ];
 
@@ -71,7 +75,7 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-lg">
-              <LayoutDashboard className="size-4" />
+              <LayoutDashboardIcon className="size-4" />
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
               <span className="truncate font-semibold">LinkBio</span>

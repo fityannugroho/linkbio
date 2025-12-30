@@ -1,4 +1,4 @@
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRightIcon, SearchIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
@@ -35,7 +35,7 @@ export function SocialAddDialog({
         </DialogHeader>
         <div className="p-4 border-b bg-muted/30">
           <div className="relative">
-            <Search
+            <SearchIcon
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               size={18}
             />
@@ -66,7 +66,7 @@ export function SocialAddDialog({
                   </div>
                   <span className="font-medium text-sm">{item.label}</span>
                 </div>
-                <ChevronRight
+                <ChevronRightIcon
                   size={18}
                   className="text-muted-foreground group-hover:text-foreground transition-colors"
                 />

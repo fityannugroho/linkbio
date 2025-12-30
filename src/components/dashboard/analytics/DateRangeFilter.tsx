@@ -1,6 +1,6 @@
 import { getRouteApi } from "@tanstack/react-router";
 import { endOfDay, format, isSameDay, startOfDay } from "date-fns";
-import { CalendarIcon, Check, ChevronLeft } from "lucide-react";
+import { CalendarIcon, CheckIcon, ChevronLeftIcon } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
 import {
@@ -144,7 +144,7 @@ export function DateRangeFilter() {
                         onClick={() => handlePresetSelect(preset.value)}
                       >
                         <span>{preset.label}</span>
-                        {isActive && <Check className="h-4 w-4" />}
+                        {isActive && <CheckIcon className="h-4 w-4" />}
                       </Button>
                     );
                   })}
@@ -162,7 +162,7 @@ export function DateRangeFilter() {
                   className="h-auto p-1 mr-2"
                   onClick={() => setView("presets")}
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
                 <span className="font-semibold text-sm">Select Dates</span>
               </div>

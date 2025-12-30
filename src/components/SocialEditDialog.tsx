@@ -1,4 +1,4 @@
-import { ChevronLeft, Trash2 } from "lucide-react";
+import { ChevronLeftIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +72,7 @@ export function SocialEditDialog({
               className="h-8 w-8 absolute left-4"
               onClick={() => setIsConfirmingDelete(false)}
             >
-              <ChevronLeft size={18} />
+              <ChevronLeftIcon size={18} />
             </Button>
           )}
           <DialogTitle className="text-center">
@@ -139,7 +139,7 @@ export function SocialEditDialog({
                   className="w-full h-12 rounded-full text-destructive hover:text-destructive hover:bg-destructive/10 font-semibold gap-2"
                   onClick={() => setIsConfirmingDelete(true)}
                 >
-                  <Trash2 size={16} />
+                  <Trash2Icon size={16} />
                   Remove icon
                 </Button>
               </div>
