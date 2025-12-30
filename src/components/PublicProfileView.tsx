@@ -110,16 +110,21 @@ export function PublicProfileView({
             }}
           >
             <div
-              className={`
-                    w-full min-h-[64px] py-4 rounded-full text-center font-medium transition-all duration-300 ease-out
-                    hover:scale-[1.03] hover:shadow-lg active:scale-[0.98] flex items-center justify-center relative
-                    ${link.thumbnailUrl ? "px-16" : "px-6"}
-                    ${buttonStyle === "outline" ? "border-2 border-current hover:bg-white/10" : ""}
-                    ${buttonStyle === "glass" ? "bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/25 hover:shadow-xl" : ""}
-                    ${buttonStyle === "default" ? "bg-white text-black hover:bg-gray-50 shadow-md hover:shadow-xl" : ""}
-                `}
+              className={cn(
+                "w-full min-h-[64px] py-4 rounded-full text-center font-medium transition-all duration-300 ease-out",
+                "hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center relative",
+                link.thumbnailUrl ? "px-16" : "px-6",
+                {
+                  "border-2 border-current hover:bg-current/10":
+                    buttonStyle === "outline",
+                  "bg-current/10 backdrop-blur-md backdrop-saturate-150 border border-current/30 hover:bg-current/20 hover:shadow-[0_0_20px_rgba(0,0,0,0.1)]":
+                    buttonStyle === "glass",
+                  "bg-white text-black hover:bg-gray-50 shadow-md hover:shadow-xl":
+                    buttonStyle === "default",
+                },
+              )}
               style={
-                buttonStyle === "default"
+                buttonStyle === "default" || buttonStyle === "glass"
                   ? undefined
                   : { borderColor: fontColor }
               }
