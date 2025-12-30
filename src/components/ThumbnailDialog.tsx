@@ -185,7 +185,7 @@ export function ThumbnailDialog({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
             {isCropping ? "Crop thumbnail" : "Link thumbnail"}
@@ -252,9 +252,9 @@ export function ThumbnailDialog({
           </div>
         ) : (
           <div className="space-y-6">
-            <div className="flex flex-col items-center justify-center gap-4 py-4">
+            <div className="flex flex-col items-center justify-center gap-6 py-4">
               {currentThumbnailUrl ? (
-                <div className="relative h-24 w-24 overflow-hidden rounded-md border border-border">
+                <div className="relative h-48 w-48 overflow-hidden rounded-md border border-border">
                   <img
                     src={currentThumbnailUrl}
                     alt="Thumbnail"
@@ -262,7 +262,7 @@ export function ThumbnailDialog({
                   />
                 </div>
               ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-md border border-dashed border-border bg-muted/30 text-muted-foreground">
+                <div className="flex h-48 w-48 items-center justify-center rounded-md border border-dashed border-border bg-muted/30 text-muted-foreground">
                   <span className="text-xs">No thumbnail</span>
                 </div>
               )}
