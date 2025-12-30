@@ -207,7 +207,7 @@ export function SocialDialog({
         onOpenChange={(isOpen) => !isOpen && onClose()}
       >
         <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-0 overflow-hidden gap-0">
-          <DialogHeader className="p-6 pb-2">
+          <DialogHeader className="p-4">
             <DialogTitle className="text-center font-bold text-lg">
               Social icons
             </DialogTitle>

@@ -64,20 +64,20 @@ export function SocialEditDialog({
       onOpenChange={(isOpen) => !isOpen && handleClose()}
     >
       <DialogContent className="sm:max-w-md p-0 overflow-hidden gap-0">
-        <DialogHeader className="p-4 border-b flex flex-row items-center gap-2">
+        <DialogHeader className="p-4 border-b flex flex-row items-center justify-center relative">
           {isConfirmingDelete && (
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 absolute left-4"
               onClick={() => setIsConfirmingDelete(false)}
             >
               <ChevronLeft size={18} />
             </Button>
           )}
-          <DialogTitle className="flex-1 text-center pr-8">
+          <DialogTitle className="text-center">
             {isConfirmingDelete
-              ? `Remove ${item.label} icon`
+              ? `Remove ${item.label} icon?`
               : `Edit ${item.label}`}
           </DialogTitle>
         </DialogHeader>
