@@ -1,11 +1,9 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { createFileRoute } from "@tanstack/react-router";
 import { auth } from "@/lib/auth";
-import { buildPublicUrl } from "@/lib/storage.server";
+import { getPublicUrl } from "@/lib/storage";
+import { uploadFile } from "@/lib/storage.server";
 import {
   ALLOWED_THUMBNAIL_CONTENT_TYPES,
-  ensureThumbnailObjectKey,
   MAX_THUMBNAIL_SIZE,
 } from "@/lib/thumbnails.server";
 
@@ -22,13 +20,8 @@ export const Route = createFileRoute("/api/thumbnail-upload")({
 
         const url = new URL(request.url);
         const objectKey = url.searchParams.get("key") || "";
-        try {
-          ensureThumbnailObjectKey(session.user.id, objectKey, "local");
-        } catch (error) {
-          return new Response(
-            error instanceof Error ? error.message : "Invalid thumbnail key",
-            { status: 400 },
-          );
+        if (!objectKey || !objectKey.startsWith("thumbnails/")) {
+          return new Response("Invalid thumbnail key", { status: 400 });
         }
 
         const formData = await request.formData();
@@ -47,16 +40,15 @@ export const Route = createFileRoute("/api/thumbnail-upload")({
           return new Response("Thumbnail must be 5MB or less", { status: 400 });
         }
 
-        const destination = path.join(process.cwd(), "public", objectKey);
-        await mkdir(path.dirname(destination), { recursive: true });
         const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(destination, buffer);
+        await uploadFile(buffer, objectKey, file.type);
 
-        const thumbnailUrl = buildPublicUrl(objectKey);
-
-        return new Response(JSON.stringify({ thumbnailUrl, objectKey }), {
-          headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({ thumbnailUrl: getPublicUrl(objectKey), objectKey }),
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       },
     },
   },

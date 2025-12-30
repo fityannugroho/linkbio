@@ -18,7 +18,7 @@ import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
 import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
 import { Route as ApiThumbnailUploadRouteImport } from './routes/api/thumbnail-upload'
 import { Route as ApiAvatarUploadRouteImport } from './routes/api/avatar-upload'
-import { Route as ApiS3SplatRouteImport } from './routes/api/s3/$'
+import { Route as ApiStorageSplatRouteImport } from './routes/api/storage/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
 
 const SetupRoute = SetupRouteImport.update({
@@ -66,9 +66,9 @@ const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
   path: '/api/avatar-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiS3SplatRoute = ApiS3SplatRouteImport.update({
-  id: '/api/s3/$',
-  path: '/api/s3/$',
+const ApiStorageSplatRoute = ApiStorageSplatRouteImport.update({
+  id: '/api/storage/$',
+  path: '/api/storage/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -88,7 +88,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/s3/$': typeof ApiS3SplatRoute
+  '/api/storage/$': typeof ApiStorageSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,7 +100,7 @@ export interface FileRoutesByTo {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/s3/$': typeof ApiS3SplatRoute
+  '/api/storage/$': typeof ApiStorageSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,7 +114,7 @@ export interface FileRoutesById {
   '/dashboard/design': typeof DashboardDesignRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/s3/$': typeof ApiS3SplatRoute
+  '/api/storage/$': typeof ApiStorageSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -129,7 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard/'
     | '/api/auth/$'
-    | '/api/s3/$'
+    | '/api/storage/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -141,7 +141,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard'
     | '/api/auth/$'
-    | '/api/s3/$'
+    | '/api/storage/$'
   id:
     | '__root__'
     | '/'
@@ -154,7 +154,7 @@ export interface FileRouteTypes {
     | '/dashboard/design'
     | '/dashboard/'
     | '/api/auth/$'
-    | '/api/s3/$'
+    | '/api/storage/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,7 +165,7 @@ export interface RootRouteChildren {
   ApiAvatarUploadRoute: typeof ApiAvatarUploadRoute
   ApiThumbnailUploadRoute: typeof ApiThumbnailUploadRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiS3SplatRoute: typeof ApiS3SplatRoute
+  ApiStorageSplatRoute: typeof ApiStorageSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -233,11 +233,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAvatarUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/s3/$': {
-      id: '/api/s3/$'
-      path: '/api/s3/$'
-      fullPath: '/api/s3/$'
-      preLoaderRoute: typeof ApiS3SplatRouteImport
+    '/api/storage/$': {
+      id: '/api/storage/$'
+      path: '/api/storage/$'
+      fullPath: '/api/storage/$'
+      preLoaderRoute: typeof ApiStorageSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -274,7 +274,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAvatarUploadRoute: ApiAvatarUploadRoute,
   ApiThumbnailUploadRoute: ApiThumbnailUploadRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiS3SplatRoute: ApiS3SplatRoute,
+  ApiStorageSplatRoute: ApiStorageSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

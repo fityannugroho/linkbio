@@ -3,12 +3,15 @@ import { listAvatarsByUserId } from "@/data/avatars";
 import {
   addLink,
   deleteLink,
+  getLink,
   listLinks,
   reorderLinks,
   toggleLinkVisibility,
   updateLink,
 } from "@/data/links";
 import { getProfileByUserId } from "@/data/profile";
+import { getPublicUrl } from "@/lib/storage";
+import { deleteFile, extractKey } from "@/lib/storage.server";
 import { isValidHttpUrl } from "@/lib/validation";
 import { getSessionOrThrow } from "@/server/auth";
 
@@ -20,9 +23,20 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(
     const allLinks = await listLinks(session.user.id);
 
     return {
-      profile: userProfile,
-      avatars,
-      links: allLinks,
+      profile: userProfile
+        ? {
+            ...userProfile,
+            avatarUrl: getPublicUrl(userProfile.avatarUrl),
+          }
+        : null,
+      avatars: avatars.map((a) => ({
+        ...a,
+        url: getPublicUrl(a.url),
+      })),
+      links: allLinks.map((l) => ({
+        ...l,
+        thumbnailUrl: getPublicUrl(l.thumbnailUrl),
+      })),
     };
   },
 );
@@ -41,7 +55,9 @@ export const addLinkAction = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
-    await addLink({ ...data, userId: session.user.id });
+    // Ensure we store the key
+    const thumbnailUrl = extractKey(data.thumbnailUrl);
+    await addLink({ ...data, userId: session.user.id, thumbnailUrl });
   });
 
 export const updateLinkAction = createServerFn({ method: "POST" })
@@ -63,7 +79,21 @@ export const updateLinkAction = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
-    await updateLink(session.user.id, data);
+
+    // Check if thumbnail changed
+    const oldLink = await getLink(session.user.id, data.id);
+    const newKey = extractKey(data.thumbnailUrl);
+
+    if (oldLink?.thumbnailUrl && oldLink.thumbnailUrl !== newKey) {
+      // If it's a key (doesn't start with http), delete it
+      if (!oldLink.thumbnailUrl.startsWith("http")) {
+        await deleteFile(oldLink.thumbnailUrl).catch(() => {
+          // Ignore deletion errors
+        });
+      }
+    }
+
+    await updateLink(session.user.id, { ...data, thumbnailUrl: newKey });
   });
 
 export const reorderLinksAction = createServerFn({ method: "POST" })
@@ -84,5 +114,13 @@ export const deleteLinkAction = createServerFn({ method: "POST" })
   .inputValidator((data: number) => data)
   .handler(async ({ data: id }) => {
     const session = await getSessionOrThrow();
+
+    const link = await getLink(session.user.id, id);
+    if (link?.thumbnailUrl && !link.thumbnailUrl.startsWith("http")) {
+      await deleteFile(link.thumbnailUrl).catch(() => {
+        // Ignore deletion errors
+      });
+    }
+
     await deleteLink(session.user.id, id);
   });

@@ -1,4 +1,11 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import path from "node:path";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 type StorageConfig = {
   accessKeyId: string;
@@ -71,25 +78,100 @@ export function getStorageBucket() {
 }
 
 export async function getStorageObject(key: string) {
-  const client = createStorageClient();
-  const bucket = getStorageBucket();
-  const command = new GetObjectCommand({
-    Bucket: bucket,
-    Key: key,
-  });
-  return client.send(command);
-}
-
-export function buildPublicUrl(objectKey: string) {
-  if (!isS3Enabled()) {
-    const key = objectKey.replace(/^\/+/, "");
-    return `/${key}`;
+  if (isS3Enabled()) {
+    const client = createStorageClient();
+    const bucket = getStorageBucket();
+    const command = new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    });
+    return client.send(command);
   }
 
-  // For private buckets, we must proxy the content through our server
-  // or return a presigned URL (cached).
-  // Given the 'avatars' use case on a public profile, a proxy route is cleaner
-  // than managing presigned URL expiration for every viewer.
-  const key = objectKey.replace(/^\/+/, "");
-  return `/api/s3/${key}`;
+  const filePath = path.join(process.cwd(), "public", key);
+  const body = await readFile(filePath);
+  // Mock S3-like response for local files
+  return {
+    Body: body,
+    ContentType: getContentTypeFromPath(filePath),
+  };
+}
+
+export async function uploadFile(
+  buffer: Buffer,
+  key: string,
+  contentType: string,
+) {
+  if (isS3Enabled()) {
+    const client = createStorageClient();
+    const command = new PutObjectCommand({
+      Bucket: getStorageBucket(),
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+    });
+    return client.send(command);
+  }
+
+  const filePath = path.join(process.cwd(), "public", key);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, buffer);
+}
+
+export async function deleteFile(key: string) {
+  if (isS3Enabled()) {
+    const client = createStorageClient();
+    const command = new DeleteObjectCommand({
+      Bucket: getStorageBucket(),
+      Key: key,
+    });
+    return client.send(command);
+  }
+
+  const filePath = path.join(process.cwd(), "public", key);
+  await rm(filePath, { force: true });
+}
+
+export function extractKey(url: string | null | undefined): string | null {
+  if (!url) return null;
+
+  // If it starts with our API prefixes, extract the key
+  if (url.startsWith("/api/storage/")) {
+    return url.replace("/api/storage/", "");
+  }
+  if (url.startsWith("/api/s3/")) {
+    return url.replace("/api/s3/", "");
+  }
+
+  // Handle media folder prefix if present
+  if (url.startsWith("/media/")) {
+    return url.replace("/media/", "");
+  }
+
+  // If it's a full URL, we might need a more complex regex if they are from a specific domain,
+  // but usually our database will either have a key or a relative /api/... path now.
+  // For legacy full URLs, we can try to find avatars/ or thumbnails/
+  if (url.startsWith("http")) {
+    const avatarMatch = url.match(/\/avatars\/(.+)$/);
+    if (avatarMatch) return `avatars/${avatarMatch[1]}`;
+    const thumbnailMatch = url.match(/\/thumbnails\/(.+)$/);
+    if (thumbnailMatch) return `thumbnails/${thumbnailMatch[1]}`;
+  }
+
+  return url;
+}
+
+function getContentTypeFromPath(filePath: string) {
+  const ext = path.extname(filePath).toLowerCase();
+  switch (ext) {
+    case ".jpg":
+    case ".jpeg":
+      return "image/jpeg";
+    case ".png":
+      return "image/png";
+    case ".webp":
+      return "image/webp";
+    default:
+      return "application/octet-stream";
+  }
 }

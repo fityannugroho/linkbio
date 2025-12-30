@@ -1,15 +1,13 @@
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { createFileRoute } from "@tanstack/react-router";
 import { insertAvatar } from "@/data/avatars";
 import { updateProfileAvatar } from "@/data/profile";
 import { auth } from "@/lib/auth";
 import {
   ALLOWED_AVATAR_CONTENT_TYPES,
-  ensureAvatarObjectKey,
   MAX_AVATAR_SIZE,
 } from "@/lib/avatars.server";
-import { buildPublicUrl } from "@/lib/storage.server";
+import { getPublicUrl } from "@/lib/storage";
+import { uploadFile } from "@/lib/storage.server";
 
 export const Route = createFileRoute("/api/avatar-upload")({
   server: {
@@ -24,13 +22,8 @@ export const Route = createFileRoute("/api/avatar-upload")({
 
         const url = new URL(request.url);
         const objectKey = url.searchParams.get("key") || "";
-        try {
-          ensureAvatarObjectKey(session.user.id, objectKey, "local");
-        } catch (error) {
-          return new Response(
-            error instanceof Error ? error.message : "Invalid avatar key",
-            { status: 400 },
-          );
+        if (!objectKey || !objectKey.startsWith("avatars/")) {
+          return new Response("Invalid avatar key", { status: 400 });
         }
 
         const formData = await request.formData();
@@ -49,22 +42,27 @@ export const Route = createFileRoute("/api/avatar-upload")({
           return new Response("Avatar must be 10MB or less", { status: 400 });
         }
 
-        const destination = path.join(process.cwd(), "public", objectKey);
-        await mkdir(path.dirname(destination), { recursive: true });
         const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(destination, buffer);
+        await uploadFile(buffer, objectKey, file.type);
 
-        const urlPath = buildPublicUrl(objectKey);
         const avatar = await insertAvatar({
           userId: session.user.id,
           objectKey,
-          url: urlPath,
+          url: objectKey,
         });
-        await updateProfileAvatar(session.user.id, urlPath);
+        await updateProfileAvatar(session.user.id, objectKey);
 
-        return new Response(JSON.stringify({ avatar }), {
-          headers: { "Content-Type": "application/json" },
-        });
+        return new Response(
+          JSON.stringify({
+            avatar: {
+              ...avatar,
+              url: getPublicUrl(avatar.url),
+            },
+          }),
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       },
     },
   },
