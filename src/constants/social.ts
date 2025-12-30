@@ -1,22 +1,15 @@
-import {
-  Github,
-  Instagram,
-  Linkedin,
-  type LucideProps,
-  Mail,
-  Music2,
-  Twitter,
-  Youtube,
-} from "lucide-react";
-import type { ForwardRefExoticComponent, RefAttributes } from "react";
+import { LinkedinIcon, MailIcon } from "lucide-react";
+import { GitHubIcon } from "@/components/icons/GitHub";
+import { InstagramIcon } from "@/components/icons/Instagram";
+import { TikTokIcon } from "@/components/icons/TikTok";
+import { TwitterIcon } from "@/components/icons/Twitter";
+import { YouTubeIcon } from "@/components/icons/YouTube";
 import type { SocialPlatform } from "@/lib/validation";
 
 export type SocialItem = {
   key: SocialPlatform;
   label: string;
-  Icon: ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-  >;
+  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   placeholder: string;
   inputType: "username" | "url" | "both"; // username: @handle, url: full URL, both: either
 };
@@ -25,49 +18,49 @@ export const socialItems: SocialItem[] = [
   {
     key: "twitter",
     label: "X (formerly Twitter)",
-    Icon: Twitter,
+    Icon: TwitterIcon,
     placeholder: "@handle",
     inputType: "username",
   },
   {
     key: "instagram",
     label: "Instagram",
-    Icon: Instagram,
+    Icon: InstagramIcon,
     placeholder: "@handle",
     inputType: "username",
   },
   {
     key: "github",
     label: "GitHub",
-    Icon: Github,
+    Icon: GitHubIcon,
     placeholder: "username",
     inputType: "username",
   },
   {
     key: "linkedin",
     label: "LinkedIn",
-    Icon: Linkedin,
+    Icon: LinkedinIcon,
     placeholder: "username or full URL",
     inputType: "both",
   },
   {
     key: "youtube",
     label: "YouTube",
-    Icon: Youtube,
+    Icon: YouTubeIcon,
     placeholder: "@handle or full URL",
     inputType: "both",
   },
   {
     key: "tiktok",
     label: "TikTok",
-    Icon: Music2,
+    Icon: TikTokIcon,
     placeholder: "@handle",
     inputType: "username",
   },
   {
     key: "email",
     label: "Email",
-    Icon: Mail,
+    Icon: MailIcon,
     placeholder: "email address",
     inputType: "url",
   },
