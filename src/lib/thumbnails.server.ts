@@ -1,4 +1,12 @@
 import { randomUUID } from "node:crypto";
+import { rm } from "node:fs/promises";
+import path from "node:path";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import {
+  createStorageClient,
+  getStorageBucket,
+  isS3Enabled,
+} from "@/lib/storage.server";
 
 export const MAX_THUMBNAIL_SIZE = 5 * 1024 * 1024;
 export const ALLOWED_THUMBNAIL_CONTENT_TYPES = new Map([
@@ -40,5 +48,24 @@ export function ensureThumbnailObjectKey(
 
   if (!objectKey.startsWith(`${basePath}/${userId}/`)) {
     throw new Error("Invalid thumbnail key");
+  }
+}
+
+export async function deleteThumbnailFile(userId: string, objectKey: string) {
+  const mode = isS3Enabled() ? "s3" : "local";
+
+  ensureThumbnailObjectKey(userId, objectKey, mode);
+
+  if (isS3Enabled()) {
+    const client = createStorageClient();
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: getStorageBucket(),
+        Key: objectKey,
+      }),
+    );
+  } else {
+    const targetPath = path.join(process.cwd(), "public", objectKey);
+    await rm(targetPath, { force: true });
   }
 }

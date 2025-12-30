@@ -1,6 +1,4 @@
-import { rm } from "node:fs/promises";
-import path from "node:path";
-import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createServerFn } from "@tanstack/react-start";
 import {
@@ -12,7 +10,7 @@ import {
 import {
   ALLOWED_THUMBNAIL_CONTENT_TYPES,
   createThumbnailObjectKey,
-  ensureThumbnailObjectKey,
+  deleteThumbnailFile,
   MAX_THUMBNAIL_SIZE,
 } from "@/lib/thumbnails.server";
 import { getSessionOrThrow } from "@/server/auth";
@@ -70,22 +68,6 @@ export const deleteThumbnailAction = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
-    const mode = isS3Enabled() ? "s3" : "local";
-
-    ensureThumbnailObjectKey(session.user.id, data.objectKey, mode);
-
-    if (isS3Enabled()) {
-      const client = createStorageClient();
-      await client.send(
-        new DeleteObjectCommand({
-          Bucket: getStorageBucket(),
-          Key: data.objectKey,
-        }),
-      );
-    } else {
-      const targetPath = path.join(process.cwd(), "public", data.objectKey);
-      await rm(targetPath, { force: true });
-    }
-
+    await deleteThumbnailFile(session.user.id, data.objectKey);
     return { deleted: true };
   });

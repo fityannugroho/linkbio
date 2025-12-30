@@ -93,3 +93,20 @@ export function buildPublicUrl(objectKey: string) {
   const key = objectKey.replace(/^\/+/, "");
   return `/api/s3/${key}`;
 }
+
+export function extractObjectKeyFromUrl(url: string | null | undefined) {
+  if (!url) return null;
+
+  // Remove leading slash for consistency
+  let key = url;
+  if (key.startsWith("/")) {
+    key = key.slice(1);
+  }
+
+  // Remove S3 proxy prefix if present
+  if (key.startsWith("api/s3/")) {
+    key = key.replace("api/s3/", "");
+  }
+
+  return key;
+}

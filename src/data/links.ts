@@ -5,6 +5,14 @@ import { links } from "@/db/schema";
 export const listLinks = async (userId: string) =>
   db.select().from(links).where(eq(links.userId, userId)).orderBy(links.order);
 
+export const getLink = async (userId: string, id: number) => {
+  const result = await db
+    .select()
+    .from(links)
+    .where(and(eq(links.id, id), eq(links.userId, userId)));
+  return result[0] || null;
+};
+
 export const addLink = async (data: {
   userId: string;
   title: string;
