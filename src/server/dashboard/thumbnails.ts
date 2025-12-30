@@ -65,7 +65,7 @@ export const deleteThumbnailAction = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ data }) => {
-    const _session = await getSessionOrThrow();
+    await getSessionOrThrow();
     // In actual use, we should probably verify the thumbnail belongs to the user
     // but the current implementation doesn't check it either.
     await deleteFile(data.objectKey);

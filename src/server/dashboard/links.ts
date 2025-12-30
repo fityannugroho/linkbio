@@ -26,9 +26,7 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(
       profile: userProfile
         ? {
             ...userProfile,
-            ...(userProfile.avatarUrl && {
-              avatarUrl: getPublicUrl(userProfile.avatarUrl),
-            }),
+            avatarUrl: getPublicUrl(userProfile.avatarUrl),
           }
         : null,
       avatars: avatars.map((a) => ({
@@ -37,9 +35,7 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(
       })),
       links: allLinks.map((l) => ({
         ...l,
-        ...(l.thumbnailUrl && {
-          thumbnailUrl: getPublicUrl(l.thumbnailUrl),
-        }),
+        thumbnailUrl: getPublicUrl(l.thumbnailUrl),
       })),
     };
   },

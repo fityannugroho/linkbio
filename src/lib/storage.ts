@@ -1,6 +1,10 @@
-export function getPublicUrl(objectKey: null | undefined): null;
 export function getPublicUrl(objectKey: string): string;
-export function getPublicUrl(objectKey: string | null | undefined) {
+export function getPublicUrl(
+  objectKey: string | null | undefined,
+): string | null;
+export function getPublicUrl(
+  objectKey: string | null | undefined,
+): string | null {
   if (!objectKey) return null;
 
   // If it's already a full URL or data URI, return it as is
