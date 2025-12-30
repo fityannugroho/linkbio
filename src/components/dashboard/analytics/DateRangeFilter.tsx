@@ -1,6 +1,6 @@
 import { getRouteApi } from "@tanstack/react-router";
 import { endOfDay, format, isSameDay, startOfDay } from "date-fns";
-import { CalendarIcon, Check, ChevronLeft } from "lucide-react";
+import { CalendarIcon, CheckIcon, ChevronLeftIcon } from "lucide-react";
 import * as React from "react";
 import type { DateRange } from "react-day-picker";
 import {
@@ -107,7 +107,7 @@ export function DateRangeFilter() {
         <Button
           variant="outline"
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-60 justify-start text-left font-normal",
             !search.range && "text-muted-foreground",
           )}
         >
@@ -117,7 +117,7 @@ export function DateRangeFilter() {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="end">
         {view === "presets" ? (
-          <div className="flex flex-col p-1.5 min-w-[180px] max-h-[340px] overflow-y-auto">
+          <div className="flex flex-col p-1.5 min-w-45 max-h-85 overflow-y-auto">
             {ANALYTICS_GROUPS.map((group, groupIndex) => (
               <React.Fragment key={group.items.join("-")}>
                 {groupIndex > 0 && (
@@ -144,7 +144,7 @@ export function DateRangeFilter() {
                         onClick={() => handlePresetSelect(preset.value)}
                       >
                         <span>{preset.label}</span>
-                        {isActive && <Check className="h-4 w-4" />}
+                        {isActive && <CheckIcon className="h-4 w-4" />}
                       </Button>
                     );
                   })}
@@ -162,7 +162,7 @@ export function DateRangeFilter() {
                   className="h-auto p-1 mr-2"
                   onClick={() => setView("presets")}
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeftIcon className="h-4 w-4" />
                 </Button>
                 <span className="font-semibold text-sm">Select Dates</span>
               </div>

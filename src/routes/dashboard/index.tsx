@@ -3,7 +3,7 @@ import {
   getRouteApi,
   useRouter,
 } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { AddLinkForm } from "@/components/AddLinkForm";
 import { AvatarDialog } from "@/components/AvatarDialog";
@@ -79,7 +79,7 @@ function DashboardLinksPage() {
           className="group flex w-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-card px-4 py-4 text-center transition-colors hover:border-border/80"
           title="Add link"
         >
-          <Plus size={20} className="text-muted-foreground" />
+          <PlusIcon size={20} className="text-muted-foreground" />
         </button>
       </div>
 

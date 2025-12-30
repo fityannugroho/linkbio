@@ -1,4 +1,4 @@
-import { Check, Trash2 } from "lucide-react";
+import { CheckIcon, Trash2Icon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Area } from "react-easy-crop";
 import Cropper from "react-easy-crop";
@@ -405,7 +405,7 @@ export function AvatarDialog({
                           <div className="flex h-11 items-center justify-end border-t border-border px-3">
                             {isCurrent ? (
                               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <Check size={16} strokeWidth={3} />
+                                <CheckIcon size={16} strokeWidth={3} />
                               </div>
                             ) : (
                               <Button
@@ -417,7 +417,7 @@ export function AvatarDialog({
                                 disabled={isSaving}
                                 title="Delete avatar"
                               >
-                                <Trash2 size={14} />
+                                <Trash2Icon size={14} />
                               </Button>
                             )}
                           </div>

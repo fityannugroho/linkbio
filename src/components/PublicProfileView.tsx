@@ -1,3 +1,4 @@
+import { Link as RouterLink } from "@tanstack/react-router";
 import { SocialIcons } from "@/components/SocialIcons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUmami } from "@/lib/umami";
@@ -111,7 +112,7 @@ export function PublicProfileView({
           >
             <div
               className={cn(
-                "w-full min-h-[64px] py-4 rounded-full text-center font-medium transition-all duration-300 ease-out",
+                "w-full min-h-16 py-4 rounded-full text-center font-medium transition-all duration-300 ease-out",
                 "hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center relative",
                 link.thumbnailUrl ? "px-16" : "px-6",
                 {
@@ -161,9 +162,9 @@ export function PublicProfileView({
 
       {showFooter && (
         <footer className="mt-auto pt-8 pb-4 text-xs opacity-40">
-          <a href="/" className="hover:underline">
+          <RouterLink to="/" className="hover:underline">
             LinkBio
-          </a>
+          </RouterLink>
         </footer>
       )}
     </div>

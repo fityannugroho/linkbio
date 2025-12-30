@@ -11,11 +11,11 @@ import {
   subMonths,
 } from "date-fns";
 import {
-  Activity,
-  BarChart3,
-  MousePointerClick,
-  TrendingUp,
-  Users,
+  ActivityIcon,
+  BarChart3Icon,
+  MousePointerClickIcon,
+  TrendingUpIcon,
+  UsersIcon,
 } from "lucide-react";
 import { DateRangeFilter } from "@/components/dashboard/analytics/DateRangeFilter";
 import {
@@ -321,7 +321,7 @@ function AnalyticsPage() {
       <div className="space-y-6">
         <Card>
           <CardContent className="p-12 text-center">
-            <BarChart3 className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+            <BarChart3Icon className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-xl font-semibold mb-2">
               Analytics not configured
             </h3>
@@ -366,7 +366,7 @@ function AnalyticsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total views</CardTitle>
-            <MousePointerClick className="h-4 w-4 text-muted-foreground" />
+            <MousePointerClickIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -380,7 +380,7 @@ function AnalyticsPage() {
             <CardTitle className="text-sm font-medium">
               Unique visitors
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <UsersIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -392,7 +392,7 @@ function AnalyticsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Visits</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -404,7 +404,7 @@ function AnalyticsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Bounce rate</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <ActivityIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">

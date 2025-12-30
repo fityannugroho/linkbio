@@ -1,4 +1,10 @@
-import { BarChart, Edit, GripVertical, Plus } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import {
+  BarChartIcon,
+  EditIcon,
+  GripVerticalIcon,
+  PlusIcon,
+} from "lucide-react";
 import type { DragEvent } from "react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -250,7 +256,7 @@ export function SocialDialog({
                         <div className="w-full flex items-center justify-between gap-3 rounded-2xl border border-border px-3 py-2 hover:bg-muted/50 transition-colors bg-background font-medium">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
                             {canReorder && (
-                              <GripVertical
+                              <GripVerticalIcon
                                 size={16}
                                 className="text-muted-foreground shrink-0 cursor-move"
                               />
@@ -280,7 +286,7 @@ export function SocialDialog({
                               onClick={() => openEditor(item.key)}
                               className="h-9 w-9 rounded-full"
                             >
-                              <Edit size={16} />
+                              <EditIcon size={16} />
                             </Button>
                           </div>
                         </div>
@@ -337,16 +343,16 @@ export function SocialDialog({
               className="flex-1 h-12 rounded-full font-bold gap-2 border-2 hover:bg-muted"
               asChild
             >
-              <a href="/dashboard/analytics">
-                <BarChart size={18} />
+              <Link to="/dashboard/analytics">
+                <BarChartIcon size={18} />
                 See insights
-              </a>
+              </Link>
             </Button>
             <Button
               onClick={() => setIsAddOpen(true)}
               className="flex-1 h-12 rounded-full font-bold gap-2"
             >
-              <Plus size={18} />
+              <PlusIcon size={18} />
               Add social icon
             </Button>
           </div>

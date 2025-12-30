@@ -1,15 +1,15 @@
 "use client";
 
+import { Link } from "@tanstack/react-router";
 import {
-  ChevronsUpDown,
-  ExternalLink,
-  LogOut,
-  Monitor,
-  Moon,
-  Sun,
+  ChevronsUpDownIcon,
+  ExternalLinkIcon,
+  LogOutIcon,
+  MonitorIcon,
+  MoonIcon,
+  SunIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -77,7 +77,7 @@ export function NavUser({
                   {user.email || "Signed in"}
                 </span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -105,17 +105,17 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <a href={viewHref} target="_blank" rel="noreferrer">
-                  <ExternalLink />
+                <Link to={viewHref} target="_blank" rel="noreferrer">
+                  <ExternalLinkIcon />
                   View live page
-                </a>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  <Monitor />
+                  <MonitorIcon />
                   Theme
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
@@ -124,15 +124,15 @@ export function NavUser({
                     onValueChange={(value) => setTheme(value)}
                   >
                     <DropdownMenuRadioItem value="light">
-                      <Sun />
+                      <SunIcon />
                       Light
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="dark">
-                      <Moon />
+                      <MoonIcon />
                       Dark
                     </DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="system">
-                      <Monitor />
+                      <MonitorIcon />
                       System
                     </DropdownMenuRadioItem>
                   </DropdownMenuRadioGroup>
@@ -141,7 +141,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive" onSelect={() => onLogout()}>
-              <LogOut />
+              <LogOutIcon />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

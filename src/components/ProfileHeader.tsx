@@ -1,4 +1,4 @@
-import { Camera, Plus } from "lucide-react";
+import { CameraIcon, PlusIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { socialItems } from "@/constants/social";
@@ -45,7 +45,7 @@ export function ProfileHeader({
             </AvatarFallback>
           </Avatar>
           <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border border-background bg-muted text-muted-foreground shadow-sm transition group-hover:bg-background">
-            <Camera size={12} />
+            <CameraIcon size={12} />
           </span>
         </button>
         <div className="flex flex-col items-start">
@@ -98,7 +98,7 @@ export function ProfileHeader({
                     >
                       <item.Icon size={18} className="opacity-50" />
                       <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-background bg-muted text-muted-foreground shadow-sm">
-                        <Plus size={8} />
+                        <PlusIcon size={8} />
                       </span>
                     </button>
                   );
@@ -110,7 +110,7 @@ export function ProfileHeader({
               onClick={() => onEditSocial()}
               title="Edit social icons"
             >
-              <Plus size={16} />
+              <PlusIcon size={16} />
             </Button>
           </div>
         </div>
