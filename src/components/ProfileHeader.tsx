@@ -31,7 +31,7 @@ export function ProfileHeader({
         className,
       )}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex flex-wrap items-start gap-4">
         <button
           type="button"
           onClick={onEditAvatar}
@@ -49,10 +49,10 @@ export function ProfileHeader({
           </span>
         </button>
         <div className="flex flex-col items-start">
-          <Button
+          <button
+            type="button"
             onClick={onEditProfile}
-            variant="link"
-            className="p-0 flex-col gap-0 items-start mb-1.5 h-auto underline-offset-2"
+            className="text-start mb-2 underline-offset-2 hover:underline focus:underline"
             title="Edit title and bio"
           >
             <span className="text-lg font-semibold text-foreground">
@@ -61,7 +61,7 @@ export function ProfileHeader({
             {profile?.bio && (
               <p className="text-sm text-muted-foreground">{profile.bio}</p>
             )}
-          </Button>
+          </button>
           <div className="flex flex-wrap items-center gap-2">
             {hasSocials
               ? profile?.socials

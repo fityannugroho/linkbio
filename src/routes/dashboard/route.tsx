@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
+import { useState } from "react";
 import { toast } from "sonner";
 import { AppSidebar } from "@/components/AppSidebar";
 import { PreviewPanel } from "@/components/PreviewPanel";
@@ -23,8 +24,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { auth } from "@/lib/auth";
 import { authClient } from "@/lib/authClient";
+import { cn } from "@/lib/utils";
 import { getDashboardData } from "@/server/dashboard/links";
 
 const getSession = createServerFn({ method: "GET" }).handler(async () => {
@@ -50,6 +53,7 @@ function DashboardLayout() {
   const router = useRouter();
   const { session } = Route.useRouteContext();
   const { profile, links } = Route.useLoaderData();
+  const [activeView, setActiveView] = useState<"editor" | "preview">("editor");
   const pathname = router.state.location.pathname;
   const showPreview =
     pathname === "/dashboard" || pathname === "/dashboard/design";
@@ -89,10 +93,11 @@ function DashboardLayout() {
           avatar: userAvatar,
         }}
         onLogout={handleLogout}
+        onNavigate={() => setActiveView("editor")}
         viewHref="/"
       />
       <SidebarInset>
-        <header className="sticky top-0 z-50 flex p-2 shrink-0 items-center gap-2 bg-background border-b border-border px-4 transition-[width,height] ease-linear">
+        <header className="sticky top-0 z-50 flex h-14 p-2 shrink-0 items-center gap-2 bg-background border-b border-border px-4 transition-[width,height] ease-linear">
           <SidebarTrigger className="-ml-1" />
           <Breadcrumb>
             <BreadcrumbList>
@@ -107,15 +112,43 @@ function DashboardLayout() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
+          <div className="ml-auto flex items-center gap-2 md:gap-4 lg:hidden">
+            {showPreview && (
+              <Tabs
+                value={activeView}
+                onValueChange={(v) => setActiveView(v as "editor" | "preview")}
+                className="w-full"
+              >
+                <TabsList className="grid w-full grid-cols-2 h-8">
+                  <TabsTrigger value="editor" className="text-xs">
+                    Editor
+                  </TabsTrigger>
+                  <TabsTrigger value="preview" className="text-xs">
+                    Preview
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            )}
+          </div>
         </header>
         <div className="flex flex-1 min-h-0">
-          <main className="flex-1 min-h-0 overflow-y-auto">
+          <main
+            className={cn(
+              "flex-1 min-h-0 overflow-y-auto lg:block",
+              activeView === "editor" ? "block" : "hidden",
+            )}
+          >
             <div className="mx-auto w-full max-w-4xl p-4">
               <Outlet />
             </div>
           </main>
           {showPreview && (
-            <aside className="hidden lg:flex w-90 min-h-0 border-l border-border bg-muted/20">
+            <aside
+              className={cn(
+                "w-full min-h-0 border-l border-border bg-muted/20 lg:flex lg:w-90",
+                activeView === "preview" ? "flex" : "hidden",
+              )}
+            >
               <PreviewPanel profile={profile} links={links} />
             </aside>
           )}

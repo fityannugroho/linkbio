@@ -15,6 +15,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 type NavItem = {
@@ -30,11 +31,21 @@ type NavItem = {
 
 export function NavMain({
   items,
+  onNavigate,
   label = "Platform",
 }: {
   items: NavItem[];
+  onNavigate?: () => void;
   label?: string;
 }) {
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleNavigate = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+    onNavigate?.();
+  };
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
@@ -63,7 +74,7 @@ export function NavMain({
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton asChild>
-                          <Link to={subItem.url}>
+                          <Link to={subItem.url} onClick={handleNavigate}>
                             <span>{subItem.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
@@ -80,7 +91,7 @@ export function NavMain({
                 tooltip={item.title}
                 isActive={item.isActive}
               >
-                <Link to={item.url}>
+                <Link to={item.url} onClick={handleNavigate}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>

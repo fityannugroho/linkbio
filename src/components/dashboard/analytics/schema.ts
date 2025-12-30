@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+ 
+ export const DEFAULT_ANALYTICS_RANGE = "24h" as const;
+
 export const analyticsSearchSchema = z.object({
   range: z
     .enum([

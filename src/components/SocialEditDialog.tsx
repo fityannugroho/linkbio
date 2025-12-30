@@ -1,5 +1,5 @@
 import { ChevronLeft, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -35,6 +35,12 @@ export function SocialEditDialog({
 }: SocialEditDialogProps) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
+  useEffect(() => {
+    if (editingKey) {
+      setIsConfirmingDelete(false);
+    }
+  }, [editingKey]);
+
   if (!editingKey) return null;
 
   const item = socialItems.find((entry) => entry.key === editingKey);
@@ -57,21 +63,21 @@ export function SocialEditDialog({
       open={Boolean(editingKey)}
       onOpenChange={(isOpen) => !isOpen && handleClose()}
     >
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-        <DialogHeader className="p-4 border-b flex flex-row items-center gap-2">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden gap-0">
+        <DialogHeader className="p-4 border-b flex flex-row items-center justify-center relative">
           {isConfirmingDelete && (
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className="h-8 w-8 absolute left-4"
               onClick={() => setIsConfirmingDelete(false)}
             >
               <ChevronLeft size={18} />
             </Button>
           )}
-          <DialogTitle className="flex-1 text-center pr-8">
+          <DialogTitle className="text-center">
             {isConfirmingDelete
-              ? `Edit ${item.label} icon`
+              ? `Remove ${item.label} icon?`
               : `Edit ${item.label}`}
           </DialogTitle>
         </DialogHeader>
@@ -80,8 +86,8 @@ export function SocialEditDialog({
           {isConfirmingDelete ? (
             <div className="space-y-3 pb-2">
               <Button
-                variant="default"
-                className="w-full h-12 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+                variant="destructive"
+                className="w-full h-12 rounded-full font-semibold"
                 onClick={onRemove}
               >
                 Yes, remove
@@ -95,7 +101,13 @@ export function SocialEditDialog({
               </Button>
             </div>
           ) : (
-            <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSave();
+              }}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
                   {inputLabel}
@@ -116,8 +128,8 @@ export function SocialEditDialog({
 
               <div className="space-y-3 pt-2">
                 <Button
+                  type="submit"
                   className="w-full h-12 rounded-full font-semibold"
-                  onClick={onSave}
                   disabled={isSaving}
                 >
                   {isSaving ? "Saving..." : "Save"}
@@ -131,7 +143,7 @@ export function SocialEditDialog({
                   Remove icon
                 </Button>
               </div>
-            </>
+            </form>
           )}
         </div>
       </DialogContent>

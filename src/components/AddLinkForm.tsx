@@ -12,11 +12,18 @@ import { Label } from "@/components/ui/label";
 type AddLinkFormProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: { title: string; url: string }) => Promise<void>;
+  onSubmit: (data: {
+    title: string;
+    url: string;
+    thumbnailUrl?: string;
+  }) => Promise<void>;
 };
 
 export function AddLinkForm({ open, onClose, onSubmit }: AddLinkFormProps) {
-  const [formData, setFormData] = useState({ title: "", url: "" });
+  const [formData, setFormData] = useState<{
+    title: string;
+    url: string;
+  }>({ title: "", url: "" });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -36,7 +43,9 @@ export function AddLinkForm({ open, onClose, onSubmit }: AddLinkFormProps) {
     setError("");
 
     try {
-      await onSubmit(formData);
+      await onSubmit({
+        ...formData,
+      });
       resetForm();
       onClose();
     } catch (err) {

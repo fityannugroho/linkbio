@@ -21,6 +21,7 @@ import { DateRangeFilter } from "@/components/dashboard/analytics/DateRangeFilte
 import {
   type AnalyticsSearch,
   analyticsSearchSchema,
+  DEFAULT_ANALYTICS_RANGE,
 } from "@/components/dashboard/analytics/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
@@ -97,47 +98,29 @@ const getAnalytics = createServerFn({ method: "GET" })
       let startDate: number;
       let endDate: number = Date.now();
 
-      if (data.range === "custom" && data.from && data.to) {
+      const range = data.range || DEFAULT_ANALYTICS_RANGE;
+
+      if (range === "custom" && data.from && data.to) {
         startDate = data.from;
         endDate = data.to;
       } else {
-        switch (data.range) {
-          case "today":
-            startDate = startOfDay(new Date()).getTime();
-            break;
-          case "24h":
-            startDate = subHours(new Date(), 24).getTime();
-            break;
-          case "this_week":
-            startDate = startOfWeek(new Date(), { weekStartsOn: 1 }).getTime();
-            break;
-          case "7d":
-            startDate = subDays(new Date(), 7).getTime();
-            break;
-          case "this_month":
-            startDate = startOfMonth(new Date()).getTime();
-            break;
-          case "30d":
-            startDate = subDays(new Date(), 30).getTime();
-            break;
-          case "90d":
-            startDate = subDays(new Date(), 90).getTime();
-            break;
-          case "this_year":
-            startDate = startOfYear(new Date()).getTime();
-            break;
-          case "6m":
-            startDate = subMonths(new Date(), 6).getTime();
-            break;
-          case "12m":
-            startDate = subMonths(new Date(), 12).getTime();
-            break;
-          case "all":
-            startDate = new Date(0).getTime(); // Beginning of time
-            break;
-          default:
-            startDate = subDays(new Date(), 30).getTime();
-        }
+        const rangeMap: Record<string, () => number> = {
+          today: () => startOfDay(new Date()).getTime(),
+          "24h": () => subHours(new Date(), 24).getTime(),
+          this_week: () =>
+            startOfWeek(new Date(), { weekStartsOn: 1 }).getTime(),
+          "7d": () => subDays(new Date(), 7).getTime(),
+          this_month: () => startOfMonth(new Date()).getTime(),
+          "30d": () => subDays(new Date(), 30).getTime(),
+          "90d": () => subDays(new Date(), 90).getTime(),
+          this_year: () => startOfYear(new Date()).getTime(),
+          "6m": () => subMonths(new Date(), 6).getTime(),
+          "12m": () => subMonths(new Date(), 12).getTime(),
+          all: () => new Date(0).getTime(),
+        };
+
+        const getStartDate = rangeMap[range] || rangeMap["30d"];
+        startDate = getStartDate();
       }
 
       const headers = {

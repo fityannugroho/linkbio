@@ -23,6 +23,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     avatar?: string | null;
   };
   onLogout: () => void;
+  onNavigate?: () => void;
   viewHref?: string;
 };
 
@@ -55,6 +56,7 @@ export function AppSidebar({
   pathname,
   user,
   onLogout,
+  onNavigate,
   viewHref = "/",
   ...props
 }: AppSidebarProps) {
@@ -78,7 +80,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain label="Manage" items={navMain} />
+        <NavMain label="Manage" items={navMain} onNavigate={onNavigate} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} onLogout={onLogout} viewHref={viewHref} />

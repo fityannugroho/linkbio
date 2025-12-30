@@ -50,7 +50,8 @@ export function ProfileDialog({
     onClose();
   };
 
-  const handleSave = async () => {
+  const handleSave = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     const nextErrors: Record<string, string> = {};
     if (!profileForm.displayName.trim()) {
       nextErrors.displayName = "Display name is required.";
@@ -81,52 +82,54 @@ export function ProfileDialog({
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Title and bio</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="displayName">Title</Label>
-            <Input
-              id="displayName"
-              value={profileForm.displayName}
-              onChange={(e) =>
-                setProfileForm((prev) => ({
-                  ...prev,
-                  displayName: e.target.value,
-                }))
-              }
-              placeholder="Your name"
-            />
-            {profileErrors.displayName && (
-              <p className="text-xs text-destructive">
-                {profileErrors.displayName}
-              </p>
-            )}
+        <form onSubmit={handleSave}>
+          <DialogHeader>
+            <DialogTitle>Title and bio</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="displayName">Title</Label>
+              <Input
+                id="displayName"
+                value={profileForm.displayName}
+                onChange={(e) =>
+                  setProfileForm((prev) => ({
+                    ...prev,
+                    displayName: e.target.value,
+                  }))
+                }
+                placeholder="Your name"
+              />
+              {profileErrors.displayName && (
+                <p className="text-xs text-destructive">
+                  {profileErrors.displayName}
+                </p>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="bio">Bio</Label>
+              <Textarea
+                id="bio"
+                value={profileForm.bio}
+                onChange={(e) =>
+                  setProfileForm((prev) => ({ ...prev, bio: e.target.value }))
+                }
+                placeholder="Short bio"
+              />
+              {profileErrors.bio && (
+                <p className="text-xs text-destructive">{profileErrors.bio}</p>
+              )}
+            </div>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              value={profileForm.bio}
-              onChange={(e) =>
-                setProfileForm((prev) => ({ ...prev, bio: e.target.value }))
-              }
-              placeholder="Short bio"
-            />
-            {profileErrors.bio && (
-              <p className="text-xs text-destructive">{profileErrors.bio}</p>
-            )}
+          <div className="flex justify-end gap-2 pt-4">
+            <Button type="button" variant="ghost" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save"}
+            </Button>
           </div>
-        </div>
-        <div className="flex justify-end gap-2 pt-4">
-          <Button type="button" variant="ghost" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? "Saving..." : "Save"}
-          </Button>
-        </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

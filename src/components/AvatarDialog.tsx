@@ -1,5 +1,5 @@
-import { Check, Trash2, Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { Check, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Area } from "react-easy-crop";
 import Cropper from "react-easy-crop";
 import { toast } from "sonner";
@@ -57,22 +57,39 @@ export function AvatarDialog({
   const [cropAreaPixels, setCropAreaPixels] = useState<Area | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [confirmConfig, setConfirmConfig] = useState<{
+    title: string;
+    description: string;
+    onConfirm: () => void;
+    variant?: "default" | "destructive";
+    confirmLabel?: string;
+  } | null>(null);
   const currentAvatarUrl = profile?.avatarUrl || "";
 
-  const isCropping = Boolean(cropImageSrc);
-
-  const resetCropState = () => {
+  const resetCropState = useCallback(() => {
     setPendingFile(null);
     setCropImageSrc(null);
     setCrop({ x: 0, y: 0 });
     setZoom(1);
     setCropAreaPixels(null);
-  };
+  }, []);
 
-  const handleClose = () => {
+  // Reset all internal states when the dialog is closed
+  useEffect(() => {
+    if (!open) {
+      resetCropState();
+      setConfirmConfig(null);
+      setIsUploading(false);
+      setIsSaving(false);
+    }
+  }, [open, resetCropState]);
+
+  const isCropping = Boolean(cropImageSrc);
+
+  const handleClose = useCallback(() => {
     resetCropState();
     onClose();
-  };
+  }, [onClose, resetCropState]);
 
   async function uploadAvatar(file: Blob) {
     const contentType = file.type;
@@ -185,41 +202,62 @@ export function AvatarDialog({
   }
 
   async function handleClearAvatar() {
-    if (!confirm("Remove your current avatar?")) return;
-    setIsSaving(true);
-    await clearProfileAvatarAction({ data: { confirmed: true } })
-      .then(() => {
-        toast.success("Avatar removed.");
-        onSuccess();
-      })
-      .catch(() => {
-        toast.error("Failed to remove avatar.");
-      })
-      .finally(() => {
-        setIsSaving(false);
-      });
+    setConfirmConfig({
+      title: "Remove avatar",
+      description:
+        "Are you sure you want to remove your current profile photo? This will revert to your name initials.",
+      variant: "destructive",
+      confirmLabel: "Remove",
+      onConfirm: async () => {
+        setIsSaving(true);
+        await clearProfileAvatarAction({ data: { confirmed: true } })
+          .then(() => {
+            toast.success("Avatar removed.");
+            onSuccess();
+          })
+          .catch(() => {
+            toast.error("Failed to remove avatar.");
+          })
+          .finally(() => {
+            setIsSaving(false);
+            setConfirmConfig(null);
+          });
+      },
+    });
   }
 
   async function handleDeleteAvatar(avatarId: number) {
-    if (!confirm("Delete this avatar?")) return;
-    setIsSaving(true);
-    await deleteAvatarAction({ data: { avatarId } })
-      .then(() => {
-        toast.success("Avatar deleted.");
-        onSuccess();
-      })
-      .catch(() => {
-        toast.error("Failed to delete avatar.");
-      })
-      .finally(() => {
-        setIsSaving(false);
-      });
+    setConfirmConfig({
+      title: "Delete avatar",
+      description:
+        "Are you sure you want to delete this avatar from your library? This action cannot be undone.",
+      variant: "destructive",
+      confirmLabel: "Delete",
+      onConfirm: async () => {
+        setIsSaving(true);
+        await deleteAvatarAction({ data: { avatarId } })
+          .then(() => {
+            toast.success("Avatar deleted.");
+            onSuccess();
+          })
+          .catch(() => {
+            toast.error("Failed to delete avatar.");
+          })
+          .finally(() => {
+            setIsSaving(false);
+            setConfirmConfig(null);
+          });
+      },
+    });
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
+    <Dialog
+      open={open && !confirmConfig}
+      onOpenChange={(isOpen) => !isOpen && handleClose()}
+    >
+      <DialogContent className="sm:max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+        <DialogHeader className="">
           <DialogTitle>
             {isCropping ? "Crop avatar" : "Profile avatar"}
           </DialogTitle>
@@ -229,182 +267,169 @@ export function AvatarDialog({
               : "Upload a new avatar or reuse one you already uploaded."}
           </DialogDescription>
         </DialogHeader>
-        {isCropping ? (
-          <div className="space-y-4">
-            <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border bg-muted/60">
-              {cropImageSrc && (
-                <Cropper
-                  image={cropImageSrc}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1}
-                  cropShape="rect"
-                  minZoom={1}
-                  maxZoom={3}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                  restrictPosition
-                  zoomWithScroll
-                />
-              )}
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>Zoom</span>
-                <span>{zoom.toFixed(1)}x</span>
+
+        <div className="flex-1 overflow-y-auto">
+          {isCropping ? (
+            <div className="space-y-4 py-4">
+              <div className="relative h-64 w-full overflow-hidden rounded-xl border border-border bg-muted/60">
+                {cropImageSrc && (
+                  <Cropper
+                    image={cropImageSrc}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={1}
+                    cropShape="rect"
+                    minZoom={1}
+                    maxZoom={3}
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                    restrictPosition
+                    zoomWithScroll
+                  />
+                )}
               </div>
-              <input
-                type="range"
-                min={1}
-                max={3}
-                step={0.1}
-                value={zoom}
-                onChange={(event) => setZoom(Number(event.target.value))}
-                className="w-full accent-primary"
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={resetCropState}
-                disabled={isUploading}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="button"
-                onClick={handleCropSave}
-                disabled={isUploading || !cropAreaPixels}
-              >
-                {isUploading ? "Uploading..." : "Save crop"}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-5">
-            <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-muted/40 p-3">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-14 w-14 border">
-                  <AvatarImage src={currentAvatarUrl} alt="Current avatar" />
-                  <AvatarFallback>
-                    {profile?.displayName?.slice(0, 2).toUpperCase() || "LT"}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium">Current avatar</p>
-                  <p className="text-xs text-muted-foreground">
-                    {currentAvatarUrl
-                      ? "Shown on your public profile."
-                      : "No avatar set."}
-                  </p>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Zoom</span>
+                  <span>{zoom.toFixed(1)}x</span>
                 </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  value={zoom}
+                  onChange={(event) => setZoom(Number(event.target.value))}
+                  className="w-full accent-primary"
+                />
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploading}
-                >
-                  {isUploading ? "Uploading..." : "Upload"}
-                </Button>
+              <div className="flex justify-end gap-2 pt-2">
                 <Button
                   type="button"
                   variant="ghost"
-                  onClick={handleClearAvatar}
-                  disabled={!currentAvatarUrl || isSaving}
+                  onClick={resetCropState}
+                  disabled={isUploading}
                 >
-                  Remove
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleCropSave}
+                  disabled={isUploading || !cropAreaPixels}
+                >
+                  {isUploading ? "Uploading..." : "Save crop"}
                 </Button>
               </div>
             </div>
+          ) : (
+            <div className="space-y-6 py-4">
+              <div className="flex flex-col gap-4 rounded-lg border border-border bg-muted/40 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-14 w-14 shrink-0 border">
+                    <AvatarImage src={currentAvatarUrl} alt="Current avatar" />
+                    <AvatarFallback className="text-muted-foreground">
+                      {profile?.displayName?.slice(0, 2).toUpperCase() || "LT"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-medium">Current avatar</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {currentAvatarUrl
+                        ? "Shown on your public profile."
+                        : "No avatar set."}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="flex-1 sm:flex-none"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                  >
+                    {isUploading ? "Uploading..." : "Upload"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="flex-1 sm:flex-none"
+                    onClick={handleClearAvatar}
+                    disabled={!currentAvatarUrl || isSaving}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </div>
 
-            <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold">Avatar library</p>
                 <p className="text-xs text-muted-foreground">
                   Tap an avatar to make it active.
                 </p>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-              >
-                <Upload size={14} className="mr-2" />
-                Add avatar
-              </Button>
-            </div>
 
-            {avatars.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border/80 p-6 text-center text-sm text-muted-foreground">
-                Upload your first avatar to build your library.
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {avatars.map((avatar) => {
-                  const isCurrent = avatar.url === currentAvatarUrl;
-                  return (
-                    <div
-                      key={avatar.id}
-                      className={`group relative overflow-hidden rounded-xl border bg-card ${
-                        isCurrent
-                          ? "border-primary/70 ring-2 ring-primary/40"
-                          : "border-border"
-                      }`}
-                    >
-                      <button
-                        type="button"
-                        className="block w-full"
-                        onClick={() => handleSetCurrent(avatar.id)}
-                        disabled={isSaving}
-                      >
-                        <div className="relative aspect-square">
-                          <img
-                            src={avatar.url}
-                            alt="Avatar"
-                            className="h-full w-full object-cover"
-                          />
-                          {isCurrent && (
-                            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-background/90 px-2 py-1 text-xs font-medium text-foreground shadow">
-                              <Check size={12} />
-                              Current
-                            </span>
-                          )}
+              <div className="relative">
+                {avatars.length === 0 ? (
+                  <div className="rounded-lg border border-dashed border-border/80 p-6 text-center text-sm text-muted-foreground">
+                    Upload your first avatar to build your library.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {avatars.map((avatar) => {
+                      const isCurrent = avatar.url === currentAvatarUrl;
+                      return (
+                        <div
+                          key={avatar.id}
+                          className={`group relative overflow-hidden rounded-xl border bg-card transition-all ${
+                            isCurrent
+                              ? "border-primary/70 ring-2 ring-primary/40"
+                              : "border-border hover:border-border/80"
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="block w-full transition-opacity hover:opacity-90"
+                            onClick={() => handleSetCurrent(avatar.id)}
+                            disabled={isSaving}
+                          >
+                            <div className="relative aspect-square">
+                              <img
+                                src={avatar.url}
+                                alt="Avatar"
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
+                          </button>
+                          <div className="flex h-11 items-center justify-end border-t border-border px-3">
+                            {isCurrent ? (
+                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <Check size={16} strokeWidth={3} />
+                              </div>
+                            ) : (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                                onClick={() => handleDeleteAvatar(avatar.id)}
+                                disabled={isSaving}
+                                title="Delete avatar"
+                              >
+                                <Trash2 size={14} />
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                      </button>
-                      <div className="flex items-center justify-between gap-2 border-t border-border px-2 py-2">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleSetCurrent(avatar.id)}
-                          disabled={isSaving}
-                        >
-                          {isCurrent ? "Selected" : "Use"}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDeleteAvatar(avatar.id)}
-                          disabled={isSaving}
-                          title="Delete avatar"
-                        >
-                          <Trash2 size={14} />
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
         <input
           ref={fileInputRef}
@@ -414,6 +439,35 @@ export function AvatarDialog({
           className="hidden"
         />
       </DialogContent>
+      <Dialog
+        open={!!confirmConfig}
+        onOpenChange={(isOpen) => !isOpen && setConfirmConfig(null)}
+      >
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{confirmConfig?.title}</DialogTitle>
+            <DialogDescription>{confirmConfig?.description}</DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-3 pt-2">
+            <Button
+              variant="ghost"
+              onClick={() => setConfirmConfig(null)}
+              disabled={isSaving}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant={confirmConfig?.variant || "default"}
+              onClick={confirmConfig?.onConfirm}
+              disabled={isSaving}
+            >
+              {isSaving
+                ? "Processing..."
+                : confirmConfig?.confirmLabel || "Confirm"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 }
