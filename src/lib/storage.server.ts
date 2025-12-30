@@ -88,7 +88,7 @@ export async function getStorageObject(key: string) {
     return client.send(command);
   }
 
-  const filePath = path.join(process.cwd(), "public", key);
+  const filePath = path.join(process.cwd(), "public", "media", key);
   const body = await readFile(filePath);
   // Mock S3-like response for local files
   return {
@@ -113,7 +113,7 @@ export async function uploadFile(
     return client.send(command);
   }
 
-  const filePath = path.join(process.cwd(), "public", key);
+  const filePath = path.join(process.cwd(), "public", "media", key);
   await mkdir(path.dirname(filePath), { recursive: true });
   await writeFile(filePath, buffer);
 }
@@ -128,7 +128,7 @@ export async function deleteFile(key: string) {
     return client.send(command);
   }
 
-  const filePath = path.join(process.cwd(), "public", key);
+  const filePath = path.join(process.cwd(), "public", "media", key);
   await rm(filePath, { force: true });
 }
 
