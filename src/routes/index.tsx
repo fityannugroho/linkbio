@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
 import { PublicProfileView } from "@/components/PublicProfileView";
@@ -85,11 +85,11 @@ function App() {
           <div className="mt-8 flex flex-col gap-3">
             {!userExists ? (
               <Button asChild className="w-full">
-                <a href="/setup">🚀 Create Admin Account</a>
+                <Link to="/setup">🚀 Create Admin Account</Link>
               </Button>
             ) : (
               <Button asChild className="w-full">
-                <a href="/login">Login to Dashboard</a>
+                <Link to="/login">Login to Dashboard</Link>
               </Button>
             )}
           </div>

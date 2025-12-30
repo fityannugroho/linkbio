@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { BarChart, Edit, GripVertical, Plus } from "lucide-react";
 import type { DragEvent } from "react";
 import { useEffect, useState } from "react";
@@ -337,10 +338,10 @@ export function SocialDialog({
               className="flex-1 h-12 rounded-full font-bold gap-2 border-2 hover:bg-muted"
               asChild
             >
-              <a href="/dashboard/analytics">
+              <Link to="/dashboard/analytics">
                 <BarChart size={18} />
                 See insights
-              </a>
+              </Link>
             </Button>
             <Button
               onClick={() => setIsAddOpen(true)}

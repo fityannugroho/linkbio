@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "@tanstack/react-router";
 import {
   ChevronsUpDown,
   ExternalLink,
@@ -9,7 +10,6 @@ import {
   Sun,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -105,10 +105,10 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <a href={viewHref} target="_blank" rel="noreferrer">
+                <Link to={viewHref} target="_blank" rel="noreferrer">
                   <ExternalLink />
                   View live page
-                </a>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
