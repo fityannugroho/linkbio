@@ -206,14 +206,14 @@ export function SocialDialog({
         open={open && !editingKey && !isAddOpen}
         onOpenChange={(isOpen) => !isOpen && onClose()}
       >
-        <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-0 overflow-hidden gap-0">
           <DialogHeader className="p-6 pb-2">
             <DialogTitle className="text-center font-bold text-lg">
               Social icons
             </DialogTitle>
           </DialogHeader>
 
-          <div className="flex-1 overflow-y-auto px-6 py-2 space-y-8">
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-8">
             <div className="space-y-4">
               <div className="space-y-1">
                 <h4 className="font-bold text-sm">
@@ -331,7 +331,7 @@ export function SocialDialog({
             </div>
           </div>
 
-          <div className="p-6 border-t bg-muted/20 flex items-center gap-3">
+          <div className="px-6 py-2 border-t bg-muted/20 flex items-center gap-3">
             <Button
               variant="outline"
               className="flex-1 h-12 rounded-full font-bold gap-2 border-2 hover:bg-muted"

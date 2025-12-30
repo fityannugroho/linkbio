@@ -63,7 +63,7 @@ export function SocialEditDialog({
       open={Boolean(editingKey)}
       onOpenChange={(isOpen) => !isOpen && handleClose()}
     >
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden gap-0">
         <DialogHeader className="p-4 border-b flex flex-row items-center gap-2">
           {isConfirmingDelete && (
             <Button
@@ -106,7 +106,7 @@ export function SocialEditDialog({
                 e.preventDefault();
                 onSave();
               }}
-              className="space-y-6"
+              className="space-y-4"
             >
               <div className="space-y-2">
                 <Label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
