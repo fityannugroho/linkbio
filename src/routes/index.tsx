@@ -50,16 +50,15 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/")({
-  head: () => {
-    return {
-      meta: [
-        {
-          name: "description",
-          content: "Links and social media profile",
-        },
-      ],
-    };
-  },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: loaderData?.profile
+          ? `${loaderData.profile.displayName} | LinkBio`
+          : "LinkBio",
+      },
+    ],
+  }),
   component: App,
   loader: async () => await getPublicProfile(),
 });

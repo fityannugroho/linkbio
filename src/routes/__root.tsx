@@ -19,11 +19,21 @@ export const Route = createRootRoute({
       {
         title: "LinkBio",
       },
+      {
+        name: "description",
+        content:
+          "Manage your links and social media handles and put them in your bio.",
+      },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "icon",
+        href: "/logo64.png",
+        type: "image/png",
       },
     ],
   }),

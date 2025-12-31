@@ -71,15 +71,29 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="justify-center">
+      <SidebarHeader className="h-14 flex items-center justify-center">
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2">
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-8 shrink-0 items-center justify-center rounded-lg">
-              <LayoutDashboardIcon className="size-4" />
+          <SidebarMenuItem className="flex w-full items-center justify-center gap-2">
+            <div className="relative size-8 group-data-[collapsible=icon]:block hidden">
+              <img
+                alt="LinkBio"
+                className="absolute inset-0 size-full object-contain"
+                src="/logo192.png"
+              />
             </div>
-            <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-              <span className="truncate font-semibold">LinkBio</span>
+            <div className="relative h-8 group-data-[collapsible=icon]:hidden">
+              <img
+                alt="LinkBio"
+                className="h-full w-auto object-contain dark:opacity-0 transition-opacity duration-200"
+                src="/logo-full.png"
+              />
+              <img
+                alt="LinkBio"
+                className="absolute inset-0 h-full w-auto object-contain opacity-0 dark:opacity-100 transition-opacity duration-200"
+                src="/logo-full-light.png"
+              />
             </div>
+            <span className="sr-only">LinkBio</span>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
