@@ -2,6 +2,8 @@
 
 A Linktree-like service built with modern web technologies. Create and manage your personal link page with analytics, customizable designs, and social media integration.
 
+[![logo](public/opengraph-image.png)](https://link.fityan.tech)
+
 ## Tech Stack
 
 - **Framework**: TanStack Start (SSR) with React 19

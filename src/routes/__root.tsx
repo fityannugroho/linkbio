@@ -60,6 +60,10 @@ export const Route = createRootRoute({
         content: "LinkBio",
       },
       {
+        property: "og:image",
+        content: "/opengraph-image.png",
+      },
+      {
         property: "twitter:card",
         content: "summary_large_image",
       },
@@ -71,6 +75,10 @@ export const Route = createRootRoute({
         property: "twitter:description",
         content:
           "Create your personalized link page. Share all your links and social media handles in one place.",
+      },
+      {
+        property: "twitter:image",
+        content: "/opengraph-image.png",
       },
     ],
     links: [

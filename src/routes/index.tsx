@@ -52,10 +52,12 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
 export const Route = createFileRoute("/")({
   head: ({ loaderData }) => {
     const profile = loaderData?.profile;
-    const title = profile ? `${profile.displayName} | LinkBio` : "LinkBio";
-    const description =
-      profile?.bio || "Check out my links and social media profiles!";
-    const ogImage = profile?.avatarUrl || "/logo512.png";
+
+    if (!profile) {
+      return { meta: [] };
+    }
+
+    const title = `${profile.displayName} | LinkBio`;
 
     return {
       meta: [
@@ -63,44 +65,16 @@ export const Route = createFileRoute("/")({
           title,
         },
         {
-          name: "description",
-          content: description,
-        },
-        {
-          property: "og:title",
+          name: "og:title",
           content: title,
         },
         {
-          property: "og:description",
-          content: description,
-        },
-        {
-          property: "og:image",
-          content: ogImage,
-        },
-        {
-          property: "og:type",
-          content: "profile",
-        },
-        {
-          property: "profile:first_name",
-          content: profile?.displayName || "",
-        },
-        {
-          property: "twitter:card",
+          name: "twitter:card",
           content: "summary_large_image",
         },
         {
-          property: "twitter:title",
+          name: "twitter:title",
           content: title,
-        },
-        {
-          property: "twitter:description",
-          content: description,
-        },
-        {
-          property: "twitter:image",
-          content: ogImage,
         },
       ],
     };
