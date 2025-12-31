@@ -58,7 +58,7 @@ pnpm drizzle-kit migrate   # Run migrations
 
 ## Merge/Pull Request Guidelines
 
-- FOLLOW THE PR TEMPLATE provided in the repository, or PR template in `.github` repository
+- FOLLOW THE PR TEMPLATE provided in the repository, or in user's `.github` repository
 - Write descriptive title and summaries BASED ON THE ACTUAL CHANGES made
 - WRITE IN ENGLISH only
 - DO NOT INCLUDE lists of commit logs or changed files in PR description, unless specifically requested
