@@ -81,7 +81,7 @@ export function ProfileHeader({
                         className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-muted transition-colors"
                         title={`Edit ${item.label}`}
                       >
-                        <item.Icon size={18} />
+                        <item.Icon className="h-4.5 w-4.5" />
                       </button>
                     );
                   })
@@ -96,7 +96,7 @@ export function ProfileHeader({
                       className="relative flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-border text-muted-foreground hover:bg-muted transition-colors"
                       title={`Add ${item.label}`}
                     >
-                      <item.Icon size={18} className="opacity-50" />
+                      <item.Icon className="h-4.5 w-4.5 opacity-50" />
                       <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-background bg-muted text-muted-foreground shadow-sm">
                         <PlusIcon size={8} />
                       </span>

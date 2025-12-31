@@ -262,7 +262,7 @@ export function SocialDialog({
                               />
                             )}
                             <div className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground shrink-0 bg-background">
-                              <item.Icon size={20} />
+                              <item.Icon className="h-5 w-5" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <Label className="text-sm font-bold">
