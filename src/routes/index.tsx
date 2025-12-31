@@ -50,12 +50,31 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/")({
-  head: () => {
+  head: ({ loaderData }) => {
+    const profile = loaderData?.profile;
+
+    if (!profile) {
+      return { meta: [] };
+    }
+
+    const title = `${profile.displayName} | LinkBio`;
+
     return {
       meta: [
         {
-          name: "description",
-          content: "Links and social media profile",
+          title,
+        },
+        {
+          name: "og:title",
+          content: title,
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          name: "twitter:title",
+          content: title,
         },
       ],
     };

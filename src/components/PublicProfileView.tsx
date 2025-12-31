@@ -1,4 +1,3 @@
-import { Link as RouterLink } from "@tanstack/react-router";
 import { SocialIcons } from "@/components/SocialIcons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUmami } from "@/lib/umami";
@@ -161,10 +160,19 @@ export function PublicProfileView({
       )}
 
       {showFooter && (
-        <footer className="mt-auto pt-8 pb-4 text-xs opacity-40">
-          <RouterLink to="/" className="hover:underline">
-            LinkBio
-          </RouterLink>
+        <footer className="mt-auto pt-8 pb-4 text-xs">
+          <a
+            href="https://github.com/fityannugroho/linkbio"
+            className="transition-opacity"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src="/logo-full-light.png"
+              alt="LinkBio"
+              className="h-6 w-auto"
+            />
+          </a>
         </footer>
       )}
     </div>

@@ -47,6 +47,9 @@ export const Route = createFileRoute("/dashboard")({
   },
   loader: async () => await getDashboardData(),
   component: DashboardLayout,
+  head: () => ({
+    meta: [{ title: "Dashboard | LinkBio" }],
+  }),
 });
 
 function DashboardLayout() {
