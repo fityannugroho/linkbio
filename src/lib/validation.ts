@@ -1,11 +1,6 @@
-export type SocialPlatform =
-  | "instagram"
-  | "twitter"
-  | "github"
-  | "linkedin"
-  | "youtube"
-  | "tiktok"
-  | "email";
+import type { SocialPlatform } from "@/constants/social";
+import { socialItemByKey } from "@/constants/social";
+export type { SocialPlatform };
 
 const stripWww = (hostname: string) =>
   hostname.toLowerCase().replace(/^www\./, "");
@@ -20,6 +15,19 @@ export const isValidHttpUrl = (value: string) => {
   }
 };
 
+const extractHostnamesFromBaseUrl = (baseUrl: string): string[] => {
+  if (baseUrl.startsWith("mailto:")) return [""];
+  try {
+    const url = new URL(baseUrl);
+    const hostname = stripWww(url.hostname);
+    if (hostname === "twitter.com") return ["twitter.com", "x.com"];
+    if (hostname === "youtube.com") return ["youtube.com", "youtu.be"];
+    return [hostname];
+  } catch {
+    return [];
+  }
+};
+
 export const isValidSocialUrl = (platform: SocialPlatform, value: string) => {
   if (platform === "email") {
     return value.includes("@");
@@ -27,22 +35,10 @@ export const isValidSocialUrl = (platform: SocialPlatform, value: string) => {
 
   if (!isValidHttpUrl(value)) return false;
   const hostname = stripWww(new URL(value).hostname);
-  switch (platform) {
-    case "instagram":
-      return hostname === "instagram.com";
-    case "twitter":
-      return hostname === "twitter.com" || hostname === "x.com";
-    case "github":
-      return hostname === "github.com";
-    case "linkedin":
-      return hostname === "linkedin.com";
-    case "youtube":
-      return hostname === "youtube.com" || hostname === "youtu.be";
-    case "tiktok":
-      return hostname === "tiktok.com";
-    default:
-      return false;
-  }
+  const item = socialItemByKey[platform];
+  if (!item) return false;
+  const validHostnames = extractHostnamesFromBaseUrl(item.baseUrl);
+  return validHostnames.includes(hostname);
 };
 
 export const isEmptyOrValidUrl = (value: string) =>

@@ -1,4 +1,4 @@
-import { socialItems } from "@/constants/social";
+import { socialItemByKey } from "@/constants/social";
 import { buildSocialUrl } from "@/lib/social";
 import { getUmami } from "@/lib/umami";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ export function SocialIcons({
   return (
     <div className={cn("flex flex-wrap justify-center gap-4", className)}>
       {visibleSocials.map((social) => {
-        const item = socialItems.find((i) => i.key === social.platform);
+        const item = socialItemByKey[social.platform];
         if (!item) return null;
 
         const Icon = item.Icon;

@@ -13,6 +13,10 @@ const socialLabelByKey = Object.fromEntries(
   socialItems.map((item) => [item.key, item.label]),
 );
 
+const socialBaseUrlByKey = Object.fromEntries(
+  socialItems.map((item) => [item.key, item.baseUrl]),
+);
+
 export const getSocialLabel = (key: SocialPlatform) =>
   socialLabelByKey[key] || key;
 
@@ -52,35 +56,10 @@ export const buildSocialPayload = (form: SocialForm): ProfileSocial[] => {
   }));
 };
 
-export const buildSocialFields = (
-  socials?: ProfileSocial[] | null,
-): SocialFields =>
-  Object.fromEntries(
-    socialItems.map((item) => [
-      item.key,
-      socials?.find((entry) => entry.platform === item.key)?.value || "",
-    ]),
-  ) as SocialFields;
-
-export const getSocialLinksFromFields = (fields: SocialFields) =>
-  Object.fromEntries(
-    socialItems.map((item) => [item.key, fields[item.key]]),
-  ) as Record<string, string>;
-
-const socialBaseUrl: Record<SocialPlatform, string> = {
-  instagram: "https://instagram.com/",
-  twitter: "https://twitter.com/",
-  github: "https://github.com/",
-  linkedin: "https://linkedin.com/in/",
-  youtube: "https://youtube.com/@",
-  tiktok: "https://www.tiktok.com/@",
-  email: "mailto:",
-};
-
 export const buildSocialUrl = (platform: SocialPlatform, value: string) => {
   const trimmed = value.trim();
   if (!trimmed) return "";
   if (isValidHttpUrl(trimmed)) return trimmed;
   const normalized = trimmed.replace(/^@/, "");
-  return `${socialBaseUrl[platform]}${encodeURIComponent(normalized)}`;
+  return `${socialBaseUrlByKey[platform]}${encodeURIComponent(normalized)}`;
 };

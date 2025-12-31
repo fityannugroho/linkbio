@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { socialItems } from "@/constants/social";
+import { socialItemByKey } from "@/constants/social";
 import type { SocialPlatform } from "@/lib/validation";
 
 type SocialEditDialogProps = {
@@ -43,7 +43,7 @@ export function SocialEditDialog({
 
   if (!editingKey) return null;
 
-  const item = socialItems.find((entry) => entry.key === editingKey);
+  const item = socialItemByKey[editingKey];
   if (!item) return null;
 
   const inputLabel =

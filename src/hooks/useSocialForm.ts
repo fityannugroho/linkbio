@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { socialItems } from "@/constants/social";
+import { socialItemByKey } from "@/constants/social";
 import {
   buildSocialForm,
   buildSocialPayload,
@@ -29,7 +29,7 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
 
   const updateSocialUrl = (key: SocialPlatform, value: string) => {
     if (value && !isValidSocialValue(key, value)) {
-      const item = socialItems.find((i) => i.key === key);
+      const item = socialItemByKey[key];
       const inputType = item?.inputType || "both";
       const errorMsg =
         inputType === "username"
@@ -64,7 +64,7 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
     const errors: Record<string, string> = {};
 
     for (const key of getInvalidSocialValues(socialPayload)) {
-      const item = socialItems.find((i) => i.key === key);
+      const item = socialItemByKey[key];
       const inputType = item?.inputType || "both";
       const label = getSocialLabel(key);
       errors[key] =

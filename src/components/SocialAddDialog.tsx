@@ -62,7 +62,7 @@ export function SocialAddDialog({
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full border border-input text-foreground bg-background">
-                    <item.Icon size={20} />
+                    <item.Icon width={20} height={20} />
                   </div>
                   <span className="font-medium text-sm">{item.label}</span>
                 </div>
