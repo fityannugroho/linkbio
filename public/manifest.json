@@ -1,6 +1,8 @@
 {
   "short_name": "LinkBio",
-  "name": "LinkBio",
+  "name": "LinkBio - Share all your links in one place",
+  "description": "Create your personalized link page and share all your links and social media handles in one place",
+  "categories": ["utilities", "social"],
   "icons": [
     {
       "src": "logo64.png",
@@ -20,6 +22,9 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "scope": "/",
+  "lang": "en"
 }

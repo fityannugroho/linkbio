@@ -50,15 +50,61 @@ const getPublicProfile = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/")({
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData?.profile
-          ? `${loaderData.profile.displayName} | LinkBio`
-          : "LinkBio",
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const profile = loaderData?.profile;
+    const title = profile ? `${profile.displayName} | LinkBio` : "LinkBio";
+    const description =
+      profile?.bio || "Check out my links and social media profiles!";
+    const ogImage = profile?.avatarUrl || "/logo512.png";
+
+    return {
+      meta: [
+        {
+          title,
+        },
+        {
+          name: "description",
+          content: description,
+        },
+        {
+          property: "og:title",
+          content: title,
+        },
+        {
+          property: "og:description",
+          content: description,
+        },
+        {
+          property: "og:image",
+          content: ogImage,
+        },
+        {
+          property: "og:type",
+          content: "profile",
+        },
+        {
+          property: "profile:first_name",
+          content: profile?.displayName || "",
+        },
+        {
+          property: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          property: "twitter:title",
+          content: title,
+        },
+        {
+          property: "twitter:description",
+          content: description,
+        },
+        {
+          property: "twitter:image",
+          content: ogImage,
+        },
+      ],
+    };
+  },
   component: App,
   loader: async () => await getPublicProfile(),
 });

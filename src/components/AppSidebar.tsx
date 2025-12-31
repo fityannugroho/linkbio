@@ -81,7 +81,7 @@ export function AppSidebar({
                 src="/logo192.png"
               />
             </div>
-            <div className="relative h-8 group-data-[collapsible=icon]:hidden">
+            <div className="relative h-8 group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:dark:hidden">
               <img
                 alt="LinkBio"
                 className="h-full w-auto object-contain dark:opacity-0 transition-opacity duration-200"
