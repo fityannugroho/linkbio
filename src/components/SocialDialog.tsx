@@ -20,7 +20,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { socialItems } from "@/constants/social";
+import { socialItemByKey } from "@/constants/social";
 import { useSocialForm } from "@/hooks/useSocialForm";
 import type { SocialPlatform } from "@/lib/validation";
 import {
@@ -234,10 +234,10 @@ export function SocialDialog({
               {orderedKeys.length > 0 && (
                 <ul className="space-y-3">
                   {orderedKeys.map((key) => {
-                    const item = socialItems.find((i) => i.key === key);
+                    const item = socialItemByKey[key];
                     if (!item) return null;
 
-                    const value = socialManager.socialForm[item.key];
+                    const value = socialManager.socialForm[key];
                     const canReorder = orderedKeys.length > 1;
 
                     return (
@@ -245,11 +245,9 @@ export function SocialDialog({
                         key={item.key}
                         draggable={canReorder}
                         onDragStart={(e) =>
-                          canReorder && handleDragStart(e, item.key)
+                          canReorder && handleDragStart(e, key)
                         }
-                        onDragOver={(e) =>
-                          canReorder && handleDragOver(e, item.key)
-                        }
+                        onDragOver={(e) => canReorder && handleDragOver(e, key)}
                         onDragEnd={handleDragEnd}
                         className="space-y-1 list-none group"
                       >
@@ -273,7 +271,7 @@ export function SocialDialog({
                           <div className="flex items-center gap-2 shrink-0">
                             <Switch
                               checked={value?.isVisible ?? true}
-                              onCheckedChange={() => toggleVisibility(item.key)}
+                              onCheckedChange={() => toggleVisibility(key)}
                               title={
                                 value?.isVisible
                                   ? "Hide from profile"
@@ -283,7 +281,7 @@ export function SocialDialog({
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => openEditor(item.key)}
+                              onClick={() => openEditor(key)}
                               className="h-9 w-9 rounded-full"
                             >
                               <EditIcon size={16} />

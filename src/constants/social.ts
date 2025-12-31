@@ -4,23 +4,24 @@ import { InstagramIcon } from "@/components/icons/Instagram";
 import { TikTokIcon } from "@/components/icons/TikTok";
 import { TwitterIcon } from "@/components/icons/Twitter";
 import { YouTubeIcon } from "@/components/icons/YouTube";
-import type { SocialPlatform } from "@/lib/validation";
 
 export type SocialItem = {
-  key: SocialPlatform;
+  key: string;
   label: string;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   placeholder: string;
-  inputType: "username" | "url" | "both"; // username: @handle, url: full URL, both: either
+  inputType: "username" | "url" | "both";
+  baseUrl: string;
 };
 
-export const socialItems: SocialItem[] = [
+export const socialItems = [
   {
     key: "twitter",
     label: "X (formerly Twitter)",
     Icon: TwitterIcon,
     placeholder: "@handle",
     inputType: "username",
+    baseUrl: "https://twitter.com/",
   },
   {
     key: "instagram",
@@ -28,6 +29,7 @@ export const socialItems: SocialItem[] = [
     Icon: InstagramIcon,
     placeholder: "@handle",
     inputType: "username",
+    baseUrl: "https://instagram.com/",
   },
   {
     key: "github",
@@ -35,6 +37,7 @@ export const socialItems: SocialItem[] = [
     Icon: GitHubIcon,
     placeholder: "username",
     inputType: "username",
+    baseUrl: "https://github.com/",
   },
   {
     key: "linkedin",
@@ -42,6 +45,7 @@ export const socialItems: SocialItem[] = [
     Icon: LinkedinIcon,
     placeholder: "username or full URL",
     inputType: "both",
+    baseUrl: "https://linkedin.com/in/",
   },
   {
     key: "youtube",
@@ -49,6 +53,7 @@ export const socialItems: SocialItem[] = [
     Icon: YouTubeIcon,
     placeholder: "@handle or full URL",
     inputType: "both",
+    baseUrl: "https://youtube.com/@",
   },
   {
     key: "tiktok",
@@ -56,6 +61,7 @@ export const socialItems: SocialItem[] = [
     Icon: TikTokIcon,
     placeholder: "@handle",
     inputType: "username",
+    baseUrl: "https://www.tiktok.com/@",
   },
   {
     key: "email",
@@ -63,7 +69,12 @@ export const socialItems: SocialItem[] = [
     Icon: MailIcon,
     placeholder: "email address",
     inputType: "url",
+    baseUrl: "mailto:",
   },
-];
+] as const satisfies SocialItem[];
 
-export const defaultSocialOrder = socialItems.map((item) => item.key);
+export type SocialPlatform = (typeof socialItems)[number]["key"];
+
+export const socialItemByKey = Object.fromEntries(
+  socialItems.map((item) => [item.key, item]),
+) as Record<SocialPlatform, SocialItem>;

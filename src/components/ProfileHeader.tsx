@@ -1,7 +1,7 @@
 import { CameraIcon, PlusIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { socialItems } from "@/constants/social";
+import { socialItemByKey, socialItems } from "@/constants/social";
 import { cn } from "@/lib/utils";
 import type { SocialPlatform } from "@/lib/validation";
 
@@ -68,16 +68,14 @@ export function ProfileHeader({
                   ?.slice()
                   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
                   .map((social) => {
-                    const item = socialItems.find(
-                      (i) => i.key === social.platform,
-                    );
+                    const item = socialItemByKey[social.platform];
                     if (!item || !social.value) return null;
 
                     return (
                       <button
-                        key={item.key}
+                        key={social.platform}
                         type="button"
-                        onClick={() => onEditSocial(item.key)}
+                        onClick={() => onEditSocial(social.platform)}
                         className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground hover:bg-muted transition-colors"
                         title={`Edit ${item.label}`}
                       >
@@ -85,14 +83,12 @@ export function ProfileHeader({
                       </button>
                     );
                   })
-              : ["instagram", "twitter", "youtube"].map((key) => {
-                  const item = socialItems.find((i) => i.key === key);
-                  if (!item) return null;
+              : socialItems.slice(0, 3).map((item) => {
                   return (
                     <button
                       key={item.key}
                       type="button"
-                      onClick={() => onEditSocial(item.key as SocialPlatform)}
+                      onClick={() => onEditSocial(item.key)}
                       className="relative flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-border text-muted-foreground hover:bg-muted transition-colors"
                       title={`Add ${item.label}`}
                     >
