@@ -1,4 +1,5 @@
 import { LinkedinIcon, MailIcon } from "lucide-react";
+import { FacebookIcon } from "@/components/icons/Facebook";
 import { GitHubIcon } from "@/components/icons/GitHub";
 import { InstagramIcon } from "@/components/icons/Instagram";
 import { PinterestIcon } from "@/components/icons/Pinterest";
@@ -29,6 +30,16 @@ export const socialItems = [
     baseUrl: "https://x.com/",
     validation:
       /^(?:@?(?<username>[a-zA-Z0-9_]{1,15})|https?:\/\/(www\.)?(?:twitter\.com|x\.com)\/(?<username>[a-zA-Z0-9_]{1,15})\/?)$/,
+  },
+  {
+    key: "facebook",
+    label: "Facebook",
+    Icon: FacebookIcon,
+    placeholder: "username or link",
+    inputLabel: "Username or Link",
+    baseUrl: "https://facebook.com/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9.]{5,50})|https?:\/\/(www\.)?facebook\.com\/(?<username>[a-zA-Z0-9.]{5,50})\/?)$/,
   },
   {
     key: "instagram",

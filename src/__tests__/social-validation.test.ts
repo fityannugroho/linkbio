@@ -47,6 +47,44 @@ describe("Social Validation", () => {
     });
   });
 
+  describe("Facebook", () => {
+    it("accepts valid username with @", () => {
+      expect(isValidSocialValue("facebook", "@username")).toBe(true);
+      expect(normalizeSocialValue("facebook", "@username")).toBe("username");
+    });
+
+    it("accepts valid username without @", () => {
+      expect(isValidSocialValue("facebook", "username")).toBe(true);
+      expect(normalizeSocialValue("facebook", "username")).toBe("username");
+    });
+
+    it("accepts valid Facebook URL", () => {
+      expect(
+        isValidSocialValue("facebook", "https://facebook.com/username"),
+      ).toBe(true);
+      expect(
+        normalizeSocialValue("facebook", "https://facebook.com/username"),
+      ).toBe("username");
+    });
+
+    it("accepts username with dots", () => {
+      expect(isValidSocialValue("facebook", "@user.name")).toBe(true);
+      expect(normalizeSocialValue("facebook", "@user.name")).toBe("user.name");
+    });
+
+    it("rejects username shorter than 5 chars", () => {
+      expect(isValidSocialValue("facebook", "@abcd")).toBe(false);
+    });
+
+    it("rejects username longer than 50 chars", () => {
+      expect(isValidSocialValue("facebook", `@${"a".repeat(51)}`)).toBe(false);
+    });
+
+    it("rejects invalid characters", () => {
+      expect(isValidSocialValue("facebook", "@user_name")).toBe(false);
+    });
+  });
+
   describe("Instagram", () => {
     it("accepts valid username with @", () => {
       expect(isValidSocialValue("instagram", "@username")).toBe(true);
