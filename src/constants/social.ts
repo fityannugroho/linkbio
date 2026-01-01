@@ -6,6 +6,7 @@ import { TelegramIcon } from "@/components/icons/Telegram";
 import { ThreadsIcon } from "@/components/icons/Threads";
 import { TikTokIcon } from "@/components/icons/TikTok";
 import { TwitterIcon } from "@/components/icons/Twitter";
+import { WhatsAppIcon } from "@/components/icons/WhatsApp";
 import { YouTubeIcon } from "@/components/icons/YouTube";
 
 export type SocialItem = {
@@ -89,6 +90,14 @@ export const socialItems = [
     placeholder: "@handle",
     inputType: "username",
     baseUrl: "https://t.me/",
+  },
+  {
+    key: "whatsapp",
+    label: "WhatsApp",
+    Icon: WhatsAppIcon,
+    placeholder: "phone number",
+    inputType: "username",
+    baseUrl: "https://wa.me/",
   },
   {
     key: "email",
