@@ -1,6 +1,7 @@
 import { LinkedinIcon, MailIcon } from "lucide-react";
 import { GitHubIcon } from "@/components/icons/GitHub";
 import { InstagramIcon } from "@/components/icons/Instagram";
+import { ThreadsIcon } from "@/components/icons/Threads";
 import { TikTokIcon } from "@/components/icons/TikTok";
 import { TwitterIcon } from "@/components/icons/Twitter";
 import { YouTubeIcon } from "@/components/icons/YouTube";
@@ -30,6 +31,14 @@ export const socialItems = [
     placeholder: "@handle",
     inputType: "username",
     baseUrl: "https://instagram.com/",
+  },
+  {
+    key: "threads",
+    label: "Threads",
+    Icon: ThreadsIcon,
+    placeholder: "@handle",
+    inputType: "username",
+    baseUrl: "https://www.threads.net/@",
   },
   {
     key: "github",
