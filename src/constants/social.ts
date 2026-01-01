@@ -29,7 +29,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://x.com/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9_]{1,15})|https?:\/\/(www\.)?(?:twitter\.com|x\.com)\/(?<username>[a-zA-Z0-9_]{1,15})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/)([a-zA-Z0-9_]{1,15})\/?$/,
   },
   {
     key: "facebook",
@@ -39,7 +39,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://facebook.com/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9.]{5,50})|https?:\/\/(www\.)?facebook\.com\/(?<username>[a-zA-Z0-9.]{5,50})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?facebook\.com\/)([a-zA-Z0-9.]{5,50})\/?$/,
   },
   {
     key: "instagram",
@@ -49,7 +49,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://instagram.com/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9._]{1,30})|https?:\/\/(www\.)?instagram\.com\/(?<username>[a-zA-Z0-9._]{1,30})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?instagram\.com\/)([a-zA-Z0-9._]{1,30})\/?$/,
   },
   {
     key: "threads",
@@ -59,7 +59,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://www.threads.net/@",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9._]{1,30})|https?:\/\/(www\.)?threads\.net\/@?(?<username>[a-zA-Z0-9._]{1,30})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?threads\.net\/@?)([a-zA-Z0-9._]{1,30})\/?$/,
   },
   {
     key: "pinterest",
@@ -69,7 +69,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://pinterest.com/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9_]{1,30})|https?:\/\/(www\.)?(?:pinterest\.com|pinterest\.[a-z]{2,3})\/(?<username>[a-zA-Z0-9_]{1,30})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?(?:pinterest\.com|pinterest\.[a-z]{2,3})\/)([a-zA-Z0-9_]{1,30})\/?$/,
   },
   {
     key: "github",
@@ -79,7 +79,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://github.com/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9-]{1,39})|https?:\/\/(www\.)?github\.com\/(?<username>[a-zA-Z0-9-]{1,39})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?github\.com\/)([a-zA-Z0-9-]{1,39})\/?$/,
   },
   {
     key: "linkedin",
@@ -89,7 +89,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://linkedin.com/in/",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9-]{1,100})|https?:\/\/(www\.)?linkedin\.com\/in\/(?<username>[a-zA-Z0-9-]{1,100})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?linkedin\.com\/in\/)([a-zA-Z0-9-]{1,100})\/?$/,
   },
   {
     key: "youtube",
@@ -99,7 +99,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://youtube.com/@",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9._-]{1,30})|https?:\/\/(www\.)?(?:youtube\.com\/@|youtu\.be\/)(?<username>[a-zA-Z0-9._-]{1,30})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?(?:youtube\.com\/@|youtu\.be\/))([a-zA-Z0-9._-]{1,30})\/?$/,
   },
   {
     key: "tiktok",
@@ -109,7 +109,7 @@ export const socialItems = [
     inputLabel: "Username or Link",
     baseUrl: "https://www.tiktok.com/@",
     validation:
-      /^(?:@?(?<username>[a-zA-Z0-9._-]{1,30})|https?:\/\/(www\.)?tiktok\.com\/@?(?<username>[a-zA-Z0-9._-]{1,30})\/?)$/,
+      /^(?:@?|https?:\/\/(?:www\.)?tiktok\.com\/@?)([a-zA-Z0-9._-]{1,30})\/?$/,
   },
   {
     key: "telegram",
@@ -118,8 +118,7 @@ export const socialItems = [
     placeholder: "@handle or link",
     inputLabel: "Username or Link",
     baseUrl: "https://t.me/",
-    validation:
-      /^(?:@?(?<username>[a-zA-Z0-9_]{1,32})|https?:\/\/t\.me\/(?<username>[a-zA-Z0-9_]{1,32})\/?)$/,
+    validation: /^(?:@?|https?:\/\/t\.me\/)([a-zA-Z0-9_]{1,32})\/?$/,
   },
   {
     key: "whatsapp",
@@ -128,7 +127,7 @@ export const socialItems = [
     placeholder: "+6281234567890",
     inputLabel: "WhatsApp Number",
     baseUrl: "https://wa.me/",
-    validation: /^\+[1-9]\d{1,14}$/,
+    validation: /^(\+[1-9]\d{1,14})$/,
   },
   {
     key: "email",
@@ -137,7 +136,7 @@ export const socialItems = [
     placeholder: "email@example.com",
     inputLabel: "Email Address",
     baseUrl: "mailto:",
-    validation: /^(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
+    validation: /^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
   },
 ] as const satisfies SocialItem[];
 

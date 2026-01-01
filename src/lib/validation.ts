@@ -33,19 +33,9 @@ export const normalizeSocialValue = (platform: SocialPlatform, raw: string) => {
     throw new Error(`Invalid ${item.label} value`);
   }
 
-  if (match.groups?.username) {
-    return match.groups.username.toLowerCase();
-  }
+  const value = match[1] || trimmed;
 
-  if (match.groups?.email) {
-    return match.groups.email.toLowerCase();
-  }
-
-  if (match.groups?.phone) {
-    return match.groups.phone;
-  }
-
-  return trimmed;
+  return value.toLowerCase();
 };
 
 export const isEmptyOrValidSocialValue = (
