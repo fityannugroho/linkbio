@@ -4,7 +4,6 @@ import {
   buildSocialForm,
   buildSocialPayload,
   getInvalidSocialValues,
-  getSocialLabel,
   type SocialForm,
 } from "@/lib/social";
 import type { SocialPlatform } from "@/lib/validation";
@@ -22,7 +21,6 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
     buildSocialForm(profile?.socials),
   );
 
-  // Sync with profile when it changes (e.g. after a direct update)
   useEffect(() => {
     setSocialForm(buildSocialForm(profile?.socials));
   }, [profile?.socials]);
@@ -30,14 +28,7 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
   const updateSocialUrl = (key: SocialPlatform, value: string) => {
     if (value && !isValidSocialValue(key, value)) {
       const item = socialItemByKey[key];
-      const inputType = item?.inputType || "both";
-      const errorMsg =
-        inputType === "username"
-          ? "Please enter a valid username (e.g., @handle or username)"
-          : inputType === "url"
-            ? "Please enter a valid URL (e.g., https://...)"
-            : "Please enter a valid username or URL";
-      throw new Error(errorMsg);
+      throw new Error(`Please enter a valid ${item?.inputLabel}`);
     }
     setSocialForm((prev) => ({
       ...prev,
@@ -65,14 +56,7 @@ export const useSocialForm = ({ profile }: UseSocialFormOptions) => {
 
     for (const key of getInvalidSocialValues(socialPayload)) {
       const item = socialItemByKey[key];
-      const inputType = item?.inputType || "both";
-      const label = getSocialLabel(key);
-      errors[key] =
-        inputType === "username"
-          ? `Enter a valid ${label} username`
-          : inputType === "url"
-            ? `Enter a valid ${label} URL`
-            : `Enter a valid ${label} username or URL`;
+      errors[key] = `Enter a valid ${item?.inputLabel}`;
     }
 
     return {

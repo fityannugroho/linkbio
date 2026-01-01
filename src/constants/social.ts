@@ -14,8 +14,9 @@ export type SocialItem = {
   label: string;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   placeholder: string;
-  inputType: "username" | "url" | "both";
+  inputLabel: string;
   baseUrl: string;
+  validation: RegExp;
 };
 
 export const socialItems = [
@@ -23,89 +24,109 @@ export const socialItems = [
     key: "twitter",
     label: "X (formerly Twitter)",
     Icon: TwitterIcon,
-    placeholder: "@handle",
-    inputType: "username",
-    baseUrl: "https://twitter.com/",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
+    baseUrl: "https://x.com/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9_]{1,15})|https?:\/\/(www\.)?(?:twitter\.com|x\.com)\/(?<username>[a-zA-Z0-9_]{1,15})\/?)$/,
   },
   {
     key: "instagram",
     label: "Instagram",
     Icon: InstagramIcon,
-    placeholder: "@handle",
-    inputType: "username",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://instagram.com/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9._]{1,30})|https?:\/\/(www\.)?instagram\.com\/(?<username>[a-zA-Z0-9._]{1,30})\/?)$/,
   },
   {
     key: "threads",
     label: "Threads",
     Icon: ThreadsIcon,
-    placeholder: "@handle",
-    inputType: "username",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://www.threads.net/@",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9._]{1,30})|https?:\/\/(www\.)?threads\.net\/@?(?<username>[a-zA-Z0-9._]{1,30})\/?)$/,
   },
   {
     key: "pinterest",
     label: "Pinterest",
     Icon: PinterestIcon,
-    placeholder: "@handle",
-    inputType: "username",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://pinterest.com/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9_]{1,30})|https?:\/\/(www\.)?(?:pinterest\.com|pinterest\.[a-z]{2,3})\/(?<username>[a-zA-Z0-9_]{1,30})\/?)$/,
   },
   {
     key: "github",
     label: "GitHub",
     Icon: GitHubIcon,
-    placeholder: "username",
-    inputType: "username",
+    placeholder: "username or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://github.com/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9-]{1,39})|https?:\/\/(www\.)?github\.com\/(?<username>[a-zA-Z0-9-]{1,39})\/?)$/,
   },
   {
     key: "linkedin",
     label: "LinkedIn",
     Icon: LinkedinIcon,
-    placeholder: "username or full URL",
-    inputType: "both",
+    placeholder: "username or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://linkedin.com/in/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9-]{1,100})|https?:\/\/(www\.)?linkedin\.com\/in\/(?<username>[a-zA-Z0-9-]{1,100})\/?)$/,
   },
   {
     key: "youtube",
     label: "YouTube",
     Icon: YouTubeIcon,
-    placeholder: "@handle or full URL",
-    inputType: "both",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://youtube.com/@",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9._-]{1,30})|https?:\/\/(www\.)?(?:youtube\.com\/@|youtu\.be\/)(?<username>[a-zA-Z0-9._-]{1,30})\/?)$/,
   },
   {
     key: "tiktok",
     label: "TikTok",
     Icon: TikTokIcon,
-    placeholder: "@handle",
-    inputType: "username",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://www.tiktok.com/@",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9._-]{1,30})|https?:\/\/(www\.)?tiktok\.com\/@?(?<username>[a-zA-Z0-9._-]{1,30})\/?)$/,
   },
   {
     key: "telegram",
     label: "Telegram",
     Icon: TelegramIcon,
-    placeholder: "@handle",
-    inputType: "username",
+    placeholder: "@handle or link",
+    inputLabel: "Username or Link",
     baseUrl: "https://t.me/",
+    validation:
+      /^(?:@?(?<username>[a-zA-Z0-9_]{1,32})|https?:\/\/t\.me\/(?<username>[a-zA-Z0-9_]{1,32})\/?)$/,
   },
   {
     key: "whatsapp",
     label: "WhatsApp",
     Icon: WhatsAppIcon,
-    placeholder: "phone number",
-    inputType: "username",
+    placeholder: "+6281234567890",
+    inputLabel: "WhatsApp Number",
     baseUrl: "https://wa.me/",
+    validation: /^\+[1-9]\d{1,14}$/,
   },
   {
     key: "email",
     label: "Email",
     Icon: MailIcon,
-    placeholder: "email address",
-    inputType: "url",
+    placeholder: "email@example.com",
+    inputLabel: "Email Address",
     baseUrl: "mailto:",
+    validation: /^(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
   },
 ] as const satisfies SocialItem[];
 
