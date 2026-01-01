@@ -23,6 +23,8 @@ A Linktree-like service built with TanStack Start, React, Drizzle ORM, and Bette
 pnpm dev          # Start dev server
 pnpm build        # Production build
 pnpm test         # Run Vitest tests
+pnpm test -- <file>  # Run specific test file
+pnpm test:cov     # Run tests with coverage
 pnpm lint         # Biome check
 pnpm lint:fix     # Biome fix + organize imports
 ```
@@ -42,28 +44,13 @@ pnpm drizzle-kit migrate   # Run migrations
 - **Forms**: react-hook-form + zod validation
 - **Toast**: Sonner library
 
-## Coding Guidelines
+## Guidelines
 
-- FOLLOW any [RULES](.agent/rules) provided in the repository
-- FOLLOW any [WORKFLOWS](.agent/workflows) provided in the repository
+- FOLLOW any [RULES](.agent/rules) and [WORKFLOWS](.agent/workflows) provided in the repository
 - ASK FOR CLARIFICATION if requirements are ambiguous before proceeding
-- Use any available tools (MCP, CLI, etc.) installed to gather additional context as needed to help you understand the project and complete your tasks.
-- Always write clean, well-documented code IN ENGLISH
-- Adhere to established architecture and coding conventions
-- Follow existing naming conventions and file structures
-- Prefer types over interfaces (except when extending external types)
-- Prefer functions over classes (classes only for errors/adapters)
-- Validate changes with existing tests or add new tests as needed
-- RUN ESSENTIAL COMMANDS to verify functionality after changes
-
-## Merge/Pull Request Guidelines
-
-- FOLLOW THE PR TEMPLATE provided in the repository, or in user's `.github` repository
-- Write descriptive title and summaries BASED ON THE ACTUAL CHANGES made
-- WRITE IN ENGLISH only
-- DO NOT INCLUDE lists of commit logs or changed files in PR description, unless specifically requested
-- REMOVE ANY PLACEHOLDER from the template
-- MERGE TO main branch, unless otherwise specified
+- Use available tools to gather context as needed
+- Write clean, well-documented code IN ENGLISH
+- Validate changes with tests
 
 ## Common Pitfalls
 
