@@ -46,12 +46,7 @@ export function SocialEditDialog({
   const item = socialItemByKey[editingKey];
   if (!item) return null;
 
-  const inputLabel =
-    item.inputType === "username"
-      ? "Username"
-      : item.inputType === "url"
-        ? "URL"
-        : "Username or URL";
+  const inputLabel = item.inputLabel;
 
   function handleClose() {
     setIsConfirmingDelete(false);

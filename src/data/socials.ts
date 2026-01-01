@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { socials } from "@/db/schema";
 import type { SocialPlatform } from "@/lib/validation";
+import { normalizeSocialValue } from "@/lib/validation";
 
 export async function getSocialsByUserId(userId: string) {
   return await db
@@ -30,19 +31,20 @@ export async function upsertSocials(
         );
       continue;
     }
+    const normalizedValue = normalizeSocialValue(item.platform, item.value);
     await db
       .insert(socials)
       .values({
         userId,
         platform: item.platform,
-        value: item.value,
+        value: normalizedValue,
         order: item.order ?? i,
         isVisible: item.isVisible ?? true,
       })
       .onConflictDoUpdate({
         target: [socials.userId, socials.platform],
         set: {
-          value: item.value,
+          value: normalizedValue,
           order: item.order ?? i,
           isVisible: item.isVisible ?? true,
           updatedAt: new Date(),

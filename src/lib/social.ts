@@ -1,6 +1,6 @@
 import { socialItems } from "@/constants/social";
 import type { SocialPlatform } from "@/lib/validation";
-import { isEmptyOrValidSocialValue, isValidHttpUrl } from "@/lib/validation";
+import { isEmptyOrValidSocialValue } from "@/lib/validation";
 import type { ProfileSocial } from "@/types/profile";
 
 export type SocialForm = Record<
@@ -59,7 +59,6 @@ export const buildSocialPayload = (form: SocialForm): ProfileSocial[] => {
 export const buildSocialUrl = (platform: SocialPlatform, value: string) => {
   const trimmed = value.trim();
   if (!trimmed) return "";
-  if (isValidHttpUrl(trimmed)) return trimmed;
-  const normalized = trimmed.replace(/^@/, "");
-  return `${socialBaseUrlByKey[platform]}${encodeURIComponent(normalized)}`;
+
+  return `${socialBaseUrlByKey[platform]}${trimmed}`;
 };

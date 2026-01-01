@@ -1,21 +1,16 @@
-import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
-import {
-  configDefaults,
-  coverageConfigDefaults,
-  defineConfig,
-} from "vitest/config";
+import viteTsConfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // this is the plugin that enables path aliases
+    viteTsConfigPaths({
+      projects: ["./tsconfig.json"],
+    }),
+  ],
   test: {
-    alias: {
-      "@": fileURLToPath(new URL("./", import.meta.url)),
-    },
-    coverage: {
-      exclude: ["app/__tests__/**/*", ...coverageConfigDefaults.exclude],
-    },
     environment: "jsdom",
-    exclude: ["app/__tests__/**/*", ...configDefaults.exclude],
   },
 });
