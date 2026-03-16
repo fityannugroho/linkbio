@@ -1,5 +1,6 @@
 import type { SocialPlatform } from "@/constants/social";
 import { socialItemByKey } from "@/constants/social";
+
 export type { SocialPlatform };
 
 export const isValidHttpUrl = (value: string) => {
