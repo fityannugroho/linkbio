@@ -1,7 +1,8 @@
-import { LinkedinIcon, MailIcon } from "lucide-react";
+import { MailIcon } from "lucide-react";
 import { FacebookIcon } from "@/components/icons/Facebook";
 import { GitHubIcon } from "@/components/icons/GitHub";
 import { InstagramIcon } from "@/components/icons/Instagram";
+import { LinkedInIcon } from "@/components/icons/LinkedIn";
 import { PinterestIcon } from "@/components/icons/Pinterest";
 import { TelegramIcon } from "@/components/icons/Telegram";
 import { ThreadsIcon } from "@/components/icons/Threads";
@@ -84,7 +85,7 @@ export const socialItems = [
   {
     key: "linkedin",
     label: "LinkedIn",
-    Icon: LinkedinIcon,
+    Icon: LinkedInIcon,
     placeholder: "username or link",
     inputLabel: "Username or Link",
     baseUrl: "https://linkedin.com/in/",
