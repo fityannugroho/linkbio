@@ -1,8 +1,8 @@
 import { MailIcon } from "lucide-react";
 import { FacebookIcon } from "@/components/icons/Facebook";
 import { GitHubIcon } from "@/components/icons/GitHub";
-import { LinkedInIcon } from "@/components/icons/LinkedIn";
 import { InstagramIcon } from "@/components/icons/Instagram";
+import { LinkedInIcon } from "@/components/icons/LinkedIn";
 import { PinterestIcon } from "@/components/icons/Pinterest";
 import { TelegramIcon } from "@/components/icons/Telegram";
 import { ThreadsIcon } from "@/components/icons/Threads";
