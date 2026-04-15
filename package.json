@@ -88,7 +88,7 @@
       "seroval": ">=1.4.1",
       "h3": ">=2.0.1-rc.18",
       "h3-v2": "npm:h3@>=2.0.1-rc.18",
-      "serialize-javascript": ">=7.0.4"
+      "serialize-javascript": ">=7.0.5"
     }
   }
 }
