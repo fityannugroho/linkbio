@@ -9,14 +9,17 @@ overrides:
   seroval: '>=1.4.1'
   h3: '>=2.0.1-rc.18'
   h3-v2: npm:h3@>=2.0.1-rc.18
-  serialize-javascript: '>=7.0.4'
+  serialize-javascript: '>=7.0.5'
   follow-redirects: '>=1.16.0'
-  lodash: '>=4.18.1'
-  vite: '>=8.0.8'
-  defu: '>=6.1.7'
+  lodash: '>=4.18.0'
+  vite: '>=8.0.5'
+  defu: '>=6.1.5'
   brace-expansion: '>=5.0.5'
   node-forge: '>=1.4.0'
-  srvx: '>=0.11.15'
+  srvx: '>=0.11.13'
+  picomatch: '>=4.0.4'
+  kysely: '>=0.28.14'
+  drizzle-orm: '>=0.45.2'
 
 importers:
 
@@ -107,7 +110,7 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       drizzle-orm:
-        specifier: ^0.45.2
+        specifier: '>=0.45.2'
         version: 0.45.2(@opentelemetry/api@1.9.0)(@types/pg@8.20.0)(kysely@0.28.14)(postgres@3.4.9)
       lucide-react:
         specifier: ^1.8.0
@@ -198,7 +201,7 @@ importers:
         specifier: ^6.0.2
         version: 6.0.2
       vite:
-        specifier: '>=8.0.8'
+        specifier: '>=8.0.5'
         version: 8.0.8(@types/node@25.6.0)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)
       vitest:
         specifier: ^4.1.4
@@ -491,7 +494,7 @@ packages:
       '@opentelemetry/api': ^1.9.0
       better-call: 1.3.5
       jose: ^6.1.0
-      kysely: ^0.28.5
+      kysely: '>=0.28.14'
       nanostores: ^1.0.1
     peerDependenciesMeta:
       '@cloudflare/workers-types':
@@ -502,7 +505,7 @@ packages:
     peerDependencies:
       '@better-auth/core': ^1.6.3
       '@better-auth/utils': 0.4.0
-      drizzle-orm: '>=0.41.0'
+      drizzle-orm: '>=0.45.2'
     peerDependenciesMeta:
       drizzle-orm:
         optional: true
@@ -512,7 +515,7 @@ packages:
     peerDependencies:
       '@better-auth/core': ^1.6.3
       '@better-auth/utils': 0.4.0
-      kysely: ^0.27.0 || ^0.28.0
+      kysely: '>=0.28.14'
     peerDependenciesMeta:
       kysely:
         optional: true
@@ -2331,7 +2334,7 @@ packages:
   '@tailwindcss/vite@4.2.2':
     resolution: {integrity: sha512-mEiF5HO1QqCLXoNEfXVA1Tzo+cYsrqV7w9Juj2wdUFyW07JRenqMG225MvPwr3ZD9N1bFQj46X7r33iHxLUW0w==}
     peerDependencies:
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
 
   '@tanstack/devtools-client@0.0.6':
     resolution: {integrity: sha512-f85ZJXJnDIFOoykG/BFIixuAevJovCvJF391LPs6YjBAPhGYC50NWlx1y4iF/UmK5/cCMx+/JqI5SBOz7FanQQ==}
@@ -2357,7 +2360,7 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
 
   '@tanstack/devtools@0.11.2':
     resolution: {integrity: sha512-K8+tsBx+ptTLqqd4dOF10B6laj1g+XYImqYZL9n0jBINGaT+sOf17PKV9pbBt8kdbZeIGsHaJ5OZWCyZoHqN4A==}
@@ -2449,7 +2452,7 @@ packages:
       '@vitejs/plugin-rsc': '*'
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
     peerDependenciesMeta:
       '@vitejs/plugin-rsc':
         optional: true
@@ -2486,7 +2489,7 @@ packages:
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
       '@tanstack/react-router': ^1.168.21
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
       vite-plugin-solid: ^2.11.10 || ^3.0.0-0
       webpack: '>=5.92.0'
     peerDependenciesMeta:
@@ -2525,7 +2528,7 @@ packages:
     resolution: {integrity: sha512-Ww511KfsXd7TbPYzjiUDCMUI5VbO0chmrTgFi1oOUT0jmk5U0Xh9WVIun1cvRmaq+KBZwvWGvmeIn0UwO3mHEA==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
 
   '@tanstack/start-server-core@1.167.19':
     resolution: {integrity: sha512-wzOdfzLsK91CnjoywnEjXSlVlaRVK99HJhyVijNU1TECBI2JEKvW9S6d14YfS4gD4fFH4V86tFYhkcLPe6nzWg==}
@@ -2616,7 +2619,7 @@ packages:
     peerDependencies:
       '@rolldown/plugin-babel': ^0.1.7 || ^0.2.0
       babel-plugin-react-compiler: ^1.0.0
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
     peerDependenciesMeta:
       '@rolldown/plugin-babel':
         optional: true
@@ -2639,7 +2642,7 @@ packages:
     resolution: {integrity: sha512-R9HTZBhW6yCSGbGQnDnH3QHfJxokKN4KB+Yvk9Q1le7eQNYwiCyKxmLmurSpFy6BzJanSLuEUDrD+j97Q+ZLPg==}
     peerDependencies:
       msw: ^2.4.9
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
     peerDependenciesMeta:
       msw:
         optional: true
@@ -2785,7 +2788,7 @@ packages:
       '@tanstack/solid-start': ^1.0.0
       better-sqlite3: ^12.0.0
       drizzle-kit: '>=0.31.4'
-      drizzle-orm: '>=0.41.0'
+      drizzle-orm: '>=0.45.2'
       mongodb: ^6.0.0 || ^7.0.0
       mysql2: ^3.0.0
       next: ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -3028,7 +3031,7 @@ packages:
   crossws@0.4.4:
     resolution: {integrity: sha512-w6c4OdpRNnudVmcgr7brb/+/HmYjMQvYToO/oTrprTwxRUiom3LYWU1PMWuD006okbUWpII1Ea9/+kwpUfmyRg==}
     peerDependencies:
-      srvx: '>=0.11.15'
+      srvx: '>=0.11.13'
     peerDependenciesMeta:
       srvx:
         optional: true
@@ -3070,7 +3073,7 @@ packages:
       '@electric-sql/pglite': '*'
       '@libsql/client': '*'
       better-sqlite3: '*'
-      drizzle-orm: '*'
+      drizzle-orm: '>=0.45.2'
       mysql2: '*'
       sqlite3: '*'
     peerDependenciesMeta:
@@ -3201,7 +3204,7 @@ packages:
       expo-sqlite: '>=14.0.0'
       gel: '>=2'
       knex: '*'
-      kysely: '*'
+      kysely: '>=0.28.14'
       mysql2: '>=2'
       pg: '>=8'
       postgres: '>=3'
@@ -3402,7 +3405,7 @@ packages:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
-      picomatch: ^3 || ^4
+      picomatch: '>=4.0.4'
     peerDependenciesMeta:
       picomatch:
         optional: true
@@ -3963,7 +3966,7 @@ packages:
       giget: '*'
       jiti: ^2.6.1
       rollup: ^4.59.0
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
       xml2js: ^0.6.2
       zephyr-agent: ^0.1.15
     peerDependenciesMeta:
@@ -4139,14 +4142,6 @@ packages:
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
-
-  picomatch@2.3.1:
-    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
-    engines: {node: '>=8.6'}
-
-  picomatch@4.0.3:
-    resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
-    engines: {node: '>=12'}
 
   picomatch@4.0.4:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
@@ -4418,8 +4413,8 @@ packages:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
 
-  serialize-javascript@7.0.4:
-    resolution: {integrity: sha512-DuGdB+Po43Q5Jxwpzt1lhyFSYKryqoNjQSA9M92tyw0lyHIOur+XCalOUe0KTJpyqzT8+fQ5A0Jf7vCx/NKmIg==}
+  serialize-javascript@7.0.5:
+    resolution: {integrity: sha512-F4LcB0UqUl1zErq+1nYEEzSHJnIwb3AF2XWB94b+afhrekOUijwooAYqFyRbjYkm2PAKBabx6oYv/xDxNi8IBw==}
     engines: {node: '>=20.0.0'}
 
   seroval-plugins@1.3.3:
@@ -4956,7 +4951,7 @@ packages:
   vitefu@1.1.1:
     resolution: {integrity: sha512-B/Fegf3i8zh0yFbpzZ21amWzHmuNlLlmJT6n7bu5e+pCHUKQIfXSYokrqOBGEMMe9UG2sostKQF9mml/vYaWJQ==}
     peerDependencies:
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
     peerDependenciesMeta:
       vite:
         optional: true
@@ -4977,7 +4972,7 @@ packages:
       '@vitest/ui': 4.1.4
       happy-dom: '*'
       jsdom: '*'
-      vite: '>=8.0.8'
+      vite: '>=8.0.5'
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
@@ -6155,7 +6150,7 @@ snapshots:
   '@parcel/watcher-wasm@2.5.6':
     dependencies:
       is-glob: 4.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   '@parcel/watcher-win32-arm64@2.5.6':
     optional: true
@@ -6171,7 +6166,7 @@ snapshots:
       detect-libc: 2.1.2
       is-glob: 4.0.3
       node-addon-api: 7.1.1
-      picomatch: 4.0.3
+      picomatch: 4.0.4
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.5.6
       '@parcel/watcher-darwin-arm64': 2.5.6
@@ -6791,10 +6786,10 @@ snapshots:
       '@rollup/pluginutils': 5.3.0(rollup@4.59.0)
       commondir: 1.0.1
       estree-walker: 2.0.2
-      fdir: 6.5.0(picomatch@4.0.3)
+      fdir: 6.5.0(picomatch@4.0.4)
       is-reference: 1.2.1
       magic-string: 0.30.21
-      picomatch: 4.0.3
+      picomatch: 4.0.4
     optionalDependencies:
       rollup: 4.59.0
 
@@ -6831,7 +6826,7 @@ snapshots:
 
   '@rollup/plugin-terser@0.4.4(rollup@4.59.0)':
     dependencies:
-      serialize-javascript: 7.0.4
+      serialize-javascript: 7.0.5
       smob: 1.5.0
       terser: 5.46.0
     optionalDependencies:
@@ -6841,7 +6836,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
-      picomatch: 4.0.3
+      picomatch: 4.0.4
     optionalDependencies:
       rollup: 4.59.0
 
@@ -7400,7 +7395,7 @@ snapshots:
       '@tanstack/devtools-event-bus': 0.4.1
       chalk: 5.6.2
       launch-editor: 2.12.0
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       vite: 8.0.8(@types/node@25.6.0)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)
     transitivePeerDependencies:
       - bufferutil
@@ -7750,7 +7745,7 @@ snapshots:
       glob: 13.0.0
       graceful-fs: 4.2.11
       node-gyp-build: 4.8.4
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       resolve-from: 5.0.0
     transitivePeerDependencies:
       - encoding
@@ -7874,7 +7869,7 @@ snapshots:
   anymatch@3.1.3:
     dependencies:
       normalize-path: 3.0.0
-      picomatch: 2.3.1
+      picomatch: 4.0.4
 
   archiver-utils@5.0.2:
     dependencies:
@@ -8435,9 +8430,9 @@ snapshots:
     dependencies:
       reusify: 1.1.0
 
-  fdir@6.5.0(picomatch@4.0.3):
+  fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   file-uri-to-path@1.0.0: {}
 
@@ -8879,7 +8874,7 @@ snapshots:
   micromatch@4.0.8:
     dependencies:
       braces: 3.0.3
-      picomatch: 2.3.1
+      picomatch: 4.0.4
 
   mime-db@1.54.0: {}
 
@@ -9218,10 +9213,6 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@2.3.1: {}
-
-  picomatch@4.0.3: {}
-
   picomatch@4.0.4: {}
 
   pkg-types@1.3.1:
@@ -9367,7 +9358,7 @@ snapshots:
 
   readdirp@3.6.0:
     dependencies:
-      picomatch: 2.3.1
+      picomatch: 4.0.4
 
   readdirp@4.1.2: {}
 
@@ -9442,7 +9433,7 @@ snapshots:
   rollup-plugin-visualizer@6.0.5(rolldown@1.0.0-rc.15)(rollup@4.59.0):
     dependencies:
       open: 8.4.2
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       source-map: 0.7.6
       yargs: 17.7.2
     optionalDependencies:
@@ -9540,7 +9531,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serialize-javascript@7.0.4: {}
+  serialize-javascript@7.0.5: {}
 
   seroval-plugins@1.3.3(seroval@1.5.1):
     dependencies:
@@ -9735,8 +9726,8 @@ snapshots:
 
   tinyglobby@0.2.15:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
 
   tinyrainbow@3.1.0: {}
 
@@ -9823,7 +9814,7 @@ snapshots:
       magic-string: 0.30.21
       mlly: 1.8.0
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       pkg-types: 2.3.0
       scule: 1.3.0
       strip-literal: 3.1.0
@@ -9834,13 +9825,13 @@ snapshots:
   unplugin-utils@0.3.1:
     dependencies:
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   unplugin@2.3.11:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       acorn: 8.15.0
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       webpack-virtual-modules: 0.6.2
 
   unstorage@1.17.4(crossws@0.3.5)(db0@0.3.4(drizzle-orm@0.45.2(@opentelemetry/api@1.9.0)(@types/pg@8.20.0)(kysely@0.28.14)(postgres@3.4.9)))(ioredis@5.9.2):
@@ -10033,7 +10024,7 @@ snapshots:
       magic-string: 0.30.21
       obug: 2.1.1
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       std-env: 4.0.0
       tinybench: 2.9.0
       tinyexec: 1.0.2
