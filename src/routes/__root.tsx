@@ -1,12 +1,30 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  ErrorComponent,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 
+function NotFound() {
+  return (
+    <div className="flex min-h-[400px] w-full items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">404</h1>
+        <p className="text-muted-foreground mt-2">Page not found</p>
+      </div>
+    </div>
+  );
+}
+
 export const Route = createRootRoute({
+  errorComponent: ErrorComponent,
+  notFoundComponent: NotFound,
   head: () => ({
     meta: [
       {
