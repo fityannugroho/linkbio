@@ -9,26 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SetupRouteImport } from './routes/setup'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
-import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
-import { Route as ApiThumbnailUploadRouteImport } from './routes/api/thumbnail-upload'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as SetupRouteImport } from './routes/setup'
 import { Route as ApiAvatarUploadRouteImport } from './routes/api/avatar-upload'
-import { Route as ApiStorageSplatRouteImport } from './routes/api/storage/$'
+import { Route as ApiThumbnailUploadRouteImport } from './routes/api/thumbnail-upload'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard/analytics'
+import { Route as DashboardDesignRouteImport } from './routes/dashboard/design'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth.$'
+import { Route as ApiStorageSplatRouteImport } from './routes/api/storage/$'
 
-const SetupRoute = SetupRouteImport.update({
-  id: '/setup',
-  path: '/setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -36,29 +31,14 @@ const DashboardRouteRoute = DashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardDesignRoute = DashboardDesignRouteImport.update({
-  id: '/design',
-  path: '/design',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
-  id: '/analytics',
-  path: '/analytics',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const ApiThumbnailUploadRoute = ApiThumbnailUploadRouteImport.update({
-  id: '/api/thumbnail-upload',
-  path: '/api/thumbnail-upload',
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
@@ -66,14 +46,34 @@ const ApiAvatarUploadRoute = ApiAvatarUploadRouteImport.update({
   path: '/api/avatar-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiStorageSplatRoute = ApiStorageSplatRouteImport.update({
-  id: '/api/storage/$',
-  path: '/api/storage/$',
+const ApiThumbnailUploadRoute = ApiThumbnailUploadRouteImport.update({
+  id: '/api/thumbnail-upload',
+  path: '/api/thumbnail-upload',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardDesignRoute = DashboardDesignRouteImport.update({
+  id: '/design',
+  path: '/design',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStorageSplatRoute = ApiStorageSplatRouteImport.update({
+  id: '/api/storage/$',
+  path: '/api/storage/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -170,18 +170,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/setup': {
-      id: '/setup'
-      path: '/setup'
-      fullPath: '/setup'
-      preLoaderRoute: typeof SetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -191,39 +184,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/design': {
-      id: '/dashboard/design'
-      path: '/design'
-      fullPath: '/dashboard/design'
-      preLoaderRoute: typeof DashboardDesignRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/analytics': {
-      id: '/dashboard/analytics'
-      path: '/analytics'
-      fullPath: '/dashboard/analytics'
-      preLoaderRoute: typeof DashboardAnalyticsRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/api/thumbnail-upload': {
-      id: '/api/thumbnail-upload'
-      path: '/api/thumbnail-upload'
-      fullPath: '/api/thumbnail-upload'
-      preLoaderRoute: typeof ApiThumbnailUploadRouteImport
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/avatar-upload': {
@@ -233,18 +205,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAvatarUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/storage/$': {
-      id: '/api/storage/$'
-      path: '/api/storage/$'
-      fullPath: '/api/storage/$'
-      preLoaderRoute: typeof ApiStorageSplatRouteImport
+    '/api/thumbnail-upload': {
+      id: '/api/thumbnail-upload'
+      path: '/api/thumbnail-upload'
+      fullPath: '/api/thumbnail-upload'
+      preLoaderRoute: typeof ApiThumbnailUploadRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/design': {
+      id: '/dashboard/design'
+      path: '/design'
+      fullPath: '/dashboard/design'
+      preLoaderRoute: typeof DashboardDesignRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/storage/$': {
+      id: '/api/storage/$'
+      path: '/api/storage/$'
+      fullPath: '/api/storage/$'
+      preLoaderRoute: typeof ApiStorageSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
