@@ -1,0 +1,15 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+overrides:
+  # vinxi@0.5.11 pins h3 exactly at 1.15.3 (vulnerable); force minimal patched v1 release.
+  # NOTE: must NOT be global — nitro@3-beta requires h3 v2 (2.0.1-rc) which is patched anyway.
+  'vinxi>h3': 1.15.11
+  # @tanstack/devtools peer resolution sticks to solid-js 1.9.10 which pulls seroval 1.3.2 (vulnerable);
+  # 1.9.14 natively uses seroval ~1.5.4 (patched)
+  solid-js: 1.9.14
+  # @esbuild-kit (dead, used by drizzle-kit) pins esbuild ^0.18.20; force the version already in the tree
+  '@esbuild-kit/core-utils>esbuild': 0.25.12
+minimumReleaseAgeExclude:
+  - '@aws-sdk/client-s3@3.1107.0'
+  - '@aws-sdk/s3-request-presigner@3.1107.0'
