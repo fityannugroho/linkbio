@@ -29,7 +29,7 @@ A Linktree-like service built with modern web technologies. Create and manage yo
 
 - Node.js 22.13+
 - PostgreSQL database
-- pnpm 11 (declared via `engines.pnpm` in package.json — Railpack and CI install it automatically)
+- pnpm 11
 
 ### Installation
 
