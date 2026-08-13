@@ -18,6 +18,8 @@ A Linktree-like service built with TanStack Start, React, Drizzle ORM, and Bette
 
 ## Development Workflow
 
+> Requires **Node.js ≥ 22.13** and **pnpm 11** (declared via `engines.pnpm` in `package.json` — Railpack and CI install it automatically).
+
 ### Commands
 ```bash
 pnpm dev          # Start dev server
