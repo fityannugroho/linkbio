@@ -27,9 +27,9 @@ A Linktree-like service built with modern web technologies. Create and manage yo
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22.13+
 - PostgreSQL database
-- pnpm
+- pnpm 11
 
 ### Installation
 
