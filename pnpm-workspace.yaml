@@ -12,6 +12,18 @@ overrides:
   solid-js: 1.9.14
   # @esbuild-kit (dead, used by drizzle-kit) pins esbuild ^0.18.20; force the version already in the tree
   '@esbuild-kit/core-utils>esbuild': 0.25.12
+  # --- security overrides (audit 2026-10-10) ---
+  # better-auth > solid-js > seroval-plugins resolves seroval 1.5.6 (GHSA-p6vx-979v-rg4c, GHSA-jp82-f5mq-hwhp);
+  # no parent range reaches 1.6.3+, so pin globally. seroval 1.6.9 is the latest patch.
+  seroval: ^1.6.9
+  # launch-editor (via @tanstack/devtools-vite) pins shell-quote 1.10.0 (GHSA-pqg4-j6r4-53mv); dev-only.
+  shell-quote: ^1.11.0
+  # postcss 8.5.x (pulled by vite 8.3.4) resolves source-map-js 1.2.1 (GHSA-68fv-2mgg-jv7q);
+  # css-tree pulled by jsdom 30 is stuck on the same range.
+  'source-map-js': ^1.2.2
+  # brace-expansion pulled by vinxi>nitropack>archiver/glob stays on 2.x/4.x (6 advisories);
+  # patched 5.0.12 is API-compatible for the minimatch versions in the tree.
+  'brace-expansion': ^5.0.12
 minimumReleaseAgeExclude:
   - '@aws-sdk/client-s3@3.1107.0'
   - '@aws-sdk/s3-request-presigner@3.1107.0'
