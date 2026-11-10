@@ -37,7 +37,7 @@ export const listAvatarsAction = createServerFn({ method: "GET" }).handler(
 );
 
 export const createAvatarUploadAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { contentType: string; size: number }) => {
+  .validator((data: { contentType: string; size: number }) => {
     if (!ALLOWED_AVATAR_CONTENT_TYPES.has(data.contentType)) {
       throw new Error("Only image uploads are allowed");
     }
@@ -77,7 +77,7 @@ export const createAvatarUploadAction = createServerFn({ method: "POST" })
   });
 
 export const saveAvatarAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { objectKey: string }) => {
+  .validator((data: { objectKey: string }) => {
     if (!data.objectKey.trim()) {
       throw new Error("Avatar key is missing");
     }
@@ -98,7 +98,7 @@ export const saveAvatarAction = createServerFn({ method: "POST" })
   });
 
 export const setProfileAvatarAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { avatarId: number }) => data)
+  .validator((data: { avatarId: number }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     const avatar = await getAvatarByIdForUser(data.avatarId, session.user.id);
@@ -113,7 +113,7 @@ export const setProfileAvatarAction = createServerFn({ method: "POST" })
   });
 
 export const clearProfileAvatarAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { confirmed: boolean }) => data)
+  .validator((data: { confirmed: boolean }) => data)
   .handler(async ({ data }) => {
     if (!data.confirmed) {
       throw new Error("Avatar removal not confirmed");
@@ -123,7 +123,7 @@ export const clearProfileAvatarAction = createServerFn({ method: "POST" })
   });
 
 export const deleteAvatarAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { avatarId: number }) => data)
+  .validator((data: { avatarId: number }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     const avatar = await getAvatarByIdForUser(data.avatarId, session.user.id);

@@ -42,17 +42,15 @@ export const getDashboardData = createServerFn({ method: "GET" }).handler(
 );
 
 export const addLinkAction = createServerFn({ method: "POST" })
-  .inputValidator(
-    (data: { title: string; url: string; thumbnailUrl?: string }) => {
-      if (!data.title.trim()) {
-        throw new Error("Title is required");
-      }
-      if (!isValidHttpUrl(data.url)) {
-        throw new Error("URL is invalid");
-      }
-      return data;
-    },
-  )
+  .validator((data: { title: string; url: string; thumbnailUrl?: string }) => {
+    if (!data.title.trim()) {
+      throw new Error("Title is required");
+    }
+    if (!isValidHttpUrl(data.url)) {
+      throw new Error("URL is invalid");
+    }
+    return data;
+  })
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     // Ensure we store the key
@@ -61,7 +59,7 @@ export const addLinkAction = createServerFn({ method: "POST" })
   });
 
 export const updateLinkAction = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       id: number;
       title: string;
@@ -97,21 +95,21 @@ export const updateLinkAction = createServerFn({ method: "POST" })
   });
 
 export const reorderLinksAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: number; newOrder: number }[]) => data)
+  .validator((data: { id: number; newOrder: number }[]) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     await reorderLinks(session.user.id, data);
   });
 
 export const toggleLinkVisibilityAction = createServerFn({ method: "POST" })
-  .inputValidator((data: number) => data)
+  .validator((data: number) => data)
   .handler(async ({ data: id }) => {
     const session = await getSessionOrThrow();
     await toggleLinkVisibility(session.user.id, id);
   });
 
 export const deleteLinkAction = createServerFn({ method: "POST" })
-  .inputValidator((data: number) => data)
+  .validator((data: number) => data)
   .handler(async ({ data: id }) => {
     const session = await getSessionOrThrow();
 

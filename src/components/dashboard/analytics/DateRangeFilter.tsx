@@ -187,7 +187,7 @@ export function DateRangeFilter() {
             </div>
             {calendarMode === "single" ? (
               <Calendar
-                initialFocus
+                autoFocus
                 mode="single"
                 defaultMonth={singleDate}
                 selected={singleDate}
@@ -196,7 +196,7 @@ export function DateRangeFilter() {
               />
             ) : (
               <Calendar
-                initialFocus
+                autoFocus
                 mode="range"
                 defaultMonth={date?.from}
                 selected={date}

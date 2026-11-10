@@ -66,7 +66,7 @@ interface UmamiEventData {
 export type { AnalyticsSearch };
 
 const getAnalytics = createServerFn({ method: "GET" })
-  .inputValidator((d: unknown) => analyticsSearchSchema.parse(d))
+  .validator((d: unknown) => analyticsSearchSchema.parse(d))
   .handler(async ({ data }) => {
     const session = await auth.api.getSession({
       headers: getRequestHeaders(),
