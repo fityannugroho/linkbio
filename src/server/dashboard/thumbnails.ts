@@ -16,7 +16,7 @@ import {
 import { getSessionOrThrow } from "@/server/auth";
 
 export const createThumbnailUploadAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { contentType: string; size: number }) => {
+  .validator((data: { contentType: string; size: number }) => {
     if (!ALLOWED_THUMBNAIL_CONTENT_TYPES.has(data.contentType)) {
       throw new Error("Only image uploads are allowed");
     }
@@ -58,7 +58,7 @@ export const createThumbnailUploadAction = createServerFn({ method: "POST" })
   });
 
 export const deleteThumbnailAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { objectKey: string }) => {
+  .validator((data: { objectKey: string }) => {
     if (!data.objectKey.trim()) {
       throw new Error("Thumbnail key is missing");
     }

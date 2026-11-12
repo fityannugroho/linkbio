@@ -47,7 +47,7 @@ const getSetupState = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 const createInitialProfile = createServerFn({ method: "POST" })
-  .inputValidator((data: { name: string }) => data)
+  .validator((data: { name: string }) => data)
   .handler(async ({ data }) => {
     const { db } = await import("@/db");
     const { profile } = await import("@/db/schema");

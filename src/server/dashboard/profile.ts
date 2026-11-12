@@ -9,7 +9,7 @@ import type { ProfileSocial } from "@/types/profile";
 
 // Update basic profile information only (displayName, bio, avatarUrl)
 export const updateProfileAction = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: {
       displayName: string;
       bio: string | null;
@@ -29,7 +29,7 @@ export const updateProfileAction = createServerFn({ method: "POST" })
 
 // Update a single social link
 export const updateSocialsAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { social: ProfileSocial }) => data)
+  .validator((data: { social: ProfileSocial }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
 
@@ -47,7 +47,7 @@ export const updateSocialsAction = createServerFn({ method: "POST" })
 
 // Update design settings only
 export const updateDesignsAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { design: Record<string, string | null> }) => data)
+  .validator((data: { design: Record<string, string | null> }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
 
@@ -56,7 +56,7 @@ export const updateDesignsAction = createServerFn({ method: "POST" })
 
 // Reorder social links
 export const reorderSocialsAction = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (data: { socials: Array<{ platform: string; order: number }> }) => data,
   )
   .handler(async ({ data }) => {
@@ -70,7 +70,7 @@ export const reorderSocialsAction = createServerFn({ method: "POST" })
 
 // Update social icons position
 export const updateSocialPositionAction = createServerFn({ method: "POST" })
-  .inputValidator((data: { position: "top" | "bottom" }) => data)
+  .validator((data: { position: "top" | "bottom" }) => data)
   .handler(async ({ data }) => {
     const session = await getSessionOrThrow();
     await upsertDesigns(session.user.id, {
